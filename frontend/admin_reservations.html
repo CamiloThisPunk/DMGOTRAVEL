@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Control de Reservas - DMGOTRAVEL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&amp;family=Work+Sans:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-lowest": "#ffffff",
+                      "surface-variant": "#dde3eb",
+                      "surface-container": "#e9eef6",
+                      "surface": "#f7f9ff",
+                      "tertiary-container": "#36393a",
+                      "error-container": "#ffdad6",
+                      "surface-bright": "#f7f9ff",
+                      "tertiary-fixed": "#e1e3e4",
+                      "on-background": "#161c22",
+                      "secondary-fixed": "#ffdbc8",
+                      "tertiary-fixed-dim": "#c5c7c8",
+                      "secondary-fixed-dim": "#ffb68b",
+                      "on-error": "#ffffff",
+                      "surface-container-highest": "#dde3eb",
+                      "inverse-primary": "#abc9f2",
+                      "inverse-surface": "#2b3137",
+                      "secondary-container": "#ff8934",
+                      "on-surface-variant": "#43474e",
+                      "primary-fixed-dim": "#abc9f2",
+                      "tertiary": "#212425",
+                      "inverse-on-surface": "#ecf1f9",
+                      "on-secondary-container": "#662d00",
+                      "on-error-container": "#93000a",
+                      "on-primary-container": "#87a4cc",
+                      "surface-tint": "#436084",
+                      "on-tertiary-fixed": "#191c1d",
+                      "outline-variant": "#c3c6cf",
+                      "on-surface": "#161c22",
+                      "on-primary-fixed": "#001c37",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary-fixed": "#321300",
+                      "surface-dim": "#d5dae2",
+                      "on-secondary": "#ffffff",
+                      "primary-container": "#1a3a5c",
+                      "on-primary-fixed-variant": "#2a486b",
+                      "on-tertiary-container": "#a0a2a3",
+                      "on-tertiary-fixed-variant": "#454748",
+                      "secondary": "#994700",
+                      "background": "#f7f9ff",
+                      "outline": "#73777f",
+                      "error": "#ba1a1a",
+                      "primary-fixed": "#d2e4ff",
+                      "primary": "#002444",
+                      "surface-container-low": "#eff4fc",
+                      "on-secondary-fixed-variant": "#743400",
+                      "on-primary": "#ffffff",
+                      "surface-container-high": "#e3e9f0"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "stack-lg": "2rem",
+                      "stack-md": "1rem",
+                      "container-max": "1320px",
+                      "gutter": "1.5rem",
+                      "section-padding-desktop": "5rem",
+                      "stack-sm": "0.5rem",
+                      "section-padding-mobile": "2.5rem"
+              },
+              "fontFamily": {
+                      "display-lg": ["Plus Jakarta Sans"],
+                      "display-lg-mobile": ["Plus Jakarta Sans"],
+                      "body-lg": ["Work Sans"],
+                      "label-md": ["Work Sans"],
+                      "headline-md": ["Plus Jakarta Sans"],
+                      "body-md": ["Work Sans"],
+                      "headline-sm": ["Plus Jakarta Sans"]
+              },
+              "fontSize": {
+                      "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}]
+              }
+            }
+          }
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+          font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Modal Transitions */
+        .modal-enter {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+        .modal-enter-active {
+            opacity: 1;
+            transform: translateX(0);
+            transition: all 0.3s ease-out;
+        }
+        .modal-exit {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .modal-exit-active {
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease-in;
+        }
+        
+        .backdrop-enter { opacity: 0; }
+        .backdrop-enter-active { opacity: 1; transition: opacity 0.3s ease-out; }
+        .backdrop-exit { opacity: 1; }
+        .backdrop-exit-active { opacity: 0; transition: opacity 0.3s ease-in; }
+      </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex">
+<!-- SideNavBar -->
+<nav class="fixed flex flex-col h-full border-r border-outline-variant bg-surface-container-low dark:bg-surface-dim text-primary dark:text-primary-fixed h-screen w-64 left-0 top-0 hidden md:flex z-40">
+<div class="p-gutter flex flex-col gap-4 border-b border-outline-variant">
+<h1 class="font-headline-sm text-headline-sm text-primary dark:text-primary-fixed">Admin Panel</h1>
+<p class="font-label-md text-label-md text-on-surface-variant">DMGOTRAVEL Management</p>
+</div>
+<div class="flex-1 overflow-y-auto py-stack-md flex flex-col gap-stack-sm">
+<!-- Inactive -->
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 my-1 flex items-center gap-3 p-3 font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<!-- Inactive -->
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 my-1 flex items-center gap-3 p-3 font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="travel_explore">travel_explore</span>
+                Servicios
+            </a>
+<!-- Active -->
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 my-1 flex items-center gap-3 p-3 font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+                Clientes
+            </a><a class="bg-secondary-container text-on-secondary-container rounded-lg mx-2 my-1 flex items-center gap-3 p-3 font-label-md text-label-md translate-x-1 active:translate-x-0 transition-transform" href="#">
+<span class="material-symbols-outlined filled" data-icon="confirmation_number">confirmation_number</span>
+                Reservas
+            </a>
+<!-- Inactive -->
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 my-1 flex items-center gap-3 p-3 font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+                Logs
+            </a>
+</div>
+<div class="p-gutter border-t border-outline-variant flex flex-col gap-stack-sm">
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 my-1 flex items-center gap-3 p-3 font-label-md text-label-md transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Ajustes
+            </a>
+<a class="text-on-surface-variant hover:bg-surface-variant rounded-lg mx-2 my-1 flex items-center gap-3 p-3 font-label-md text-label-md transition-all text-error" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Cerrar Sesión
+            </a>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 flex flex-col min-h-screen bg-surface-bright relative">
+<!-- Header Section -->
+<header class="bg-surface-container-lowest border-b border-outline-variant px-gutter py-stack-md flex justify-between items-center sticky top-0 z-30 shadow-sm">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary m-0">Control de Reservas</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">Gestión y seguimiento de itinerarios turísticos.</p>
+</div>
+<div class="flex items-center gap-stack-md">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-10 pr-4 py-2 border border-outline-variant rounded-full bg-surface text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body-md text-body-md w-64" placeholder="Buscar ID, Cliente..." type="text"/>
+</div>
+<button class="bg-primary text-on-primary font-label-md text-label-md px-4 py-2 rounded-lg flex items-center gap-2 hover:bg-primary-container hover:text-on-primary-container transition-colors shadow-sm">
+<span class="material-symbols-outlined">add</span>
+                    Nueva Reserva
+                </button>
+</div>
+</header>
+<!-- Content Area -->
+<div class="p-gutter flex-1 overflow-x-hidden">
+<!-- Filter Bar -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-2 mb-stack-lg flex flex-wrap gap-2 shadow-sm">
+<button class="px-4 py-2 rounded-lg bg-surface-container-high text-on-surface font-label-md text-label-md transition-colors hover:bg-surface-variant border border-outline-variant">Todas</button>
+<button class="px-4 py-2 rounded-lg bg-secondary-container text-on-secondary-container font-label-md text-label-md transition-colors border border-transparent">Pendientes <span class="bg-surface-container-lowest text-on-surface text-xs px-2 py-0.5 rounded-full ml-2">12</span></button>
+<button class="px-4 py-2 rounded-lg text-on-surface-variant font-label-md text-label-md transition-colors hover:bg-surface-variant border border-transparent hover:border-outline-variant">Confirmadas</button>
+<button class="px-4 py-2 rounded-lg text-on-surface-variant font-label-md text-label-md transition-colors hover:bg-surface-variant border border-transparent hover:border-outline-variant">Canceladas</button>
+<button class="px-4 py-2 rounded-lg text-on-surface-variant font-label-md text-label-md transition-colors hover:bg-surface-variant border border-transparent hover:border-outline-variant">Completadas</button>
+</div>
+<!-- Data Table Container (Glassmorphism/Card style) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="p-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">ID</th>
+<th class="p-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Cliente</th>
+<th class="p-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Servicio</th>
+<th class="p-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Fecha Viaje</th>
+<th class="p-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Total</th>
+<th class="p-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Estado</th>
+<th class="p-4 font-label-md text-label-md text-on-surface-variant uppercase tracking-wider text-right">Acciones</th>
+</tr>
+</thead>
+<tbody class="font-body-md text-body-md divide-y divide-outline-variant">
+<!-- Row 1: Pendiente -->
+<tr class="hover:bg-surface transition-colors group">
+<td class="p-4 text-primary font-semibold">#RES-8492</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-primary font-bold text-xs">JP</div>
+<div>
+<p class="font-semibold text-on-surface">Juan Pérez</p>
+<p class="text-sm text-on-surface-variant">juan.p@example.com</p>
+</div>
+</div>
+</td>
+<td class="p-4">
+<p class="font-semibold text-on-surface">Tour Pampa de Ayacucho y Wari</p>
+<p class="text-sm text-on-surface-variant">Paquete Premium</p>
+</td>
+<td class="p-4 text-on-surface-variant">15 Nov 2024</td>
+<td class="p-4 font-semibold text-primary">S/ 1,250.00</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-secondary-fixed-dim text-on-secondary-fixed">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                        Pendiente
+                                    </span>
+</td>
+<td class="p-4 text-right">
+<button class="text-primary hover:text-secondary font-label-md text-label-md border border-primary px-3 py-1.5 rounded-lg hover:bg-surface-variant transition-colors inline-flex items-center gap-1" onclick="openPanel('RES-8492')">
+                                        Ver Detalle
+                                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- Row 2: Confirmada -->
+<tr class="hover:bg-surface transition-colors group">
+<td class="p-4 text-primary font-semibold">#RES-8491</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-primary font-bold text-xs">MG</div>
+<div>
+<p class="font-semibold text-on-surface">María García</p>
+<p class="text-sm text-on-surface-variant">m.garcia@example.com</p>
+</div>
+</div>
+</td>
+<td class="p-4">
+<p class="font-semibold text-on-surface">Aguas Turquesas de Millpu Full Day</p>
+<p class="text-sm text-on-surface-variant">Aventura Básica</p>
+</td>
+<td class="p-4 text-on-surface-variant">10 Nov 2024</td>
+<td class="p-4 font-semibold text-primary">S/ 450.00</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-[#d3f5d3] text-[#005000]">
+<span class="w-1.5 h-1.5 rounded-full bg-[#008000]"></span>
+                                        Confirmada
+                                    </span>
+</td>
+<td class="p-4 text-right">
+<button class="text-primary hover:text-secondary font-label-md text-label-md border border-outline-variant px-3 py-1.5 rounded-lg hover:bg-surface-variant transition-colors inline-flex items-center gap-1" onclick="openPanel('RES-8491')">
+                                        Ver Detalle
+                                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</td>
+</tr>
+<!-- Row 3: Cancelada -->
+<tr class="hover:bg-surface transition-colors group opacity-75">
+<td class="p-4 text-outline font-semibold">#RES-8488</td>
+<td class="p-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-outline font-bold text-xs">CL</div>
+<div>
+<p class="font-semibold text-on-surface">Carlos López</p>
+<p class="text-sm text-on-surface-variant">clopez99@example.com</p>
+</div>
+</div>
+</td>
+<td class="p-4">
+<p class="font-semibold text-on-surface">City Tour Ayacucho</p>
+<p class="text-sm text-on-surface-variant">Tour Grupal</p>
+</td>
+<td class="p-4 text-on-surface-variant">05 Nov 2024</td>
+<td class="p-4 font-semibold text-outline line-through">S/ 85.00</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-error-container text-on-error-container">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                                        Cancelada
+                                    </span>
+</td>
+<td class="p-4 text-right">
+<button class="text-outline hover:text-primary font-label-md text-label-md border border-outline-variant px-3 py-1.5 rounded-lg hover:bg-surface-variant transition-colors inline-flex items-center gap-1" onclick="openPanel('RES-8488')">
+                                        Ver Detalle
+                                        <span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="border-t border-outline-variant p-4 flex items-center justify-between bg-surface-container-lowest">
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Mostrando 1 a 3 de 45 reservas</p>
+<div class="flex items-center gap-2">
+<button class="p-2 border border-outline-variant rounded-lg text-outline hover:bg-surface-variant transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined text-sm">chevron_left</span>
+</button>
+<button class="px-3 py-1 bg-primary text-on-primary rounded-lg font-label-md text-sm">1</button>
+<button class="px-3 py-1 border border-outline-variant text-on-surface rounded-lg font-label-md text-sm hover:bg-surface-variant transition-colors">2</button>
+<button class="px-3 py-1 border border-outline-variant text-on-surface rounded-lg font-label-md text-sm hover:bg-surface-variant transition-colors">3</button>
+<span class="text-outline">...</span>
+<button class="p-2 border border-outline-variant rounded-lg text-on-surface hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Side Panel Backdrop -->
+<div class="fixed inset-0 bg-[#000000] bg-opacity-30 z-50 hidden backdrop-enter" id="sidePanelBackdrop" onclick="closePanel()"></div>
+<!-- Details Side Panel -->
+<aside class="fixed top-0 right-0 h-full w-full max-w-md bg-surface-container-lowest shadow-[-4px_0_24px_rgba(0,36,68,0.1)] z-50 border-l border-outline-variant flex flex-col hidden modal-enter" id="detailsPanel">
+<!-- Panel Header -->
+<div class="p-gutter border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary m-0 flex items-center gap-2">
+                    Detalle de Reserva
+                    <span class="text-sm px-2 py-1 bg-surface-variant rounded text-on-surface-variant font-label-md" id="panelResId">#RES-0000</span>
+</h3>
+</div>
+<button class="p-2 rounded-full hover:bg-surface-variant text-on-surface-variant transition-colors flex items-center justify-center" onclick="closePanel()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Panel Content Scrollable -->
+<div class="flex-1 overflow-y-auto p-gutter flex flex-col gap-stack-lg">
+<!-- Status Alert -->
+<div class="bg-secondary-fixed p-4 rounded-xl border border-secondary-fixed-dim flex gap-3 items-start">
+<span class="material-symbols-outlined text-secondary mt-0.5">info</span>
+<div>
+<h4 class="font-label-md text-label-md text-on-secondary-fixed mb-1">Acción Requerida</h4>
+<p class="font-body-md text-sm text-on-secondary-fixed opacity-90">Esta reserva está pendiente de confirmación de pago. Verifique el comprobante antes de confirmar.</p>
+</div>
+</div>
+<!-- Client Info Bento Box -->
+<div>
+<h4 class="font-label-md text-label-md text-on-surface-variant mb-stack-sm uppercase tracking-wider text-xs">Información del Cliente</h4>
+<div class="bg-surface border border-outline-variant rounded-xl p-4 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-lg">
+                        JP
+                    </div>
+<div>
+<p class="font-semibold text-on-surface text-lg">Juan Pérez</p>
+<p class="font-body-md text-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">mail</span> juan.p@example.com
+                        </p>
+<p class="font-body-md text-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-sm">phone_iphone</span> +51 987 654 321
+                        </p>
+</div>
+</div>
+</div>
+<!-- Service Info -->
+<div>
+<h4 class="font-label-md text-label-md text-on-surface-variant mb-stack-sm uppercase tracking-wider text-xs">Detalles del Servicio</h4>
+<div class="border border-outline-variant rounded-xl overflow-hidden">
+<div class="p-4 bg-surface-container-low border-b border-outline-variant">
+<p class="font-semibold text-primary text-lg">Tour Pampa de Ayacucho y Wari</p>
+<p class="text-sm text-on-surface-variant">Paquete Premium • 2 Pasajeros</p>
+</div>
+<div class="p-4 bg-surface-container-lowest grid grid-cols-2 gap-4">
+<div>
+<p class="text-xs text-outline mb-1">Fecha de Inicio</p>
+<p class="font-semibold text-on-surface text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary">calendar_today</span> 15 Nov 2024
+                             </p>
+</div>
+<div>
+<p class="text-xs text-outline mb-1">Fecha de Fin</p>
+<p class="font-semibold text-on-surface text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary">event_available</span> 19 Nov 2024
+                             </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Payment Summary -->
+<div>
+<h4 class="font-label-md text-label-md text-on-surface-variant mb-stack-sm uppercase tracking-wider text-xs">Resumen de Pago</h4>
+<div class="bg-surface rounded-xl p-4 border border-outline-variant">
+<div class="flex justify-between items-center mb-2 text-sm">
+<span class="text-on-surface-variant">Subtotal (2 pax)</span>
+<span class="font-semibold">S/ 1,150.00</span>
+</div>
+<div class="flex justify-between items-center mb-4 text-sm">
+<span class="text-on-surface-variant">Impuestos (IGV 18%)</span>
+<span class="font-semibold">S/ 100.00</span>
+</div>
+<div class="flex justify-between items-center pt-3 border-t border-outline-variant">
+<span class="font-semibold text-on-surface">Total</span>
+<span class="font-bold text-primary text-lg">S/ 1,250.00</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Panel Footer / Actions -->
+<div class="p-gutter border-t border-outline-variant bg-surface-container-low flex gap-3">
+<button class="flex-1 bg-surface-container-lowest border border-error text-error font-label-md text-label-md px-4 py-3 rounded-xl hover:bg-error-container hover:text-on-error-container transition-colors shadow-sm flex justify-center items-center gap-2">
+<span class="material-symbols-outlined">cancel</span>
+                Cancelar
+            </button>
+<button class="flex-1 bg-secondary text-on-secondary font-label-md text-label-md px-4 py-3 rounded-xl hover:bg-secondary-container hover:text-on-secondary-container transition-colors shadow-sm flex justify-center items-center gap-2">
+<span class="material-symbols-outlined">check_circle</span>
+                Confirmar
+            </button>
+</div>
+</aside>
+<script>
+        const panel = document.getElementById('detailsPanel');
+        const backdrop = document.getElementById('sidePanelBackdrop');
+        const resIdSpan = document.getElementById('panelResId');
+
+        function openPanel(id) {
+            resIdSpan.textContent = '#' + id;
+            
+            // Show backdrop
+            backdrop.classList.remove('hidden');
+            // Trigger reflow
+            void backdrop.offsetWidth;
+            backdrop.classList.remove('backdrop-enter');
+            backdrop.classList.add('backdrop-enter-active');
+            
+            // Show panel
+            panel.classList.remove('hidden');
+            void panel.offsetWidth;
+            panel.classList.remove('modal-enter');
+            panel.classList.add('modal-enter-active');
+            
+            document.body.style.overflow = 'hidden'; // Prevent main scrolling
+        }
+
+        function closePanel() {
+            // Animate out panel
+            panel.classList.remove('modal-enter-active');
+            panel.classList.add('modal-exit-active');
+            
+            // Animate out backdrop
+            backdrop.classList.remove('backdrop-enter-active');
+            backdrop.classList.add('backdrop-exit-active');
+            
+            setTimeout(() => {
+                panel.classList.add('hidden');
+                panel.classList.remove('modal-exit-active');
+                panel.classList.add('modal-enter');
+                
+                backdrop.classList.add('hidden');
+                backdrop.classList.remove('backdrop-exit-active');
+                backdrop.classList.add('backdrop-enter');
+                
+                document.body.style.overflow = '';
+            }, 300);
+        }
+    </script>
+</body></html>

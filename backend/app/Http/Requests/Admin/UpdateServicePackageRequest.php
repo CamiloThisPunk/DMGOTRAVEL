@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Http\Requests\Admin;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class UpdateServicePackageRequest extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @return array<string, array<int, string>>
+     */
+    public function rules(): array
+    {
+        return [
+            'title' => ['sometimes', 'string', 'max:255'],
+            'description' => ['sometimes', 'string'],
+            'price' => ['sometimes', 'numeric', 'min:0'],
+            'capacity' => ['sometimes', 'integer', 'min:1'],
+            'duration' => ['sometimes', 'integer', 'min:1'],
+            'image_360' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
+            'is_active' => ['sometimes', 'boolean'],
+        ];
+    }
+}

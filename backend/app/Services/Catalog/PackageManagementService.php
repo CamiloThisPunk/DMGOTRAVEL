@@ -1,0 +1,122 @@
+<?php
+
+namespace App\Services\Catalog;
+
+use App\Models\AuditLog;
+use App\Models\ServicePackage;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
+use App\Services\Media\ImageUploadService;
+
+class PackageManagementService
+{
+    protected ImageUploadService $imageUploadService;
+
+    public function __construct(ImageUploadService $imageUploadService)
+    {
+        $this->imageUploadService = $imageUploadService;
+    }
+
+    /**
+     * List all service packages for admin (including inactive).
+     */
+    public function listAll(int $perPage = 15): LengthAwarePaginator
+    {
+        return ServicePackage::orderBy('created_at', 'desc')
+            ->paginate($perPage);
+    }
+
+    /**
+     * Find a service package by ID (including inactive).
+     */
+    public function findOrFail(int $id): ServicePackage
+    {
+        return ServicePackage::findOrFail($id);
+    }
+
+    /**
+     * Create a new service package.
+     *
+     * @param array<string, mixed> $data
+     */
+    public function create(array $data): ServicePackage
+    {
+        if (isset($data['image_360'])) {
+            $data['image_360_url'] = $this->imageUploadService->storeImage($data['image_360']);
+            unset($data['image_360']);
+        }
+
+        $package = ServicePackage::create($data);
+        $package->refresh();
+
+        $this->logAction('service_package.created', $package, null, $package->toArray());
+
+        return $package;
+    }
+
+    /**
+     * Update an existing service package.
+     *
+     * @param array<string, mixed> $data
+     */
+    public function update(ServicePackage $package, array $data): ServicePackage
+    {
+        $oldValues = $package->toArray();
+
+        if (isset($data['image_360'])) {
+            $this->imageUploadService->deleteImage($package->image_360_url);
+            $data['image_360_url'] = $this->imageUploadService->storeImage($data['image_360']);
+            unset($data['image_360']);
+        }
+
+        $package->update($data);
+
+        $this->logAction(
+            'service_package.updated',
+            $package,
+            $oldValues,
+            $package->fresh()->toArray()
+        );
+
+        return $package->fresh();
+    }
+
+    /**
+     * Deactivate a service package (soft action via is_active flag).
+     */
+    public function deactivate(ServicePackage $package): ServicePackage
+    {
+        $oldValues = ['is_active' => $package->is_active];
+
+        $package->update(['is_active' => false]);
+
+        $this->logAction(
+            'service_package.deactivated',
+            $package,
+            $oldValues,
+            ['is_active' => false]
+        );
+
+        return $package;
+    }
+
+    /**
+     * Log an audit action for a service package.
+     */
+    private function logAction(
+        string $action,
+        ServicePackage $package,
+        ?array $oldValues,
+        ?array $newValues
+    ): void {
+        AuditLog::create([
+            'user_id' => Auth::id(),
+            'action' => $action,
+            'entity_type' => ServicePackage::class,
+            'entity_id' => $package->id,
+            'old_values' => $oldValues,
+            'new_values' => $newValues,
+            'created_at' => now(),
+        ]);
+    }
+}

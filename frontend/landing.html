@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DMGOTRAVEL - Explora Ayacucho</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&amp;family=Work+Sans:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#dde3eb",
+                    "surface-container": "#e9eef6",
+                    "surface": "#f7f9ff",
+                    "tertiary-container": "#36393a",
+                    "error-container": "#ffdad6",
+                    "surface-bright": "#f7f9ff",
+                    "tertiary-fixed": "#e1e3e4",
+                    "on-background": "#161c22",
+                    "secondary-fixed": "#ffdbc8",
+                    "tertiary-fixed-dim": "#c5c7c8",
+                    "secondary-fixed-dim": "#ffb68b",
+                    "on-error": "#ffffff",
+                    "surface-container-highest": "#dde3eb",
+                    "inverse-primary": "#abc9f2",
+                    "inverse-surface": "#2b3137",
+                    "secondary-container": "#ff8934",
+                    "on-surface-variant": "#43474e",
+                    "primary-fixed-dim": "#abc9f2",
+                    "tertiary": "#212425",
+                    "inverse-on-surface": "#ecf1f9",
+                    "on-secondary-container": "#662d00",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#87a4cc",
+                    "surface-tint": "#436084",
+                    "on-tertiary-fixed": "#191c1d",
+                    "outline-variant": "#c3c6cf",
+                    "on-surface": "#161c22",
+                    "on-primary-fixed": "#001c37",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed": "#321300",
+                    "surface-dim": "#d5dae2",
+                    "on-secondary": "#ffffff",
+                    "primary-container": "#1a3a5c",
+                    "on-primary-fixed-variant": "#2a486b",
+                    "on-tertiary-container": "#a0a2a3",
+                    "on-tertiary-fixed-variant": "#454748",
+                    "secondary": "#994700",
+                    "background": "#f7f9ff",
+                    "outline": "#73777f",
+                    "error": "#ba1a1a",
+                    "primary-fixed": "#d2e4ff",
+                    "primary": "#002444",
+                    "surface-container-low": "#eff4fc",
+                    "on-secondary-fixed-variant": "#743400",
+                    "on-primary": "#ffffff",
+                    "surface-container-high": "#e3e9f0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "stack-lg": "2rem",
+                    "stack-md": "1rem",
+                    "container-max": "1320px",
+                    "gutter": "1.5rem",
+                    "section-padding-desktop": "5rem",
+                    "stack-sm": "0.5rem",
+                    "section-padding-mobile": "2.5rem"
+            },
+            "fontFamily": {
+                    "display-lg": ["Plus Jakarta Sans"],
+                    "display-lg-mobile": ["Plus Jakarta Sans"],
+                    "body-lg": ["Work Sans"],
+                    "label-md": ["Work Sans"],
+                    "headline-md": ["Plus Jakarta Sans"],
+                    "body-md": ["Work Sans"],
+                    "headline-sm": ["Plus Jakarta Sans"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Emulating Bootstrap 5 Container & Rows via Tailwind utilities where possible, but keeping custom CSS minimal */
+        .tour-card {
+            transition: all 0.3s ease;
+        }
+        .tour-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            border-bottom: 2px solid #002444; /* Primary Navy */
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased">
+<!-- Shared Component: TopNavBar -->
+<header class="w-full sticky top-0 z-50 bg-surface-container-lowest border-b border-outline-variant">
+<nav class="container mx-auto max-w-[1320px] flex justify-between items-center h-20 px-gutter">
+<!-- Brand -->
+<a class="font-display-lg md:text-display-lg text-display-lg-mobile text-primary tracking-tight" href="#">
+                DMGOTRAVEL
+            </a>
+<!-- Navigation Links (Desktop) -->
+<ul class="hidden md:flex items-center gap-8 font-body-md text-body-md">
+<li>
+<a class="text-primary font-bold border-b-2 border-secondary pb-1 block hover:text-secondary transition-colors" href="#inicio">
+                        Inicio
+                    </a>
+</li>
+<li>
+<a class="text-on-surface-variant hover:text-secondary transition-colors block pb-1 border-b-2 border-transparent" href="#destinos">
+                        Destinos
+                    </a>
+</li>
+<li>
+<a class="text-on-surface-variant hover:text-secondary transition-colors block pb-1 border-b-2 border-transparent" href="#nosotros">
+                        Nosotros
+                    </a>
+</li>
+<li>
+<a class="text-on-surface-variant hover:text-secondary transition-colors block pb-1 border-b-2 border-transparent" href="#contacto">
+                        Contacto
+                    </a>
+</li>
+</ul>
+<!-- Trailing Action -->
+<div class="hidden md:block">
+<button class="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded hover:bg-primary-container hover:text-on-primary-container transition-colors scale-95 active:scale-90">
+                    Reservar ahora
+                </button>
+</div>
+<!-- Mobile Menu Icon (Placeholder) -->
+<button class="md:hidden text-primary">
+<span class="material-symbols-outlined text-3xl">menu</span>
+</button>
+</nav>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative w-full h-[819px] min-h-[600px] flex items-center justify-center overflow-hidden" id="inicio">
+<!-- Background Image -->
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center" data-alt="A breathtaking, wide-angle landscape photograph of the vast Andean mountains in Ayacucho, Peru during a vibrant sunrise. The clear, bright blue sky is lightly dusted with clouds, illuminating the deep green valleys and rugged peaks. The scene exudes a high-key, pristine light mode aesthetic, perfectly suited for a modern corporate travel agency highlighting thrilling, reliable adventure. The mood is majestic and inviting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDD_V6y9OlnL1qSmdBpUSbPE79P1JJs937IgKkdGtg1OTRRz5UKBCSyDEVWC7594oYnHMRHzFFrqjnDsWmIYM8SHibpBoRTjqd7eyaTlrtJaNOtUHHcQrNBwtutm-M2HVtdCKdothcGmeyvXgHeZFoEv7HfTtLYWOp3vtWRl1lKqExM5lRfHUsEk1RlSv5nJVJ2pgnWi2w86IfTP7lh6YtueNFAZ7OVjAZIXvAwn6dAX5UFoSX55ngzpcy9K960u3lGvwFUZFEssxs')"></div>
+<!-- Gradient Overlay for text readability -->
+<div class="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent"></div>
+</div>
+<div class="relative z-10 container mx-auto max-w-[1320px] px-gutter text-left">
+<div class="max-w-2xl">
+<h1 class="font-display-lg md:text-display-lg text-display-lg-mobile text-on-primary mb-stack-md drop-shadow-md">
+                        Explora la Magia de Ayacucho
+                    </h1>
+<p class="font-body-lg text-body-lg text-on-primary mb-stack-lg opacity-90">
+                        Descubre paisajes inolvidables, aventuras extremas y la calidez de nuestra historia. Tu próximo gran viaje comienza aquí.
+                    </p>
+<a class="inline-flex items-center justify-center bg-secondary-container text-on-secondary-container font-label-md text-label-md px-8 py-4 rounded font-bold shadow-sm hover:bg-secondary hover:text-on-secondary transition-colors scale-95 active:scale-90" href="#destinos">
+                        Ver Tours
+                    </a>
+</div>
+</div>
+</section>
+<!-- Service Catalog Section -->
+<section class="py-section-padding-mobile md:py-section-padding-desktop bg-surface" id="destinos">
+<div class="container mx-auto max-w-[1320px] px-gutter">
+<div class="text-center mb-12">
+<h2 class="font-headline-md text-headline-md text-primary mb-2">Destinos Destacados</h2>
+<p class="text-on-surface-variant max-w-2xl mx-auto">Experiencias diseñadas para el viajero moderno. Seguridad, profesionalismo y aventura en cada ruta.</p>
+</div>
+<!-- 12-Column Grid for Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Card 1 -->
+<article class="tour-card bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden flex flex-col h-full">
+<div class="h-64 overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="Dynamic action photography of a person snowboarding down the pristine, snow-covered slopes of Nevado Razuhuillca in Ayacucho. Bright daylight illuminates the crisp white snow and clear blue sky, capturing a sense of extreme sport and adventure. The image follows a modern corporate aesthetic, utilizing high contrast and sharp focus to convey excitement within a reliable, structured touring environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJGrL6LQf6tw1ldrqGFXEK-hIY_1Zb-JjQ_AjvN_dp0NXFt1Hpbb5cXnJkIHZPzB0ph5NZ-KTV4sPHLUmtYIylevCu1YmThbwMeUzYVTQ0huAJClWwV92YmcZFif_mquZ_VVszredxUi55jTIrmh9FLls-E43GLiZllixrbLh9cPO7yGYLHv-U7CVMlK278HzNNqcTA02F4XAS2iVNKwqPKxf7KKLTmrcVvgKo8RNeaRfkAoqgh-aGFKQtLZpLX6HzvpkkNf4ua5g"/>
+<div class="absolute top-4 left-4 bg-surface-container-lowest text-primary font-label-md text-label-md px-3 py-1 rounded shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">account_balance</span> Cultura
+                            </div>
+</div>
+<div class="p-6 flex-grow flex flex-col">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-2">Ciudadela Inca de Vilcashuamán</h3>
+<p class="text-on-surface-variant flex-grow mb-4">Explora la majestuosidad arquitectónica del antiguo imperio. Un viaje profundo a nuestras raíces andinas en la región de Ayacucho.</p>
+<div class="flex justify-between items-center mt-auto border-t border-outline-variant pt-4">
+<span class="bg-surface-container text-primary px-3 py-1 rounded font-bold text-sm">Desde S/ 120</span>
+<button class="text-secondary font-label-md text-label-md hover:text-secondary-container transition-colors flex items-center gap-1">
+                                    Detalles <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="tour-card bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden flex flex-col h-full">
+<div class="h-64 overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="High-quality adventure photography showing a mountain biker riding down a rugged, scenic trail in Cachi, Ayacucho. The warm, golden hour sunlight casts long shadows, emphasizing the rocky terrain and sweeping landscape. Shot with professional clarity in a light mode style, the image highlights the thrill of outdoor sports while maintaining a clean, trustworthy corporate travel visual identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmrkMsUShFOS-8VPZMsEeTyGwTXb0oAWz9F7J-MaCRalseeVvhFtUR1W6iCeqjjlrp4rB-J3IjvdlB8C_uKFRKmJP3ald_WebMmyKzSe2Bpiip-t8L6iG6BSMW8qcdI7d89YEP2iX3w8nh145x8WiFasQeHdbMH5cKv7XNjtBJFKrs9XWcIFOHt0rAoKXqu_wi7c2wurUCEGgpVUAMpGogt-1m_6aF_Xf7GQNL2vBQBb0QUX9T0zy2GWo3nASUlTM4VUYYNblQQBs"/>
+<div class="absolute top-4 left-4 bg-surface-container-lowest text-primary font-label-md text-label-md px-3 py-1 rounded shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">local_florist</span> Naturaleza
+                            </div>
+</div>
+<div class="p-6 flex-grow flex flex-col">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-2">Valle Esmeralda de Huanta</h3>
+<p class="text-on-surface-variant flex-grow mb-4">Disfruta del clima cálido y paisajes vibrantes. Ideal para turismo vivencial y degustación de licores locales en Huanta.</p>
+<div class="flex justify-between items-center mt-auto border-t border-outline-variant pt-4">
+<span class="bg-surface-container text-primary px-3 py-1 rounded font-bold text-sm">Desde S/ 85</span>
+<button class="text-secondary font-label-md text-label-md hover:text-secondary-container transition-colors flex items-center gap-1">
+                                    Detalles <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="tour-card bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden flex flex-col h-full">
+<div class="h-64 overflow-hidden relative">
+<img class="w-full h-full object-cover" data-alt="Stunning professional travel photography capturing a group of hikers exploring the turquoise natural pools of Millpu in Ayacucho. The clear, bright water contrasts beautifully against the rocky, sunlit canyon walls. The image features a bright, airy light mode aesthetic, conveying a sense of serene discovery, professional guidance, and natural wonder characteristic of a premium travel agency." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnR0fCn5KtabHFx4ML6nm4f5Hr0YgqQB4_6_jZX276zc7N2W-8kqZApN_6wRldryV-_PcSzuCbRqx87M8WoZqBc2tE0UwCY7glfLS6JydgEfC6vujvir7RIQ-wNkwA0tNsvFw67QICxLjwlgU-A0UW6mpqeqVnMmdeRKEYg9ejcmyQX_vit7wkhRmEgUtVck4m-giu-MH_CqObAx5XJOPLAipBkp6upCaVDi9q1Aj4OAHrGmNSgi9YIVIHFYEN0mUpbGj9mZXqz5c"/>
+<div class="absolute top-4 left-4 bg-surface-container-lowest text-primary font-label-md text-label-md px-3 py-1 rounded shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">hiking</span> Trekking
+                            </div>
+</div>
+<div class="p-6 flex-grow flex flex-col">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-2">Hiking en las Aguas de Millpu</h3>
+<p class="text-on-surface-variant flex-grow mb-4">Caminatas guiadas hacia las impresionantes pozas turquesas escondidas en el cañón. Naturaleza pura y senderismo seguro en Ayacucho.</p>
+<div class="flex justify-between items-center mt-auto border-t border-outline-variant pt-4">
+<span class="bg-surface-container text-primary px-3 py-1 rounded font-bold text-sm">Desde S/ 60</span>
+<button class="text-secondary font-label-md text-label-md hover:text-secondary-container transition-colors flex items-center gap-1">
+                                    Detalles <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</article>
+</div>
+</div>
+</section>
+<!-- About Us Section -->
+<section class="py-section-padding-mobile md:py-section-padding-desktop bg-surface-container-lowest border-y border-outline-variant" id="nosotros">
+<div class="container mx-auto max-w-[1320px] px-gutter">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
+<div class="md:col-span-6 order-2 md:order-1">
+<h2 class="font-headline-md text-headline-md text-primary mb-6">Expertos en Turismo Local</h2>
+<p class="text-on-surface-variant mb-4">
+                            En DMGOTRAVEL, no solo organizamos viajes; creamos conexiones auténticas con el corazón de los Andes. Nuestro equipo está conformado por guías locales apasionados y certificados, listos para mostrarte los secretos mejor guardados de Ayacucho.
+                        </p>
+<p class="text-on-surface-variant mb-6">
+                            Combinamos la rica herencia histórica de la región con la emoción de la aventura moderna. Desde rutas arqueológicas en Quinua hasta deportes extremos, garantizamos una experiencia profesional, segura e inolvidable.
+                        </p>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+                                Guías certificados y bilingües.
+                            </li>
+<li class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+                                Equipamiento de primera calidad.
+                            </li>
+<li class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+                                Compromiso con el turismo sostenible.
+                            </li>
+</ul>
+<button class="border border-primary text-primary px-6 py-3 rounded font-label-md hover:bg-primary hover:text-on-primary transition-colors">
+                            Conoce al Equipo
+                        </button>
+</div>
+<div class="md:col-span-6 order-1 md:order-2 h-[500px] rounded-lg overflow-hidden relative shadow-sm border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A candid, well-lit photograph of a professional tour guide from DMGOTRAVEL pointing towards a scenic vista in Ayacucho, while engaging with a small group of attentive tourists. The scene is shot outdoors in bright daylight, maintaining a clean, modern corporate aesthetic. The focus is on friendly professionalism, trust, and the beautiful Andean landscape in the soft-focus background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcasfvf2ILNz6EsZ9NHP9-UlOQL0YABzRfzAUXg-cf6EqPeiLeJIP2HV7lpacSITSGHbmZ1pvMA80vSFwP0a8M75s7tAeTcxr7T8Liov4-93Z3tVW8GwDv40s6iYqL8V6WVXtSc-uoOfej7SIjyQJuY0VyVk-QLSBkr5-5jxU86p18JFtdwfRqeLuSv9iOhm3JgsEIxmhxrYukq71_VB0J4QKHvXR4f1TH8VbKYGYpHC4-um-RvcsO_8Kn3tt5b7js2PvzHL3Nk-0"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Contact Section -->
+<section class="py-section-padding-mobile md:py-section-padding-desktop bg-surface-container-low" id="contacto">
+<div class="container mx-auto max-w-[1320px] px-gutter text-center">
+<h2 class="font-headline-md text-headline-md text-primary mb-8">¿Listo para tu próxima aventura?</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+<!-- Contact Item -->
+<div class="bg-surface-container-lowest p-8 rounded border border-outline-variant hover:border-secondary transition-colors">
+<span class="material-symbols-outlined text-4xl text-secondary mb-4 block">call</span>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-2">Llámanos</h4>
+<p class="text-on-surface-variant">+51 987 654 321</p>
+<p class="text-on-surface-variant text-sm mt-1">Lun - Sab, 8am - 6pm</p>
+</div>
+<!-- Contact Item -->
+<div class="bg-surface-container-lowest p-8 rounded border border-outline-variant hover:border-secondary transition-colors">
+<span class="material-symbols-outlined text-4xl text-secondary mb-4 block">mail</span>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-2">Escríbenos</h4>
+<p class="text-on-surface-variant">reservas@dmgotravel.pe</p>
+<p class="text-on-surface-variant text-sm mt-1">Respuesta en 24h</p>
+</div>
+<!-- Contact Item -->
+<div class="bg-surface-container-lowest p-8 rounded border border-outline-variant hover:border-secondary transition-colors">
+<span class="material-symbols-outlined text-4xl text-secondary mb-4 block">location_on</span>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-2">Visítanos</h4>
+<p class="text-on-surface-variant">Portal Constitución 123</p>
+<p class="text-on-surface-variant text-sm mt-1">Plaza de Armas, Ayacucho</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Shared Component: Footer -->
+<footer class="w-full py-stack-lg px-gutter flex flex-col items-center gap-stack-md bg-primary text-on-primary font-body-md text-body-md">
+<div class="font-headline-sm text-headline-sm text-on-primary tracking-tight">
+            DMGOTRAVEL
+        </div>
+<ul class="flex flex-wrap justify-center gap-6 mt-4">
+<li>
+<a class="text-on-primary-container hover:text-secondary-fixed-dim transition-colors opacity-80 hover:opacity-100 block" href="#">
+                    Facebook
+                </a>
+</li>
+<li>
+<a class="text-on-primary-container hover:text-secondary-fixed-dim transition-colors opacity-80 hover:opacity-100 block" href="#">
+                    Instagram
+                </a>
+</li>
+<li>
+<a class="text-on-primary-container hover:text-secondary-fixed-dim transition-colors opacity-80 hover:opacity-100 block" href="#">
+                    WhatsApp
+                </a>
+</li>
+<li>
+<a class="text-on-primary-container hover:text-secondary-fixed-dim transition-colors opacity-80 hover:opacity-100 block" href="#">
+                    Términos y Condiciones
+                </a>
+</li>
+</ul>
+<div class="mt-4 text-center text-sm opacity-80">
+            © 2024 DMGOTRAVEL. Explorando el corazón de los Andes.
+        </div>
+</footer>
+</body></html>
