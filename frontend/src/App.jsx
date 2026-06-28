@@ -23,12 +23,13 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Auth />} />
         <Route path="/register" element={<Auth />} />
+        <Route path="/auth" element={<Auth />} />
 
         {/* Client Routes */}
         <Route path="/client" element={<ProtectedRoute allowedRoles={['client']}><ClientLayout /></ProtectedRoute>}>
             <Route path="dashboard" element={<ClientDashboard />} />
             <Route path="catalog" element={<TourCatalog />} />
-            <Route path="profile" element={<div className="p-12">Perfil en construcción</div>} />
+            <Route path="profile" element={<div className="p-12 text-center text-on-surface-variant">Perfil en construcción</div>} />
         </Route>
 
         {/* Admin Routes */}
