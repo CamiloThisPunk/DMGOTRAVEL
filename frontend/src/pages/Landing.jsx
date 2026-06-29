@@ -1,7 +1,25 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import api from '../services/api';
 
 const Landing = () => {
+    const [services, setServices] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchServices = async () => {
+            try {
+                const res = await api.get('/api/services');
+                setServices(res.data?.data || res.data || []);
+            } catch (error) {
+                console.error("Error fetching services", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchServices();
+    }, []);
+
     return (
         <div className="bg-background text-on-background font-body-md text-body-md antialiased">
             {/* TopNavBar */}
@@ -56,65 +74,45 @@ const Landing = () => {
                             <h2 className="font-headline-md text-headline-md text-primary mb-2">Destinos Destacados</h2>
                             <p className="text-on-surface-variant max-w-2xl mx-auto">Experiencias diseñadas para el viajero moderno. Seguridad, profesionalismo y aventura en cada ruta.</p>
                         </div>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-                            {/* Card 1 */}
-                            <article className="tour-card bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden flex flex-col h-full">
-                                <div className="h-64 overflow-hidden relative">
-                                    <img className="w-full h-full object-cover" alt="Ciudadela Inca de Vilcashuamán" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJGrL6LQf6tw1ldrqGFXEK-hIY_1Zb-JjQ_AjvN_dp0NXFt1Hpbb5cXnJkIHZPzB0ph5NZ-KTV4sPHLUmtYIylevCu1YmThbwMeUzYVTQ0huAJClWwV92YmcZFif_mquZ_VVszredxUi55jTIrmh9FLls-E43GLiZllixrbLh9cPO7yGYLHv-U7CVMlK278HzNNqcTA02F4XAS2iVNKwqPKxf7KKLTmrcVvgKo8RNeaRfkAoqgh-aGFKQtLZpLX6HzvpkkNf4ua5g" />
-                                    <div className="absolute top-4 left-4 bg-surface-container-lowest text-primary font-label-md text-label-md px-3 py-1 rounded shadow-sm flex items-center gap-1">
-                                        <span className="material-symbols-outlined text-[16px]">account_balance</span> Cultura
-                                    </div>
-                                </div>
-                                <div className="p-6 flex-grow flex flex-col">
-                                    <h3 className="font-headline-sm text-headline-sm text-primary mb-2">Ciudadela Inca de Vilcashuamán</h3>
-                                    <p className="text-on-surface-variant flex-grow mb-4">Explora la majestuosidad arquitectónica del antiguo imperio. Un viaje profundo a nuestras raíces andinas en la región de Ayacucho.</p>
-                                    <div className="flex justify-between items-center mt-auto border-t border-outline-variant pt-4">
-                                        <span className="bg-surface-container text-primary px-3 py-1 rounded font-bold text-sm">Desde S/ 120</span>
-                                        <button className="text-secondary font-label-md text-label-md hover:text-secondary-container transition-colors flex items-center gap-1">
-                                            Detalles <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </article>
-                            {/* Card 2 */}
-                            <article className="tour-card bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden flex flex-col h-full">
-                                <div className="h-64 overflow-hidden relative">
-                                    <img className="w-full h-full object-cover" alt="Valle Esmeralda de Huanta" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmrkMsUShFOS-8VPZMsEeTyGwTXb0oAWz9F7J-MaCRalseeVvhFtUR1W6iCeqjjlrp4rB-J3IjvdlB8C_uKFRKmJP3ald_WebMmyKzSe2Bpiip-t8L6iG6BSMW8qcdI7d89YEP2iX3w8nh145x8WiFasQeHdbMH5cKv7XNjtBJFKrs9XWcIFOHt0rAoKXqu_wi7c2wurUCEGgpVUAMpGogt-1m_6aF_Xf7GQNL2vBQBb0QUX9T0zy2GWo3nASUlTM4VUYYNblQQBs" />
-                                    <div className="absolute top-4 left-4 bg-surface-container-lowest text-primary font-label-md text-label-md px-3 py-1 rounded shadow-sm flex items-center gap-1">
-                                        <span className="material-symbols-outlined text-[16px]">local_florist</span> Naturaleza
-                                    </div>
-                                </div>
-                                <div className="p-6 flex-grow flex flex-col">
-                                    <h3 className="font-headline-sm text-headline-sm text-primary mb-2">Valle Esmeralda de Huanta</h3>
-                                    <p className="text-on-surface-variant flex-grow mb-4">Disfruta del clima cálido y paisajes vibrantes. Ideal para turismo vivencial y degustación de licores locales en Huanta.</p>
-                                    <div className="flex justify-between items-center mt-auto border-t border-outline-variant pt-4">
-                                        <span className="bg-surface-container text-primary px-3 py-1 rounded font-bold text-sm">Desde S/ 85</span>
-                                        <button className="text-secondary font-label-md text-label-md hover:text-secondary-container transition-colors flex items-center gap-1">
-                                            Detalles <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </article>
-                            {/* Card 3 */}
-                            <article className="tour-card bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden flex flex-col h-full">
-                                <div className="h-64 overflow-hidden relative">
-                                    <img className="w-full h-full object-cover" alt="Hiking en las Aguas de Millpu" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnR0fCn5KtabHFx4ML6nm4f5Hr0YgqQB4_6_jZX276zc7N2W-8kqZApN_6wRldryV-_PcSzuCbRqx87M8WoZqBc2tE0UwCY7glfLS6JydgEfC6vujvir7RIQ-wNkwA0tNsvFw67QICxLjwlgU-A0UW6mpqeqVnMmdeRKEYg9ejcmyQX_vit7wkhRmEgUtVck4m-giu-MH_CqObAx5XJOPLAipBkp6upCaVDi9q1Aj4OAHrGmNSgi9YIVIHFYEN0mUpbGj9mZXqz5c" />
-                                    <div className="absolute top-4 left-4 bg-surface-container-lowest text-primary font-label-md text-label-md px-3 py-1 rounded shadow-sm flex items-center gap-1">
-                                        <span className="material-symbols-outlined text-[16px]">hiking</span> Trekking
-                                    </div>
-                                </div>
-                                <div className="p-6 flex-grow flex flex-col">
-                                    <h3 className="font-headline-sm text-headline-sm text-primary mb-2">Hiking en las Aguas de Millpu</h3>
-                                    <p className="text-on-surface-variant flex-grow mb-4">Caminatas guiadas hacia las impresionantes pozas turquesas escondidas en el cañón. Naturaleza pura y senderismo seguro en Ayacucho.</p>
-                                    <div className="flex justify-between items-center mt-auto border-t border-outline-variant pt-4">
-                                        <span className="bg-surface-container text-primary px-3 py-1 rounded font-bold text-sm">Desde S/ 60</span>
-                                        <button className="text-secondary font-label-md text-label-md hover:text-secondary-container transition-colors flex items-center gap-1">
-                                            Detalles <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
+                        
+                        {loading ? (
+                            <div className="flex items-center justify-center py-12">
+                                <span className="material-symbols-outlined animate-spin text-primary text-4xl">sync</span>
+                            </div>
+                        ) : services.length === 0 ? (
+                            <div className="text-center py-12 text-on-surface-variant">
+                                No hay tours disponibles en este momento. Vuelve más tarde.
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+                                {services.slice(0, 6).map((service) => (
+                                    <article key={service.id} className="tour-card bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden flex flex-col h-full hover:border-primary transition-colors hover:shadow-md">
+                                        <div className="h-64 overflow-hidden relative">
+                                            {service.image_360_url ? (
+                                                <img className="w-full h-full object-cover" alt={service.title} src={service.image_360_url} />
+                                            ) : (
+                                                <div className="w-full h-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+                                                    <span className="material-symbols-outlined text-4xl">image</span>
+                                                </div>
+                                            )}
+                                            <div className="absolute top-4 left-4 bg-surface-container-lowest text-primary font-label-md text-label-md px-3 py-1 rounded shadow-sm flex items-center gap-1">
+                                                <span className="material-symbols-outlined text-[16px]">explore</span> Aventura
+                                            </div>
+                                        </div>
+                                        <div className="p-6 flex-grow flex flex-col">
+                                            <h3 className="font-headline-sm text-headline-sm text-primary mb-2">{service.title}</h3>
+                                            <p className="text-on-surface-variant flex-grow mb-4 line-clamp-3">{service.description}</p>
+                                            <div className="flex justify-between items-center mt-auto border-t border-outline-variant pt-4">
+                                                <span className="bg-surface-container text-primary px-3 py-1 rounded font-bold text-sm">Desde S/ {parseFloat(service.price).toFixed(2)}</span>
+                                                <Link to={`/auth`} className="text-secondary font-label-md text-label-md hover:text-secondary-container transition-colors flex items-center gap-1">
+                                                    Reservar <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    </article>
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </section>
 
@@ -178,6 +176,36 @@ const Landing = () => {
                                 <p className="text-on-surface-variant">Portal Constitución 123</p>
                                 <p className="text-on-surface-variant text-sm mt-1">Plaza de Armas, Ayacucho</p>
                             </div>
+                        </div>
+
+                        {/* Google Maps */}
+                        <div className="mt-12 max-w-5xl mx-auto">
+                            <div className="bg-surface-container-lowest rounded-xl overflow-hidden border border-outline-variant shadow-sm">
+                                <div className="flex items-center gap-3 px-6 py-4 border-b border-outline-variant">
+                                    <span className="material-symbols-outlined text-secondary">map</span>
+                                    <h4 className="font-headline-sm text-headline-sm text-primary">Nuestra Ubicación</h4>
+                                </div>
+                                <iframe
+                                    title="Ubicación DM GO TRAVEL - Ayacucho"
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.5!2d-74.2277647!3d-13.160722!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47ad3b3dd4e015ed%3A0x7c90f9dc139bc293!2sDM%20GO%20TRAVEL!5e0!3m2!1ses!2spe!4v1719000000000"
+                                    width="100%"
+                                    height="450"
+                                    style={{ border: 0 }}
+                                    allowFullScreen=""
+                                    loading="lazy"
+                                    referrerPolicy="no-referrer-when-downgrade"
+                                    className="w-full"
+                                ></iframe>
+                            </div>
+                            <a
+                                href="https://www.google.com/maps/place/DM+GO+TRAVEL/@-13.160722,-74.2277647,17z"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 mt-4 text-primary hover:text-secondary transition-colors font-label-md text-label-md"
+                            >
+                                <span className="material-symbols-outlined text-[18px]">open_in_new</span>
+                                Ver en Google Maps
+                            </a>
                         </div>
                     </div>
                 </section>
