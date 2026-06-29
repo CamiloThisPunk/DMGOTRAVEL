@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
 const TourCatalog = () => {
+    const navigate = useNavigate();
     const [tours, setTours] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedTour, setSelectedTour] = useState(null);
     const [guestsCount, setGuestsCount] = useState(1);
     const [reservationDate, setReservationDate] = useState('');
     const [submitting, setSubmitting] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => { fetchTours(); }, []);
 
@@ -22,6 +25,7 @@ const TourCatalog = () => {
 
     const handleSelectTour = (tour) => {
         setSelectedTour(tour);
+        setSuccessMessage('');
         if (window.innerWidth < 1024) {
             document.getElementById('reservation-form')?.scrollIntoView({ behavior: 'smooth' });
         }
@@ -39,10 +43,10 @@ const TourCatalog = () => {
                 reservation_date: reservationDate,
                 guests_count: guestsCount,
             });
-            alert('¡Reserva realizada con éxito! Pronto nos contactaremos contigo.');
-            setSelectedTour(null);
-            setGuestsCount(1);
-            setReservationDate('');
+            setSuccessMessage('¡Reserva confirmada! Redirigiendo a tus reservas...');
+            setTimeout(() => {
+                navigate('/client/dashboard');
+            }, 2000);
         } catch (err) {
             if (err.response?.status === 422) {
                 const errors = err.response.data.errors;
@@ -94,18 +98,18 @@ const TourCatalog = () => {
                                 }`}>
                                     <div className="relative h-48 w-full overflow-hidden">
                                         <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                            src={tour.image_url || tour.image_360_url || 'https://images.unsplash.com/photo-1518173946687-a4c8a9b749f4?auto=format&fit=crop&q=80&w=800'}
-                                            alt={tour.name} />
+                                            src={tour.image_360_url || 'https://images.unsplash.com/photo-1518173946687-a4c8a9b749f4?auto=format&fit=crop&q=80&w=800'}
+                                            alt={tour.title} />
                                         <div className="absolute top-3 left-3 bg-secondary-container text-on-secondary-container font-label-md text-label-md px-3 py-1 rounded-full flex items-center gap-1">
                                             <span className="material-symbols-outlined text-[16px]">hiking</span>
                                             {tour.category || 'Aventura'}
                                         </div>
                                     </div>
                                     <div className="p-4 md:p-6 flex flex-col flex-grow">
-                                        <h3 className="font-headline-sm text-headline-sm text-primary mb-2 line-clamp-2">{tour.name}</h3>
+                                        <h3 className="font-headline-sm text-headline-sm text-primary mb-2 line-clamp-2">{tour.title}</h3>
                                         <p className="font-body-md text-body-md text-on-surface-variant mb-4 flex-grow line-clamp-3">{tour.description}</p>
                                         <div className="flex items-center gap-4 mb-4 text-on-surface-variant font-body-md text-body-md">
-                                            <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">schedule</span> {tour.duration || '1 Día'}</div>
+                                            <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">schedule</span> {tour.duration} min</div>
                                             <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">group</span> Máx {tour.capacity || 15}</div>
                                         </div>
                                         <div className="flex items-end justify-between mt-auto">
@@ -118,7 +122,7 @@ const TourCatalog = () => {
                                                 {selectedTour?.id === tour.id ? '✓ Seleccionado' : 'Seleccionar'}
                                             </button>
                                             <div className="bg-surface-container text-primary font-headline-sm text-headline-sm px-3 py-1 rounded">
-                                                S/ {tour.price}
+                                                S/ {parseFloat(tour.price || 0).toFixed(2)}
                                             </div>
                                         </div>
                                     </div>
@@ -164,19 +168,32 @@ const TourCatalog = () => {
                                 <h4 className="font-label-md text-label-md text-on-surface-variant mb-2">Confirmar Tour</h4>
                                 <div className="font-body-md text-body-md text-sm">
                                     {selectedTour ? (
-                                        <span className="text-primary font-bold">{selectedTour.name}</span>
+                                        <span className="text-primary font-bold">{selectedTour.title}</span>
                                     ) : (
                                         <span className="text-outline italic">Selecciona un tour del catálogo para continuar.</span>
                                     )}
                                 </div>
                             </div>
 
-                            <button type="submit" disabled={!selectedTour || submitting}
+                            <button type="submit" disabled={!selectedTour || submitting || successMessage}
                                 className={`w-full font-label-md text-label-md py-3 rounded text-center font-bold transition-colors ${
-                                    selectedTour ? 'bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container' : 'bg-surface-variant text-outline cursor-not-allowed'
+                                    successMessage 
+                                        ? 'bg-green-600 text-white' 
+                                        : (selectedTour ? 'bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container' : 'bg-surface-variant text-outline cursor-not-allowed')
                                 }`}>
-                                {submitting ? 'Procesando...' : 'Continuar Reserva'}
+                                {successMessage ? (
+                                    <div className="flex items-center justify-center gap-2">
+                                        <span className="material-symbols-outlined">check_circle</span>
+                                        ¡Reserva Exitosa!
+                                    </div>
+                                ) : submitting ? 'Procesando...' : 'Continuar Reserva'}
                             </button>
+
+                            {successMessage && (
+                                <div className="mt-4 p-3 bg-green-50 text-green-800 text-sm rounded-lg border border-green-200 text-center animate-fade-in">
+                                    {successMessage}
+                                </div>
+                            )}
 
                             <div className="mt-4 flex items-center gap-2 justify-center text-on-surface-variant">
                                 <span className="material-symbols-outlined text-[16px]">lock</span>

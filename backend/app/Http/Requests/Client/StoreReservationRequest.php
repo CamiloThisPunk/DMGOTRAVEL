@@ -18,7 +18,7 @@ class StoreReservationRequest extends FormRequest
     {
         return [
             'service_package_id' => ['required', 'integer', 'exists:service_packages,id'],
-            'reservation_date' => ['required', 'date', 'after:today'],
+            'reservation_date' => ['required', 'date', 'after_or_equal:today'],
             'guests_count' => ['required', 'integer', 'min:1'],
         ];
     }
