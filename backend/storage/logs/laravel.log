@@ -3098,3 +3098,12 @@
 #4 C:/Users/Asus TUF/Desktop/DMGOTRAVEL/backend/artisan(16): Illuminate/Foundation/Application->handleCommand()
 #5 {main}
 "} 
+[2026-06-29 17:21:17] local.ERROR: Command "tinker" is not defined. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"tinker\" is not defined. at C:/Users/Asus TUF/Desktop/DMGOTRAVEL/backend/vendor/symfony/console/Application.php:759)
+[stacktrace]
+#0 C:/Users/Asus TUF/Desktop/DMGOTRAVEL/backend/vendor/symfony/console/Application.php(298): Symfony/Component/Console/Application->find()
+#1 C:/Users/Asus TUF/Desktop/DMGOTRAVEL/backend/vendor/symfony/console/Application.php(195): Symfony/Component/Console/Application->doRun()
+#2 C:/Users/Asus TUF/Desktop/DMGOTRAVEL/backend/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(198): Symfony/Component/Console/Application->run()
+#3 C:/Users/Asus TUF/Desktop/DMGOTRAVEL/backend/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1235): Illuminate/Foundation/Console/Kernel->handle()
+#4 C:/Users/Asus TUF/Desktop/DMGOTRAVEL/backend/artisan(16): Illuminate/Foundation/Application->handleCommand()
+#5 {main}
+"} 

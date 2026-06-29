@@ -567,6 +567,8 @@ class ComposerStaticInit28b9167d2750e2aa5f9b59414e3e71e9
     );
 
     public static $classMap = array (
+        'App\\Console\\Commands\\CancelExpiredReservations' => __DIR__ . '/../..' . '/app/Console/Commands/CancelExpiredReservations.php',
+        'App\\Console\\Commands\\CheckImages' => __DIR__ . '/../..' . '/app/Console/Commands/CheckImages.php',
         'App\\Http\\Controllers\\Api\\Admin\\ClientOversightController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/Admin/ClientOversightController.php',
         'App\\Http\\Controllers\\Api\\Admin\\ReservationController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/Admin/ReservationController.php',
         'App\\Http\\Controllers\\Api\\Admin\\ServicePackageController' => __DIR__ . '/../..' . '/app/Http/Controllers/Api/Admin/ServicePackageController.php',
@@ -784,6 +786,7 @@ class ComposerStaticInit28b9167d2750e2aa5f9b59414e3e71e9
         'Database\\Factories\\UserFactory' => __DIR__ . '/../..' . '/database/factories/UserFactory.php',
         'Database\\Seeders\\AdminSeeder' => __DIR__ . '/../..' . '/database/seeders/AdminSeeder.php',
         'Database\\Seeders\\DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeders/DatabaseSeeder.php',
+        'Database\\Seeders\\DemoSeeder' => __DIR__ . '/../..' . '/database/seeders/DemoSeeder.php',
         'Database\\Seeders\\RoleSeeder' => __DIR__ . '/../..' . '/database/seeders/RoleSeeder.php',
         'DateError' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
         'DateException' => __DIR__ . '/..' . '/symfony/polyfill-php83/Resources/stubs/DateException.php',

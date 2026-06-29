@@ -6,6 +6,8 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Console\\Commands\\CancelExpiredReservations' => $baseDir . '/app/Console/Commands/CancelExpiredReservations.php',
+    'App\\Console\\Commands\\CheckImages' => $baseDir . '/app/Console/Commands/CheckImages.php',
     'App\\Http\\Controllers\\Api\\Admin\\ClientOversightController' => $baseDir . '/app/Http/Controllers/Api/Admin/ClientOversightController.php',
     'App\\Http\\Controllers\\Api\\Admin\\ReservationController' => $baseDir . '/app/Http/Controllers/Api/Admin/ReservationController.php',
     'App\\Http\\Controllers\\Api\\Admin\\ServicePackageController' => $baseDir . '/app/Http/Controllers/Api/Admin/ServicePackageController.php',
@@ -223,6 +225,7 @@ return array(
     'Database\\Factories\\UserFactory' => $baseDir . '/database/factories/UserFactory.php',
     'Database\\Seeders\\AdminSeeder' => $baseDir . '/database/seeders/AdminSeeder.php',
     'Database\\Seeders\\DatabaseSeeder' => $baseDir . '/database/seeders/DatabaseSeeder.php',
+    'Database\\Seeders\\DemoSeeder' => $baseDir . '/database/seeders/DemoSeeder.php',
     'Database\\Seeders\\RoleSeeder' => $baseDir . '/database/seeders/RoleSeeder.php',
     'DateError' => $vendorDir . '/symfony/polyfill-php83/Resources/stubs/DateError.php',
     'DateException' => $vendorDir . '/symfony/polyfill-php83/Resources/stubs/DateException.php',

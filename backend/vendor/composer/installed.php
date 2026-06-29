@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'dmgotravel/booking-api',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'b507d320691c35c761f08f914717e1962bc5e75d',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -95,9 +95,9 @@
             'dev_requirement' => false,
         ),
         'dmgotravel/booking-api' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'b507d320691c35c761f08f914717e1962bc5e75d',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
