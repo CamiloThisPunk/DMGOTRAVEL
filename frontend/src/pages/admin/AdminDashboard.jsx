@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
 
 const AdminDashboard = () => {
-    const [stats, setStats] = useState({ services: 0, reservations: 0, clients: 0 });
+    const [stats, setStats] = useState({ services: 0, reservations: 0, clients: 0, earnings: 0 });
+    const [chartData, setChartData] = useState([]);
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -27,6 +28,28 @@ const AdminDashboard = () => {
                     }
                     return total;
                 }, 0);
+
+                // Calculate chart data (last 6 months)
+                const monthsData = [];
+                const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+                for (let i = 5; i >= 0; i--) {
+                    const d = new Date();
+                    d.setMonth(d.getMonth() - i);
+                    monthsData.push({
+                        month: monthNames[d.getMonth()],
+                        monthIndex: d.getMonth(),
+                        year: d.getFullYear(),
+                        count: 0
+                    });
+                }
+
+                reservations.forEach(res => {
+                    const d = new Date(res.created_at || res.reservation_date);
+                    const item = monthsData.find(m => m.monthIndex === d.getMonth() && m.year === d.getFullYear());
+                    if (item) item.count++;
+                });
+                
+                setChartData(monthsData);
 
                 setStats({
                     services: servicesRes.status === 'fulfilled' ? (servicesRes.value.data?.data?.length || 0) : 0,
@@ -117,16 +140,28 @@ const AdminDashboard = () => {
                             <option>Este Año</option>
                         </select>
                     </div>
-                    <div className="flex-1 bg-surface rounded-lg border border-outline-variant border-dashed flex items-center justify-center relative overflow-hidden">
+                    <div className="flex-1 bg-surface rounded-lg border border-outline-variant flex items-end justify-between p-6 relative overflow-hidden">
                         <div className="absolute inset-0 opacity-10 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-                        <div className="text-center z-10">
-                            <span className="material-symbols-outlined text-4xl text-outline mb-2 block">bar_chart</span>
-                            <p className="font-body-md text-body-md text-on-surface-variant">Área de Visualización</p>
-                            <p className="text-sm text-outline">Datos de reservas se mostrarán aquí</p>
-                        </div>
-                        <svg className="absolute bottom-0 left-0 w-full h-1/2 opacity-20" preserveAspectRatio="none" viewBox="0 0 100 100">
-                            <path className="text-primary" d="M0,100 C20,80 40,90 60,40 C80,-10 100,50 100,50 L100,100 Z" fill="currentColor"></path>
-                        </svg>
+                        {chartData.length > 0 ? chartData.map((data, idx) => {
+                            const maxCount = Math.max(...chartData.map(d => d.count), 1);
+                            const heightPercentage = Math.max((data.count / maxCount) * 100, 2); // Minimum 2% height for visibility
+                            return (
+                                <div key={idx} className="flex flex-col items-center gap-2 z-10 w-full h-full justify-end group">
+                                    <span className="text-sm font-bold text-transparent group-hover:text-primary transition-colors">{data.count}</span>
+                                    <div 
+                                        className="w-full max-w-[48px] bg-primary/20 rounded-t-md relative transition-all duration-300 group-hover:bg-primary/40" 
+                                        style={{ height: `${heightPercentage}%` }}
+                                    >
+                                        <div className="absolute bottom-0 left-0 w-full bg-primary rounded-t-md transition-all duration-500 origin-bottom" style={{ height: data.count > 0 ? '100%' : '0%' }}></div>
+                                    </div>
+                                    <span className="text-xs text-on-surface-variant font-medium mt-1">{data.month}</span>
+                                </div>
+                            );
+                        }) : (
+                            <div className="absolute inset-0 flex items-center justify-center z-10 text-on-surface-variant text-sm">
+                                Cargando datos...
+                            </div>
+                        )}
                     </div>
                 </div>
 
