@@ -20,6 +20,24 @@ const Landing = () => {
         fetchServices();
     }, []);
 
+    // Helper to generate dynamic tags to fix the inconsistency of hardcoded tags
+    const getCategory = (title, description) => {
+        const text = (title + ' ' + description).toLowerCase();
+        if (text.includes('inca') || text.includes('arqueol') || text.includes('hist') || text.includes('wari') || text.includes('museo')) {
+            return { name: 'Cultura', icon: 'account_balance' };
+        }
+        if (text.includes('agua') || text.includes('catarata') || text.includes('bosque') || text.includes('puya') || text.includes('naturaleza')) {
+            return { name: 'Naturaleza', icon: 'local_florist' };
+        }
+        if (text.includes('trekking') || text.includes('caminata') || text.includes('mirador') || text.includes('valle')) {
+            return { name: 'Trekking', icon: 'hiking' };
+        }
+        if (text.includes('extremo') || text.includes('canopy') || text.includes('juego') || text.includes('aventura')) {
+            return { name: 'Aventura', icon: 'explore' };
+        }
+        return { name: 'Destino', icon: 'location_on' };
+    };
+
     return (
         <div className="bg-background text-on-background font-body-md text-body-md antialiased">
             {/* TopNavBar */}
@@ -84,33 +102,36 @@ const Landing = () => {
                                 No hay tours disponibles en este momento. Vuelve más tarde.
                             </div>
                         ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-gutter">
-                                {services.slice(0, 6).map((service) => (
-                                    <article key={service.id} className="tour-card bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden flex flex-col h-full hover:border-primary transition-colors hover:shadow-md">
-                                        <div className="h-64 overflow-hidden relative">
-                                            {service.image_360_url ? (
-                                                <img className="w-full h-full object-cover" alt={service.title} src={service.image_360_url} />
-                                            ) : (
-                                                <div className="w-full h-full bg-surface-container flex items-center justify-center text-on-surface-variant">
-                                                    <span className="material-symbols-outlined text-4xl">image</span>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+                                {services.slice(0, 9).map((service) => {
+                                    const cat = getCategory(service.title, service.description);
+                                    return (
+                                        <article key={service.id} className="tour-card bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden flex flex-col h-full hover:border-primary transition-colors hover:shadow-md">
+                                            <div className="h-64 overflow-hidden relative">
+                                                {service.image_360_url ? (
+                                                    <img className="w-full h-full object-cover" alt={service.title} src={service.image_360_url} />
+                                                ) : (
+                                                    <div className="w-full h-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+                                                        <span className="material-symbols-outlined text-4xl">image</span>
+                                                    </div>
+                                                )}
+                                                <div className="absolute top-4 left-4 bg-surface-container-lowest text-primary font-label-md text-label-md px-3 py-1 rounded shadow-sm flex items-center gap-1">
+                                                    <span className="material-symbols-outlined text-[16px]">{cat.icon}</span> {cat.name}
                                                 </div>
-                                            )}
-                                            <div className="absolute top-4 left-4 bg-surface-container-lowest text-primary font-label-md text-label-md px-3 py-1 rounded shadow-sm flex items-center gap-1">
-                                                <span className="material-symbols-outlined text-[16px]">explore</span> Aventura
                                             </div>
-                                        </div>
-                                        <div className="p-6 flex-grow flex flex-col">
-                                            <h3 className="font-headline-sm text-headline-sm text-primary mb-2">{service.title}</h3>
-                                            <p className="text-on-surface-variant flex-grow mb-4 line-clamp-3">{service.description}</p>
-                                            <div className="flex justify-between items-center mt-auto border-t border-outline-variant pt-4">
-                                                <span className="bg-surface-container text-primary px-3 py-1 rounded font-bold text-sm">Desde S/ {parseFloat(service.price).toFixed(2)}</span>
-                                                <Link to={`/auth`} className="text-secondary font-label-md text-label-md hover:text-secondary-container transition-colors flex items-center gap-1">
-                                                    Reservar <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
-                                                </Link>
+                                            <div className="p-6 flex-grow flex flex-col">
+                                                <h3 className="font-headline-sm text-headline-sm text-primary mb-2 line-clamp-2">{service.title}</h3>
+                                                <p className="text-on-surface-variant flex-grow mb-4 line-clamp-3">{service.description}</p>
+                                                <div className="flex justify-between items-center mt-auto border-t border-outline-variant pt-4">
+                                                    <span className="bg-surface-container text-primary px-3 py-1 rounded font-bold text-sm">Desde S/ {parseFloat(service.price).toFixed(2)}</span>
+                                                    <Link to={`/auth`} className="text-secondary font-label-md text-label-md hover:text-secondary-container transition-colors flex items-center gap-1">
+                                                        Reservar <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                                                    </Link>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </article>
-                                ))}
+                                        </article>
+                                    );
+                                })}
                             </div>
                         )}
                     </div>
