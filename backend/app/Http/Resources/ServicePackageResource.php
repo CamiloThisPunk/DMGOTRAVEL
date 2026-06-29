@@ -20,7 +20,7 @@ class ServicePackageResource extends JsonResource
             'capacity' => $this->capacity,
             'duration' => $this->duration,
             'image_360_url' => $this->image_360_url
-                ? (str_starts_with($this->image_360_url, 'http') ? $this->image_360_url : asset('storage/' . $this->image_360_url))
+                ? (str_starts_with($this->image_360_url, 'http') ? $this->image_360_url : url('/api/images?path=' . $this->image_360_url))
                 : null,
             'is_active' => $this->is_active,
             'created_at' => $this->created_at?->toIso8601String(),

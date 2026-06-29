@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Client\ReservationController as ClientReservationController;
 use App\Http\Controllers\Api\Public\CatalogController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/services', [CatalogController::class, 'index']);
 Route::get('/services/{servicePackage}', [CatalogController::class, 'show']);
+
+Route::get('/images', function (\Illuminate\Http\Request $request) {
+    $path = $request->query('path');
+    if (!$path || !Storage::disk('public')->exists($path)) {
+        abort(404);
+    }
+    return response()->file(Storage::disk('public')->path($path));
+});
 
 /*
 |--------------------------------------------------------------------------
