@@ -23,6 +23,7 @@ class StoreServicePackageRequest extends FormRequest
             'capacity' => ['required', 'integer', 'min:1'],
             'duration' => ['required', 'integer', 'min:1'],
             'image_360' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
+            'image_360_url' => ['nullable', 'string', 'url', 'max:2048'],
             'is_active' => ['sometimes', 'boolean'],
         ];
     }
