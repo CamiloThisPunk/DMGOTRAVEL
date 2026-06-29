@@ -90,13 +90,9 @@ const AdminServices = () => {
         try {
             await api.get('/sanctum/csrf-cookie');
             if (editingService) {
-                await api.post(`/api/admin/services/${editingService.id}`, formData, {
-                    headers: { 'Content-Type': 'multipart/form-data' }
-                });
+                await api.post(`/api/admin/services/${editingService.id}`, formData);
             } else {
-                await api.post('/api/admin/services', formData, {
-                    headers: { 'Content-Type': 'multipart/form-data' }
-                });
+                await api.post('/api/admin/services', formData);
             }
             setShowModal(false);
             fetchServices();
