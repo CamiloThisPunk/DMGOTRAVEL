@@ -102,8 +102,8 @@ const Landing = () => {
                                 No hay tours disponibles en este momento. Vuelve más tarde.
                             </div>
                         ) : (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
-                                {services.slice(0, 9).map((service) => {
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+                                {services.slice(0, 4).map((service) => {
                                     const cat = getCategory(service.title, service.description);
                                     return (
                                         <article key={service.id} className="tour-card bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden flex flex-col h-full hover:border-primary transition-colors hover:shadow-md">

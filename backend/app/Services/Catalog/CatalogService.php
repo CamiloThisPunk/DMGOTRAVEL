@@ -17,6 +17,8 @@ class CatalogService
 
         return Cache::remember($cacheKey, now()->addMinutes(30), function () use ($perPage, $page) {
             return ServicePackage::active()
+                ->withCount('reservations')
+                ->orderByDesc('reservations_count')
                 ->orderBy('title')
                 ->paginate(perPage: $perPage, page: $page);
         });
