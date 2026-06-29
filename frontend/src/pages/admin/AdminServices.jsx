@@ -67,7 +67,6 @@ const AdminServices = () => {
         setSubmitting(true);
         setErrors({});
         
-        // Convert to FormData to support file upload
         const formData = new FormData();
         formData.append('title', form.title);
         formData.append('description', form.description);
@@ -75,28 +74,38 @@ const AdminServices = () => {
         formData.append('capacity', parseInt(form.capacity));
         formData.append('duration', parseInt(form.duration));
         
-        if (imageFile) {
+        if (imageFile instanceof File) {
             formData.append('image_360', imageFile);
-        } else if (form.image_360_url && !form.image_360_url.startsWith('http://127.0.0.1')) {
-            // Only send URL if it's an external URL, not an existing local storage one
+        } else if (form.image_360_url && typeof form.image_360_url === 'string' && !form.image_360_url.startsWith('http://127.0.0.1')) {
             formData.append('image_360_url', form.image_360_url);
         }
 
-        // Si es edición, en Laravel se recomienda mandar POST con _method=PUT cuando se usan archivos
         if (editingService) {
             formData.append('_method', 'PUT');
         }
 
         try {
             await api.get('/sanctum/csrf-cookie');
+            
+            // To properly send FormData with Axios, we must let the browser set the Content-Type 
+            // so it includes the multipart boundary. Since our API instance has a default 
+            // application/json Content-Type, we must explicitly delete it for this request.
+            const config = {
+                headers: {
+                    'Content-Type': undefined
+                }
+            };
+
             if (editingService) {
-                await api.post(`/api/admin/services/${editingService.id}`, formData);
+                await api.post(`/api/admin/services/${editingService.id}`, formData, config);
             } else {
-                await api.post('/api/admin/services', formData);
+                await api.post('/api/admin/services', formData, config);
             }
+            
             setShowModal(false);
             fetchServices();
         } catch (err) {
+            console.error('Upload error:', err.response?.data);
             if (err.response?.status === 422) {
                 setErrors(err.response.data.errors || {});
             } else {
