@@ -12,10 +12,27 @@ const AdminDashboard = () => {
                     api.get('/api/admin/reservations'),
                     api.get('/api/admin/clients'),
                 ]);
+                
+                const reservations = reservationsRes.status === 'fulfilled' ? (reservationsRes.value.data?.data || []) : [];
+                
+                const currentMonth = new Date().getMonth();
+                const currentYear = new Date().getFullYear();
+                
+                const monthlyEarnings = reservations.reduce((total, res) => {
+                    const resDate = new Date(res.created_at || res.reservation_date);
+                    if ((res.status === 'confirmed' || res.status === 'completed') && 
+                        resDate.getMonth() === currentMonth && 
+                        resDate.getFullYear() === currentYear) {
+                        return total + (parseFloat(res.total_price) || 0);
+                    }
+                    return total;
+                }, 0);
+
                 setStats({
                     services: servicesRes.status === 'fulfilled' ? (servicesRes.value.data?.data?.length || 0) : 0,
-                    reservations: reservationsRes.status === 'fulfilled' ? (reservationsRes.value.data?.data?.length || 0) : 0,
+                    reservations: reservations.length,
                     clients: clientsRes.status === 'fulfilled' ? (clientsRes.value.data?.data?.length || 0) : 0,
+                    earnings: monthlyEarnings,
                 });
             } catch (e) { console.error(e); }
         };
@@ -81,7 +98,9 @@ const AdminDashboard = () => {
                         </div>
                     </div>
                     <h3 className="font-body-md text-body-md text-on-surface-variant mb-1">Ganancias del Mes</h3>
-                    <p className="font-headline-md text-headline-md text-primary font-bold">S/ 0</p>
+                    <p className="font-headline-md text-headline-md text-primary font-bold">
+                        S/ {stats.earnings !== undefined ? stats.earnings.toFixed(2) : '0.00'}
+                    </p>
                     <div className="absolute bottom-0 left-0 w-full h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
                 </div>
             </div>
