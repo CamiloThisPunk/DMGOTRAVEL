@@ -1,0 +1,384 @@
+<!DOCTYPE html><html class="light" lang="es" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>DMGOTRAVEL - Gestión de Paquetes</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "success": "#12C416",
+                        "inverse-surface": "#2f3033",
+                        "on-surface-variant": "#43474e",
+                        "on-secondary-fixed": "#311300",
+                        "surface-container-low": "#f4f3f6",
+                        "on-tertiary-fixed-variant": "#6b3a25",
+                        "primary-fixed-dim": "#afc8f0",
+                        "secondary": "#964900",
+                        "tertiary-container": "#391303",
+                        "surface-dim": "#dbd9dd",
+                        "surface-variant": "#e3e2e5",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#c4c6cf",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#612d00",
+                        "on-secondary-fixed-variant": "#723600",
+                        "secondary-fixed-dim": "#ffb787",
+                        "surface-container": "#efedf0",
+                        "surface": "#faf9fc",
+                        "on-secondary": "#ffffff",
+                        "warning": "#FFB703",
+                        "surface-tint": "#476083",
+                        "tertiary-fixed": "#ffdbce",
+                        "primary-fixed": "#d4e3ff",
+                        "on-background": "#1a1c1e",
+                        "info": "#219EBC",
+                        "primary": "#000613",
+                        "on-surface": "#1a1c1e",
+                        "tertiary-fixed-dim": "#fdb69a",
+                        "outline": "#74777f",
+                        "surface-container-highest": "#e3e2e5",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#b5785f",
+                        "surface-container-high": "#e9e7eb",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#6f88ad",
+                        "primary-container": "#001f3f",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#351002",
+                        "surface-muted": "#F8FAFC",
+                        "surface-bright": "#faf9fc",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#2f486a",
+                        "inverse-on-surface": "#f2f0f3",
+                        "background": "#faf9fc",
+                        "secondary-container": "#ff851b",
+                        "tertiary": "#110200",
+                        "secondary-fixed": "#ffdcc7",
+                        "inverse-primary": "#afc8f0",
+                        "danger": "#D00000",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed": "#001c3a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "base": "4px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "label-md": ["Hanken Grotesk"],
+                        "headline-lg-mobile": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "body-sm": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Hanken Grotesk', sans-serif;
+            background-color: #faf9fc;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-tab {
+            box-shadow: inset 4px 0 0 0 #ff851b;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background flex h-screen">
+<!-- Mobile Top Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface border-b border-outline-variant h-16 flex items-center justify-between px-4 md:hidden">
+<button class="p-2 text-primary" id="menu-toggle">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="text-headline-md font-headline-md text-primary tracking-tight">DMGOTRAVEL</h1>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-primary-fixed-dim overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a travel agency administrator in a clean modern office, soft high-key lighting, focused look, corporate portrait style with a minimalist background, professional skin tones and soft depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXHy9jfsGzZiZVyIVEB3awULfUDKCvB1PpOL8NYaaP3QWZbYxjUnO_E6CGGHL1kYkDqMN6H_MKIW0jjUt_ScxXaznjr4-fav8c-9UlfjoyJqqhUY5z1-gO0A10FV7lsve9RsD7SrugPh49502Pru7EYgBJdG1GHzWRGABzGilJfKwvTIoQbbwZiiOyYAJgb-lkSOfR9yyD1MyK5migDHhwo8zMieh447NHw1ftI-ezARJ8LQJAuXoPLwibMnxnpHChSTXk09fBFQ">
+</div>
+</header>
+<!-- Mobile Overlay Sidebar -->
+<aside class="fixed inset-y-0 left-0 z-[60] w-[280px] bg-surface-container-low border-r border-outline-variant transform transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:block h-screen" id="sidebar">
+<div class="flex flex-col h-full py-6">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-primary-fixed-dim overflow-hidden border border-outline-variant md:block hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a travel agency administrator in a clean modern office, soft high-key lighting, focused look, corporate portrait style with a minimalist background, professional skin tones and soft depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXHy9jfsGzZiZVyIVEB3awULfUDKCvB1PpOL8NYaaP3QWZbYxjUnO_E6CGGHL1kYkDqMN6H_MKIW0jjUt_ScxXaznjr4-fav8c-9UlfjoyJqqhUY5z1-gO0A10FV7lsve9RsD7SrugPh49502Pru7EYgBJdG1GHzWRGABzGilJfKwvTIoQbbwZiiOyYAJgb-lkSOfR9yyD1MyK5migDHhwo8zMieh447NHw1ftI-ezARJ8LQJAuXoPLwibMnxnpHChSTXk09fBFQ">
+</div>
+<div>
+<h2 class="text-headline-md font-headline-md text-primary font-bold">DMGOTRAVEL</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Admin Panel</p>
+</div>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-label-md font-label-md">Dashboard</span>
+</a><a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">travel_explore</span>
+<span class="text-label-md font-label-md">Servicios</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-secondary-container text-on-secondary-container font-bold rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="text-label-md font-label-md">Paquetes Turisticos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="text-label-md font-label-md">Clientes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">confirmation_number</span>
+<span class="text-label-md font-label-md">Reservas</span>
+</a>
+
+</nav>
+<div class="mt-auto px-2 space-y-1 border-t border-outline-variant pt-4">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="text-label-md font-label-md">Ajustes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="text-label-md font-label-md">Cerrar Sesión</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Backdrop for Mobile Sidebar -->
+<div class="fixed inset-0 bg-black/50 z-50 hidden md:hidden" id="sidebar-backdrop"></div>
+<!-- Main Content -->
+<main class="flex-1 h-screen pt-16 md:pt-0 overflow-y-auto">
+<div class="max-w-container-max mx-auto px-4 md:px-8 py-8 md:py-12">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+<div>
+<h2 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg text-primary mb-1">Paquetes Turísticos</h2>
+<p class="text-body-md font-body-md text-on-surface-variant">Catálogo de experiencias y tours en Ayacucho.</p>
+</div>
+<button class="bg-primary text-on-primary px-6 py-3 rounded-lg flex items-center justify-center gap-2 font-bold shadow-sm hover:bg-primary/90 active:scale-95 transition-all w-full md:w-auto">
+<span class="material-symbols-outlined">add</span>
+<span class="">Nuevo Paquete</span>
+</button>
+</div>
+<!-- Search and Filter Bar -->
+<div class="bg-surface border border-outline-variant rounded-xl p-4 mb-6 shadow-sm flex flex-col md:flex-row items-center gap-4">
+<!-- Search -->
+<div class="relative flex-1 w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg focus:ring-2 focus:ring-secondary focus:border-secondary outline-none text-body-md" placeholder="Buscar paquete, duración, precio..." type="text">
+</div>
+<!-- Chips/Tabs Scrollable -->
+<div class="flex items-center gap-2 overflow-x-auto no-scrollbar w-full md:w-auto">
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-primary-container text-on-primary-container text-label-md font-label-md border border-primary-container">Todas</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container-highest text-on-surface-variant text-label-md font-label-md border border-outline-variant hover:bg-surface-variant transition-colors">Activos</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container-highest text-on-surface-variant text-label-md font-label-md border border-outline-variant hover:bg-surface-variant transition-colors">Inactivos</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container-highest text-on-surface-variant text-label-md font-label-md border border-outline-variant hover:bg-surface-variant transition-colors">Más Populares</button>
+</div>
+</div>
+<!-- Packages Table / List -->
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse min-w-[800px]">
+<thead class="bg-surface-container-low border-b border-outline-variant">
+<tr>
+<th class="px-6 py-4 text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Paquete</th>
+<th class="px-6 py-4 text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Duración</th>
+<th class="px-6 py-4 text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Precio</th>
+<th class="px-6 py-4 text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Estado</th>
+<th class="px-6 py-4 text-label-md font-label-md text-on-surface-variant uppercase tracking-wider text-right">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-muted transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="A vibrant landscape of the turquoise pools of Millpu in Ayacucho, Peru. Stunning stepped natural pools with crystal clear water surrounded by high canyon walls, daylight, saturated colors, travel photography style, high quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDsY9-EE3B2LMqNbO2lcXdEB9ZAb0WNk24URFws6_YLjqZWYHFBMX84CvFpIEyCq-z_nbm8iny2xbF3ug68BkBPrFyCYM1xta1k9XeAlvrcBjWTxd5sKy9C-SmXstJ__3bv7mOzZ4HnQWio0mwQva6O8tLlzWQe-XNBFp4TkqIRv135spRU08JSIKTOXJfNYmTfrgQNMb8JDbDIv0_KiBmgtfV4DSyNfz_ApYlt_R9G3t_L16eKlugrbDlGF3cKMht0wbJFL9qHZw">
+</div>
+<div>
+<div class="text-body-md font-bold text-primary">Ayacucho Extremo</div>
+<div class="text-body-sm text-on-surface-variant">Aventura y Naturaleza</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-body-md text-on-surface">2 Dias&nbsp;&nbsp;</td>
+<td class="px-6 py-5">
+<span class="text-body-md font-bold text-primary">S/ 450.00</span>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success border border-success/20">
+<span class="w-1.5 h-1.5 rounded-full bg-success mr-1.5"></span>
+                                        Activo
+                                    </span>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="ml-3 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-muted transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="The Pampa de Ayacucho historic sanctuary with the large white Obelisk of the Battle of Ayacucho under a clear blue sky. Wide angle shot, majestic Andean scenery, historical monument, bright afternoon sun, professional architectural photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDr-yxU8cdewtVuM3TD5RZsrxHlgc01IpEpMk8XTp25yNG7awfW6j6HnX2iaU7-2f7qLvajdeHJ-nJ9PcY3SGlsXLhSJy6OrZTHMRN8atqbPnCNWTLMRGAZQ3kEROVnvAWJXMhiz9Y0nUbnjeR6DNBOLhFmelmOxB2suiuwzAsdASV0llIVeJ8b8MvEBM-hCiNWRliRU6b6vjbjgSiJMZ1cBcKObEsOLXG55imZKj1JQUwtv4-nszv9UoxmNbk_2mu7iflWYXPAvQ">
+</div>
+<div>
+<div class="text-body-md font-bold text-primary">Ruta Histórica Wari</div>
+<div class="text-body-sm text-on-surface-variant">Cultura y Arqueología</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-body-md text-on-surface">1D Full Day</td>
+<td class="px-6 py-5">
+<span class="text-body-md font-bold text-primary">S/ 120.00</span>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success/10 text-success border border-success/20">
+<span class="w-1.5 h-1.5 rounded-full bg-success mr-1.5"></span>
+                                        Activo
+                                    </span>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="ml-3 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-muted transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface-container-high overflow-hidden shrink-0 grayscale opacity-60">
+<img class="w-full h-full object-cover" data-alt="Traditional Peruvian religious festival in Ayacucho, featuring colorful costumes, musicians, and large groups of people in the main square. Dynamic composition, cultural celebration, street photography style, vibrant colors, authentic atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALjygvPONj9P1-xsUnOy0fcekfZKOLKy_Fcm2wIu1DADp7SQRp8pWnzULqOfyzm3A7U7xwEFUCvHhckILdc0WRCM5BMGQ4bh7O7HNhKdNf9EUyRfkMz_Q3eAk8tcDbTWctcTFIkNVDZiFZzCF_GJYHP4sfRi4ugR0qfEOA9wgMP6mBiW0DNjKHiBM6pD-dqO2eSDNPgqGQtwIokbRsBJZ_JorhP5E3v8Lyo6MDL1w9hakRGygx_KUO_QAekz6P0wZej-T9dHJrxw">
+</div>
+<div>
+<div class="text-body-md font-bold text-on-surface-variant">Semana Santa VIP</div>
+<div class="text-body-sm text-on-surface-variant">Temporada</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-body-md text-on-surface-variant">4 Dias</td>
+<td class="px-6 py-5">
+<span class="text-body-md font-bold text-on-surface-variant">S/ 1,200.00</span>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-surface-container-highest text-on-surface-variant border border-outline-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant mr-1.5"></span>
+                                        Inactivo
+                                    </span>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">edit</span>
+</button>
+<button class="ml-3 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="px-6 py-4 bg-surface border-t border-outline-variant flex items-center justify-between">
+<p class="text-body-sm text-on-surface-variant">Mostrando 3 de 18 paquetes</p>
+<div class="flex items-center gap-1">
+<button class="p-1 rounded hover:bg-surface-container-high disabled:opacity-30" disabled="">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded flex items-center justify-center bg-primary text-on-primary text-label-md font-label-md">1</button>
+<button class="w-8 h-8 rounded flex items-center justify-center hover:bg-surface-container-high text-label-md font-label-md">2</button>
+<button class="w-8 h-8 rounded flex items-center justify-center hover:bg-surface-container-high text-label-md font-label-md">3</button>
+<button class="p-1 rounded hover:bg-surface-container-high">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button (FAB) for Mobile -->
+<button class="fixed bottom-6 right-6 w-14 h-14 rounded-full bg-secondary-container text-on-secondary-container shadow-lg flex items-center justify-center md:hidden z-40 active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[32px]">add</span>
+</button>
+<script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const sidebar = document.getElementById('sidebar');
+        const backdrop = document.getElementById('sidebar-backdrop');
+
+        function toggleMenu() {
+            sidebar.classList.toggle('-translate-x-full');
+            backdrop.classList.toggle('hidden');
+            document.body.classList.toggle('overflow-hidden');
+        }
+
+        menuToggle.addEventListener('click', toggleMenu);
+        backdrop.addEventListener('click', toggleMenu);
+
+        // Close sidebar on window resize if switching to desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) {
+                sidebar.classList.remove('-translate-x-full');
+                backdrop.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+    </script>
+
+
+
+
+
+
+</body></html>

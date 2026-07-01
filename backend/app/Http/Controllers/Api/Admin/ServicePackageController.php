@@ -21,9 +21,10 @@ class ServicePackageController extends Controller
     public function index(Request $request): AnonymousResourceCollection
     {
         $perPage = $request->integer('per_page', 15);
+        $type = $request->query('type');
 
         return ServicePackageResource::collection(
-            $this->packageService->listAll($perPage)
+            $this->packageService->listAll($perPage, $type)
         );
     }
 

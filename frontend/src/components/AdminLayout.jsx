@@ -14,6 +14,7 @@ const AdminLayout = () => {
     const navItems = [
         { to: '/admin/dashboard', icon: 'dashboard', label: 'Dashboard' },
         { to: '/admin/services', icon: 'travel_explore', label: 'Servicios' },
+        { to: '/admin/tourist-packages', icon: 'explore', label: 'Paquetes Turísticos' },
         { to: '/admin/clients', icon: 'group', label: 'Clientes' },
         { to: '/admin/reservations', icon: 'confirmation_number', label: 'Reservas' },
     ];

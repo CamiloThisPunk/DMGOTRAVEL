@@ -17,7 +17,7 @@ const TourCatalog = () => {
     const fetchTours = async () => {
         setLoading(true);
         try {
-            const res = await api.get('/api/services');
+            const res = await api.get('/api/services?type=servicio');
             setTours(res.data?.data || res.data || []);
         } catch (e) { console.error(e); }
         finally { setLoading(false); }
@@ -109,7 +109,7 @@ const TourCatalog = () => {
                                         <h3 className="font-headline-sm text-headline-sm text-primary mb-2 line-clamp-2">{tour.title}</h3>
                                         <p className="font-body-md text-body-md text-on-surface-variant mb-4 flex-grow line-clamp-3">{tour.description}</p>
                                         <div className="flex items-center gap-4 mb-4 text-on-surface-variant font-body-md text-body-md">
-                                            <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">schedule</span> {tour.duration} min</div>
+                                            <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">schedule</span> {tour.duration} días</div>
                                             <div className="flex items-center gap-1"><span className="material-symbols-outlined text-[18px]">group</span> Máx {tour.capacity || 15}</div>
                                         </div>
                                         <div className="flex items-end justify-between mt-auto">

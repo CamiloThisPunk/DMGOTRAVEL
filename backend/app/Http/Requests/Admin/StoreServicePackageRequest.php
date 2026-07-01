@@ -18,6 +18,7 @@ class StoreServicePackageRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:255'],
+            'type' => ['required', 'string', 'in:servicio,paquete'],
             'description' => ['required', 'string'],
             'price' => ['required', 'numeric', 'min:0'],
             'capacity' => ['required', 'integer', 'min:1'],
@@ -25,6 +26,7 @@ class StoreServicePackageRequest extends FormRequest
             'image_360' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
             'image_360_url' => ['nullable', 'string', 'url', 'max:2048'],
             'is_active' => ['sometimes', 'boolean'],
+            'itinerary' => ['nullable', 'string'], // As JSON string from form data
         ];
     }
 }

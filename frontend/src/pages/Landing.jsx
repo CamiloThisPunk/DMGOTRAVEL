@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../services/api';
+import { useAuth } from '../contexts/AuthContext';
 
 const Landing = () => {
+    const { user } = useAuth();
     const [services, setServices] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -53,9 +55,15 @@ const Landing = () => {
                         <li><a className="text-on-surface-variant hover:text-secondary transition-colors block pb-1 border-b-2 border-transparent" href="#contacto">Contacto</a></li>
                     </ul>
                     <div className="hidden md:block">
-                        <Link to="/auth" className="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded hover:bg-primary-container hover:text-on-primary-container transition-colors">
-                            Reservar ahora
-                        </Link>
+                        {user ? (
+                            <Link to={user.roles?.includes('admin') ? '/admin/dashboard' : '/client/catalog'} className="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded hover:bg-primary-container hover:text-on-primary-container transition-colors">
+                                Ir a mi panel
+                            </Link>
+                        ) : (
+                            <Link to="/auth" className="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded hover:bg-primary-container hover:text-on-primary-container transition-colors">
+                                Reservar ahora
+                            </Link>
+                        )}
                     </div>
                     <button className="md:hidden text-primary">
                         <span className="material-symbols-outlined text-3xl">menu</span>
@@ -243,8 +251,8 @@ const Landing = () => {
                     <li><a className="text-on-primary-container hover:text-secondary-fixed-dim transition-colors opacity-80 hover:opacity-100 block" href="#">WhatsApp</a></li>
                     <li><a className="text-on-primary-container hover:text-secondary-fixed-dim transition-colors opacity-80 hover:opacity-100 block" href="#">Términos y Condiciones</a></li>
                 </ul>
-                <div className="mt-4 text-center text-sm opacity-80">
-                    © 2024 DMGOTRAVEL. Explorando el corazón de los Andes.
+                <div className="font-body-md text-body-md text-on-primary opacity-60 text-center">
+                    &copy; {new Date().getFullYear()} DMGOTRAVEL. Explorando el corazón de los Andes.
                 </div>
             </footer>
         </div>

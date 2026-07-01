@@ -31,6 +31,14 @@ const ClientLayout = () => {
                             }>
                             Destinos
                         </NavLink>
+                        <NavLink to="/client/tourist-packages"
+                            className={({ isActive }) =>
+                                `flex items-center h-full px-2 font-body-md text-body-md transition-colors ${
+                                    isActive ? 'text-primary font-bold border-b-2 border-secondary' : 'text-on-surface-variant hover:text-secondary'
+                                }`
+                            }>
+                            Paquetes Turísticos
+                        </NavLink>
                         <NavLink to="/client/dashboard"
                             className={({ isActive }) =>
                                 `flex items-center h-full px-2 font-body-md text-body-md transition-colors ${
@@ -72,7 +80,7 @@ const ClientLayout = () => {
                     <a className="text-on-primary-container hover:text-secondary-fixed-dim transition-colors opacity-80 hover:opacity-100 font-body-md text-body-md" href="#">Términos y Condiciones</a>
                 </div>
                 <div className="font-body-md text-body-md text-on-primary opacity-60 text-center">
-                    © 2024 DMGOTRAVEL. Explorando el corazón de los Andes.
+                    &copy; {new Date().getFullYear()} DMGOTRAVEL. Explorando el corazón de los Andes.
                 </div>
             </footer>
         </div>

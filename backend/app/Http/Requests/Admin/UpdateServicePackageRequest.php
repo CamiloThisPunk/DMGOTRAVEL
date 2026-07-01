@@ -18,6 +18,7 @@ class UpdateServicePackageRequest extends FormRequest
     {
         return [
             'title' => ['sometimes', 'string', 'max:255'],
+            'type' => ['sometimes', 'string', 'in:servicio,paquete'],
             'description' => ['sometimes', 'string'],
             'price' => ['sometimes', 'numeric', 'min:0'],
             'capacity' => ['sometimes', 'integer', 'min:1'],
@@ -25,6 +26,7 @@ class UpdateServicePackageRequest extends FormRequest
             'image_360' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:10240'],
             'image_360_url' => ['nullable', 'string', 'url', 'max:2048'],
             'is_active' => ['sometimes', 'boolean'],
+            'itinerary' => ['nullable', 'string'], // As JSON string from form data
         ];
     }
 }

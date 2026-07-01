@@ -49,7 +49,7 @@ const AdminReservations = () => {
         const q = search.toLowerCase();
         const matchSearch = !q ||
             String(r.id).includes(q) ||
-            (r.user?.name || r.customer?.name || '').toLowerCase().includes(q) ||
+            (r.client?.name || r.user?.name || r.customer?.name || '').toLowerCase().includes(q) ||
             (r.service_package?.name || r.service?.name || '').toLowerCase().includes(q);
         return matchFilter && matchSearch;
     });
@@ -67,10 +67,11 @@ const AdminReservations = () => {
         { value: 'completed', label: 'Completadas' },
     ];
 
-    const getCustomerName = (r) => r.user?.name || r.customer?.name || 'Cliente';
-    const getCustomerEmail = (r) => r.user?.email || r.customer?.email || '';
-    const getServiceName = (r) => r.service_package?.name || r.service?.name || 'Servicio';
-    const getTotal = (r) => r.total_price || r.total || r.service_package?.price || 0;
+    const getCustomerName = (r) => r.client?.name || r.user?.name || r.customer?.name || 'Cliente';
+    const getCustomerEmail = (r) => r.client?.email || r.user?.email || r.customer?.email || '';
+    const getServiceName = (r) => r.service?.title || r.service_title || 'Servicio';
+    const getServiceType = (r) => r.service?.type === 'paquete' ? 'Paquete Turístico' : 'Destino';
+    const getTotal = (r) => r.total_price || r.total || r.service?.price || 0;
     const getTravelDate = (r) => r.reservation_date || r.travel_date || '';
 
     return (
@@ -145,7 +146,16 @@ const AdminReservations = () => {
                                                 </div>
                                             </div>
                                         </td>
-                                        <td className="p-4 font-semibold text-on-surface">{getServiceName(res)}</td>
+                                        <td className="p-4">
+                                            <p className="font-semibold text-on-surface">{getServiceName(res)}</p>
+                                            <span className={`inline-block mt-1 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full tracking-wide ${
+                                                getServiceType(res) === 'Paquete Turístico'
+                                                ? 'bg-primary-container text-on-primary-container'
+                                                : 'bg-secondary-container text-on-secondary-container'
+                                            }`}>
+                                                {getServiceType(res)}
+                                            </span>
+                                        </td>
                                         <td className="p-4 text-on-surface-variant">{getTravelDate(res)}</td>
                                         <td className="p-4 font-semibold text-primary">S/ {parseFloat(getTotal(res)).toFixed(2)}</td>
                                         <td className="p-4">
@@ -217,7 +227,16 @@ const AdminReservations = () => {
                                 <h4 className="font-label-md text-label-md text-on-surface-variant mb-stack-sm uppercase tracking-wider text-xs">Detalles del Servicio</h4>
                                 <div className="border border-outline-variant rounded-xl overflow-hidden">
                                     <div className="p-4 bg-surface-container-low border-b border-outline-variant">
-                                        <p className="font-semibold text-primary text-lg">{getServiceName(selectedRes)}</p>
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <p className="font-semibold text-primary text-lg">{getServiceName(selectedRes)}</p>
+                                            <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full tracking-wide ${
+                                                getServiceType(selectedRes) === 'Paquete Turístico'
+                                                ? 'bg-primary-container text-on-primary-container'
+                                                : 'bg-secondary-container text-on-secondary-container'
+                                            }`}>
+                                                {getServiceType(selectedRes)}
+                                            </span>
+                                        </div>
                                         <p className="text-sm text-on-surface-variant">{selectedRes.guests_count || selectedRes.pax || 1} Pasajeros</p>
                                     </div>
                                     <div className="p-4 bg-surface-container-lowest grid grid-cols-2 gap-4">

@@ -11,13 +11,16 @@ class CatalogService
     /**
      * List active service packages for public catalog.
      */
-    public function listActive(int $perPage = 15, int $page = 1): LengthAwarePaginator
+    public function listActive(int $perPage = 15, int $page = 1, ?string $type = null): LengthAwarePaginator
     {
-        $cacheKey = "catalog.active_page_{$page}_per_{$perPage}";
+        $cacheKey = "catalog.active_page_{$page}_per_{$perPage}_type_{$type}";
 
-        return Cache::remember($cacheKey, now()->addMinutes(30), function () use ($perPage, $page) {
-            return ServicePackage::active()
-                ->withCount('reservations')
+        return Cache::remember($cacheKey, now()->addMinutes(30), function () use ($perPage, $page, $type) {
+            $query = ServicePackage::active();
+            if ($type) {
+                $query->where('type', $type);
+            }
+            return $query->withCount('reservations')
                 ->orderByDesc('reservations_count')
                 ->orderBy('title')
                 ->paginate(perPage: $perPage, page: $page);

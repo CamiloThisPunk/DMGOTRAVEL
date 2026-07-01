@@ -18,8 +18,8 @@ const AdminServices = () => {
     const fetchServices = async () => {
         setLoading(true);
         try {
-            const res = await api.get('/api/admin/services');
-            setServices(res.data?.data || res.data?.services || res.data || []);
+            const res = await api.get('/api/admin/services?type=servicio');
+            setServices(res.data?.data || res.data || []);
         } catch (e) { console.error(e); }
         finally { setLoading(false); }
     };
@@ -69,6 +69,7 @@ const AdminServices = () => {
         
         const formData = new FormData();
         formData.append('title', form.title);
+        formData.append('type', 'servicio');
         formData.append('description', form.description);
         formData.append('price', parseFloat(form.price));
         formData.append('capacity', parseInt(form.capacity));
@@ -159,7 +160,7 @@ const AdminServices = () => {
                                     <th className="p-4 font-semibold w-16">Img</th>
                                     <th className="p-4 font-semibold">Nombre del Servicio</th>
                                     <th className="p-4 font-semibold w-32">Precio</th>
-                                    <th className="p-4 font-semibold w-32">Duración (min)</th>
+                                    <th className="p-4 font-semibold w-32">Duración (días)</th>
                                     <th className="p-4 font-semibold w-32">Capacidad</th>
                                     <th className="p-4 font-semibold w-48 text-right">Acciones</th>
                                 </tr>
@@ -318,11 +319,11 @@ const AdminServices = () => {
                                     {errors.price && <p className="text-error text-xs">{errors.price[0]}</p>}
                                 </div>
                                 <div className="space-y-2">
-                                    <label className="font-label-md text-sm text-on-surface">Duración (minutos) *</label>
+                                    <label className="font-label-md text-sm text-on-surface">Duración (días) *</label>
                                     <div className="relative">
                                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant material-symbols-outlined text-[18px]">schedule</span>
                                         <input className="w-full pl-10 pr-4 py-2 border border-outline-variant rounded focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
-                                            type="number" min="1" value={form.duration} onChange={e => setForm({...form, duration: e.target.value})} required placeholder="Ej: 120" />
+                                            type="number" min="1" value={form.duration} onChange={e => setForm({...form, duration: e.target.value})} required placeholder="Ej: 3" />
                                     </div>
                                     {errors.duration && <p className="text-error text-xs">{errors.duration[0]}</p>}
                                 </div>

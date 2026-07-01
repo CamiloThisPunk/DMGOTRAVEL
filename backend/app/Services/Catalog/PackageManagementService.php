@@ -6,6 +6,7 @@ use App\Models\AuditLog;
 use App\Models\ServicePackage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use App\Services\Media\ImageUploadService;
 
 class PackageManagementService
@@ -20,9 +21,13 @@ class PackageManagementService
     /**
      * List all service packages for admin (including inactive).
      */
-    public function listAll(int $perPage = 15): LengthAwarePaginator
+    public function listAll(int $perPage = 15, ?string $type = null): LengthAwarePaginator
     {
-        return ServicePackage::orderBy('created_at', 'desc')
+        $query = ServicePackage::query();
+        if ($type) {
+            $query->where('type', $type);
+        }
+        return $query->orderBy('created_at', 'desc')
             ->paginate($perPage);
     }
 
@@ -45,11 +50,17 @@ class PackageManagementService
             $data['image_360_url'] = $this->imageUploadService->storeImage($data['image_360']);
             unset($data['image_360']);
         }
+        
+        if (isset($data['itinerary']) && is_string($data['itinerary'])) {
+            $data['itinerary'] = json_decode($data['itinerary'], true);
+        }
 
         $package = ServicePackage::create($data);
         $package->refresh();
 
         $this->logAction('service_package.created', $package, null, $package->toArray());
+
+        Cache::flush();
 
         return $package;
     }
@@ -69,6 +80,10 @@ class PackageManagementService
             unset($data['image_360']);
         }
 
+        if (isset($data['itinerary']) && is_string($data['itinerary'])) {
+            $data['itinerary'] = json_decode($data['itinerary'], true);
+        }
+
         $package->update($data);
 
         $this->logAction(
@@ -77,6 +92,8 @@ class PackageManagementService
             $oldValues,
             $package->fresh()->toArray()
         );
+
+        Cache::flush();
 
         return $package->fresh();
     }
@@ -89,6 +106,7 @@ class PackageManagementService
         $oldValues = ['is_active' => $package->is_active];
 
         $package->update(['is_active' => false]);
+        $package->delete();
 
         $this->logAction(
             'service_package.deactivated',
@@ -96,6 +114,8 @@ class PackageManagementService
             $oldValues,
             ['is_active' => false]
         );
+
+        Cache::flush();
 
         return $package;
     }

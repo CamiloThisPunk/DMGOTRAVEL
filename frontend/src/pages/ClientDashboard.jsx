@@ -38,8 +38,9 @@ const ClientDashboard = () => {
         return <span className={`${s.cls} text-[10px] font-bold uppercase px-2 py-0.5 rounded-sm tracking-wide`}>{s.label}</span>;
     };
 
-    const getName = (r) => r.service_package?.name || r.tour_name || 'Tour';
-    const getTotal = (r) => r.total_price || r.total || r.service_package?.price || 0;
+    const getName = (r) => r.service?.title || r.service_title || r.tour_name || 'Tour';
+    const getType = (r) => r.service?.type === 'paquete' ? 'Paquete Turístico' : 'Destino';
+    const getTotal = (r) => r.total_price || r.total || r.service?.price || 0;
     const getDate = (r) => r.reservation_date || r.travel_date || r.date || '';
     const getGuests = (r) => r.guests_count || r.passengers || 1;
 
@@ -156,7 +157,18 @@ const ClientDashboard = () => {
                                                 #{res.id}
                                             </span>
                                         </div>
-                                        <h4 className="font-headline-sm text-headline-sm text-on-surface mb-1">{getName(res)}</h4>
+                                        <div className="flex items-center gap-2 mb-1">
+                                            <h4 className="font-headline-sm text-headline-sm text-on-surface">{getName(res)}</h4>
+                                            {res.service && (
+                                                <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded-full tracking-wide ${
+                                                    res.service.type === 'paquete' 
+                                                    ? 'bg-primary-container text-on-primary-container' 
+                                                    : 'bg-secondary-container text-on-secondary-container'
+                                                }`}>
+                                                    {getType(res)}
+                                                </span>
+                                            )}
+                                        </div>
                                         <p className="text-sm text-on-surface-variant flex items-center gap-4">
                                             <span><span className="material-symbols-outlined align-middle mr-1 text-[16px]">group</span>{getGuests(res)} Pasajeros</span>
                                             <span><span className="material-symbols-outlined align-middle mr-1 text-[16px]">payments</span>S/ {parseFloat(getTotal(res)).toFixed(2)} Total</span>

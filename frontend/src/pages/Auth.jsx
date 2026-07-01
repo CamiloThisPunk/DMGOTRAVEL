@@ -87,10 +87,17 @@ const Auth = () => {
     };
 
     return (
-        <div className="bg-background text-on-background min-h-screen flex items-center justify-center font-body-md text-body-md overflow-x-hidden">
-            <div className="w-full max-w-container-max mx-auto px-gutter min-h-screen md:min-h-[819px] flex items-center justify-center py-section-padding-mobile md:py-section-padding-desktop">
-                <div className="w-full bg-surface-container-lowest rounded-xl shadow-[0_8px_30px_rgb(0,0,0,0.08)] overflow-hidden flex flex-col md:flex-row min-h-[600px] border border-surface-variant relative">
-                    
+        <div className="bg-background text-on-background min-h-screen font-body-md text-body-md overflow-x-hidden flex">
+            <div className="w-full bg-surface-container-lowest flex flex-col md:flex-row min-h-screen relative">
+                
+                <button 
+                    onClick={() => navigate('/')} 
+                    className="absolute top-6 right-6 z-50 flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors bg-surface-container-lowest md:bg-transparent p-2 md:p-0 rounded-full md:rounded-none shadow-sm md:shadow-none"
+                    title="Volver al inicio"
+                >
+                    <span className="material-symbols-outlined">arrow_back</span>
+                    <span className="hidden md:inline font-label-md">Volver al inicio</span>
+                </button>
                     {/* Left Side: Image / Brand */}
                     <div className="w-full md:w-1/2 relative bg-primary-container overflow-hidden hidden md:block">
                         <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdF1t7a6Yd9aSzWMTTv9nWRMhW-56cBodM8WTM5DR-QWWkwKiU4bvULJcqIz9-wGUhSLfQFJcWci7GR12znUysrWHVNKndoMbPzn25G_8frSj8R0EZAwayp-M2RxFMtnI5I_3r-VL0n5pO2qKp5I8R54Xb0cIxucgZonEpBGenc6fpzwu_ZbL5iMenEzJuz6I9dbS7XRJUzlJCja4GGLMlFU_IwAp_RWNsyDnaM8I66LMzEHjYPscrphNjsfm2KMoRmiJcB0gxgmg')" }}></div>
@@ -198,7 +205,6 @@ const Auth = () => {
                             </div>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     );

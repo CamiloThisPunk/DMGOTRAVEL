@@ -30,7 +30,8 @@ class CatalogController extends Controller
     {
         $perPage = $request->integer('per_page', 15);
         $page = $request->integer('page', 1);
-        $packages = $this->catalogService->listActive($perPage, $page);
+        $type = $request->query('type');
+        $packages = $this->catalogService->listActive($perPage, $page, $type);
 
         return ServicePackageResource::collection($packages);
     }
