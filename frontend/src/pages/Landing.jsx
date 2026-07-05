@@ -246,7 +246,7 @@ const Landing = () => {
                                 <p className="text-on-surface-variant mb-6">
                                     Combinamos la rica herencia histórica de la región con la emoción de la aventura moderna. Desde rutas arqueológicas en Quinua hasta deportes extremos, garantizamos una experiencia profesional, segura e inolvidable.
                                 </p>
-                                <div className="flex justify-center mb-8">
+                                <div className="flex justify-start mb-8">
                                     <ul className="space-y-3 text-left">
                                         <li className="flex items-center gap-3 text-primary">
                                             <span className="material-symbols-outlined text-secondary">check_circle</span>

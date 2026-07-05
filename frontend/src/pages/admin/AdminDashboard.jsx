@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import jsPDF from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 const AdminDashboard = () => {
-    const [stats, setStats] = useState({ services: 0, reservations: 0, clients: 0, earnings: 0 });
+    const [stats, setStats] = useState({ services: 0, reservations: 0, clients: 0, earnings: 0, earningsHistory: [] });
     const [chartData, setChartData] = useState([]);
+    const [showEarningsModal, setShowEarningsModal] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -19,15 +24,30 @@ const AdminDashboard = () => {
                 const currentMonth = new Date().getMonth();
                 const currentYear = new Date().getFullYear();
                 
-                const monthlyEarnings = reservations.reduce((total, res) => {
-                    const resDate = new Date(res.created_at || res.reservation_date);
-                    if ((res.status === 'confirmed' || res.status === 'completed') && 
-                        resDate.getMonth() === currentMonth && 
-                        resDate.getFullYear() === currentYear) {
-                        return total + (parseFloat(res.total_price) || 0);
+                let monthlyEarnings = 0;
+                const historyMap = {};
+
+                reservations.forEach((res) => {
+                    if (res.status === 'completed') {
+                        const resDate = new Date(res.created_at || res.reservation_date);
+                        const val = parseFloat(res.total_price) || 0;
+                        
+                        if (resDate.getMonth() === currentMonth && resDate.getFullYear() === currentYear) {
+                            monthlyEarnings += val;
+                        }
+
+                        const monthNamesFull = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+                        const key = `${monthNamesFull[resDate.getMonth()]} ${resDate.getFullYear()}`;
+                        const sortKey = resDate.getFullYear() * 100 + resDate.getMonth();
+                        
+                        if (!historyMap[sortKey]) {
+                            historyMap[sortKey] = { label: key, total: 0, sortKey };
+                        }
+                        historyMap[sortKey].total += val;
                     }
-                    return total;
-                }, 0);
+                });
+                
+                const historyArray = Object.values(historyMap).sort((a, b) => b.sortKey - a.sortKey);
 
                 // Calculate chart data (last 6 months)
                 const monthsData = [];
@@ -56,11 +76,34 @@ const AdminDashboard = () => {
                     reservations: reservations.length,
                     clients: clientsRes.status === 'fulfilled' ? (clientsRes.value.data?.data?.length || 0) : 0,
                     earnings: monthlyEarnings,
+                    earningsHistory: historyArray,
                 });
             } catch (e) { console.error(e); }
         };
         fetchStats();
     }, []);
+
+    const downloadPDF = () => {
+        const doc = new jsPDF();
+        
+        doc.setFontSize(18);
+        doc.text('Historial de Ganancias - DMGOTRAVEL', 14, 22);
+        
+        const tableData = (stats.earningsHistory || []).map(item => [
+            item.label,
+            `S/ ${item.total.toFixed(2)}`
+        ]);
+        
+        autoTable(doc, {
+            startY: 30,
+            head: [['Mes', 'Ganancias Totales']],
+            body: tableData,
+            theme: 'striped',
+            headStyles: { fillColor: [4, 30, 66] } // Dark blue to match app style roughly
+        });
+        
+        doc.save('historial_ganancias_dmgotravel.pdf');
+    };
 
     return (
         <>
@@ -92,7 +135,10 @@ const AdminDashboard = () => {
                     <div className="absolute bottom-0 left-0 w-full h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
                 </div>
                 {/* Total Reservations */}
-                <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 relative overflow-hidden group">
+                <div 
+                    className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 relative overflow-hidden group cursor-pointer hover:border-primary transition-colors shadow-sm hover:shadow-md"
+                    onClick={() => navigate('/admin/reservations')}
+                >
                     <div className="flex justify-between items-start mb-4">
                         <div className="w-12 h-12 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary">
                             <span className="material-symbols-outlined">airplane_ticket</span>
@@ -103,7 +149,10 @@ const AdminDashboard = () => {
                     <div className="absolute bottom-0 left-0 w-full h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
                 </div>
                 {/* Total Clients */}
-                <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 relative overflow-hidden group">
+                <div 
+                    className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 relative overflow-hidden group cursor-pointer hover:border-primary transition-colors shadow-sm hover:shadow-md"
+                    onClick={() => navigate('/admin/clients')}
+                >
                     <div className="flex justify-between items-start mb-4">
                         <div className="w-12 h-12 rounded-full bg-error-container flex items-center justify-center text-on-error-container">
                             <span className="material-symbols-outlined">group</span>
@@ -114,7 +163,10 @@ const AdminDashboard = () => {
                     <div className="absolute bottom-0 left-0 w-full h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
                 </div>
                 {/* Earnings */}
-                <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 relative overflow-hidden group">
+                <div 
+                    className="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 relative overflow-hidden group cursor-pointer hover:border-primary transition-colors shadow-sm hover:shadow-md"
+                    onClick={() => setShowEarningsModal(true)}
+                >
                     <div className="flex justify-between items-start mb-4">
                         <div className="w-12 h-12 rounded-full bg-surface-tint/20 flex items-center justify-center text-surface-tint">
                             <span className="material-symbols-outlined">payments</span>
@@ -190,6 +242,39 @@ const AdminDashboard = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Earnings Modal */}
+            {showEarningsModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm">
+                    <div className="bg-surface-container-lowest rounded-xl shadow-lg w-full max-w-md overflow-hidden flex flex-col max-h-[80vh]">
+                        <div className="p-6 border-b border-outline-variant flex justify-between items-center bg-surface">
+                            <h3 className="font-headline-sm text-headline-sm text-primary">Historial de Ganancias</h3>
+                            <div className="flex items-center gap-2">
+                                <button onClick={downloadPDF} className="flex items-center gap-1 text-primary hover:text-primary-container transition-colors font-label-md text-label-md border border-primary px-3 py-1 rounded" title="Descargar PDF">
+                                    <span className="material-symbols-outlined text-[18px]">download</span> PDF
+                                </button>
+                                <button onClick={() => setShowEarningsModal(false)} className="text-on-surface-variant hover:text-error transition-colors ml-2">
+                                    <span className="material-symbols-outlined">close</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div className="p-6 overflow-y-auto">
+                            {stats.earningsHistory && stats.earningsHistory.length > 0 ? (
+                                <ul className="space-y-4">
+                                    {stats.earningsHistory.map((item, idx) => (
+                                        <li key={idx} className="flex justify-between items-center border-b border-outline-variant pb-3 last:border-0 last:pb-0">
+                                            <span className="font-body-md text-on-surface">{item.label}</span>
+                                            <span className="font-bold text-primary">S/ {item.total.toFixed(2)}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p className="text-on-surface-variant text-center py-4">No hay ganancias registradas aún.</p>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 };
