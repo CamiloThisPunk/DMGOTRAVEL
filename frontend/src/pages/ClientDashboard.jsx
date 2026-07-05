@@ -152,9 +152,9 @@ const ClientDashboard = () => {
                                     <div className="flex-1">
                                         <div className="flex items-center gap-2 mb-1">
                                             {getStatusBadge(res.status)}
-                                            <span className="text-xs text-on-surface-variant flex items-center gap-1">
+                                            <span className="text-xs text-on-surface-variant flex items-center gap-1" title={`ID BD: ${res.id}`}>
                                                 <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>confirmation_number</span>
-                                                #{res.id}
+                                                #{reservations.length - reservations.findIndex(r => r.id === res.id)}
                                             </span>
                                         </div>
                                         <div className="flex items-center gap-2 mb-1">

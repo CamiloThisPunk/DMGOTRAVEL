@@ -19,7 +19,7 @@ const AdminDashboard = () => {
                     api.get('/api/admin/clients'),
                 ]);
                 
-                const reservations = reservationsRes.status === 'fulfilled' ? (reservationsRes.value.data?.data || []) : [];
+                const reservations = reservationsRes.status === 'fulfilled' ? (reservationsRes.value.data?.data || res.data || []) : [];
                 
                 const currentMonth = new Date().getMonth();
                 const currentYear = new Date().getFullYear();
@@ -27,10 +27,18 @@ const AdminDashboard = () => {
                 let monthlyEarnings = 0;
                 const historyMap = {};
 
+                const parseDate = (dateStr) => {
+                    if (!dateStr) return new Date('1970-01-01');
+                    const cleanDate = dateStr.split(' ')[0];
+                    return new Date(cleanDate + (cleanDate.includes('T') ? '' : 'T12:00:00'));
+                };
+
+                const getTravelDate = (r) => r.reservation_date || r.travel_date || r.created_at || '';
+
                 reservations.forEach((res) => {
-                    if (res.status === 'completed') {
-                        const resDate = new Date(res.created_at || res.reservation_date);
-                        const val = parseFloat(res.total_price) || 0;
+                    if (res.status === 'completed' || res.status === 'confirmed') {
+                        const resDate = parseDate(getTravelDate(res));
+                        const val = parseFloat(res.total_price) || parseFloat(res.total) || 0;
                         
                         if (resDate.getMonth() === currentMonth && resDate.getFullYear() === currentYear) {
                             monthlyEarnings += val;
@@ -59,14 +67,20 @@ const AdminDashboard = () => {
                         month: monthNames[d.getMonth()],
                         monthIndex: d.getMonth(),
                         year: d.getFullYear(),
-                        count: 0
+                        count: 0,
+                        earnings: 0
                     });
                 }
 
                 reservations.forEach(res => {
-                    const d = new Date(res.created_at || res.reservation_date);
+                    const d = parseDate(getTravelDate(res));
                     const item = monthsData.find(m => m.monthIndex === d.getMonth() && m.year === d.getFullYear());
-                    if (item) item.count++;
+                    if (item) {
+                        item.count++;
+                        if (res.status === 'completed' || res.status === 'confirmed') {
+                            item.earnings += (parseFloat(res.total_price) || parseFloat(res.total) || 0);
+                        }
+                    }
                 });
                 
                 setChartData(monthsData);
@@ -198,13 +212,22 @@ const AdminDashboard = () => {
                             const maxCount = Math.max(...chartData.map(d => d.count), 1);
                             const heightPercentage = Math.max((data.count / maxCount) * 100, 2); // Minimum 2% height for visibility
                             return (
-                                <div key={idx} className="flex flex-col items-center gap-2 z-10 w-full h-full justify-end group">
+                                <div key={idx} className="flex flex-col items-center gap-2 z-10 w-full h-full justify-end group relative">
                                     <span className="text-sm font-bold text-transparent group-hover:text-primary transition-colors">{data.count}</span>
                                     <div 
-                                        className="w-full max-w-[48px] bg-primary/20 rounded-t-md relative transition-all duration-300 group-hover:bg-primary/40" 
+                                        className="w-full max-w-[48px] bg-primary/20 rounded-t-md relative transition-all duration-300 group-hover:bg-primary/40 cursor-pointer" 
                                         style={{ height: `${heightPercentage}%` }}
                                     >
                                         <div className="absolute bottom-0 left-0 w-full bg-primary rounded-t-md transition-all duration-500 origin-bottom" style={{ height: data.count > 0 ? '100%' : '0%' }}></div>
+                                        
+                                        {/* Tooltip de Ganancias */}
+                                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+                                            <div className="bg-inverse-surface text-inverse-on-surface text-xs font-bold px-3 py-2 rounded-lg shadow-lg whitespace-nowrap flex flex-col items-center">
+                                                <span className="opacity-70 font-medium text-[10px] uppercase tracking-wider mb-0.5">Ganancias</span>
+                                                <span className="text-inverse-primary text-sm">S/ {data.earnings.toFixed(2)}</span>
+                                                <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-inverse-surface"></div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <span className="text-xs text-on-surface-variant font-medium mt-1">{data.month}</span>
                                 </div>

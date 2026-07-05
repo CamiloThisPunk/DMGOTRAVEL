@@ -9,6 +9,7 @@ const AdminReservations = () => {
     const [selectedRes, setSelectedRes] = useState(null);
     const [panelOpen, setPanelOpen] = useState(false);
     const [updating, setUpdating] = useState(false);
+    const [expandedGroups, setExpandedGroups] = useState({});
 
     useEffect(() => { fetchReservations(); }, []);
 
@@ -44,15 +45,51 @@ const AdminReservations = () => {
         return configs[status] || configs.pending;
     };
 
+    const getCustomerName = (r) => r.client?.name || r.user?.name || r.customer?.name || 'Cliente';
+    const getCustomerEmail = (r) => r.client?.email || r.user?.email || r.customer?.email || '';
+    const getServiceName = (r) => r.service?.title || r.service_title || 'Servicio';
+    const getServiceType = (r) => r.service?.type === 'paquete' ? 'Paquete Turístico' : 'Destino';
+    const getTotal = (r) => r.total_price || r.total || r.service?.price || 0;
+    const getTravelDate = (r) => r.reservation_date || r.travel_date || '';
+
+    const parseDate = (dateStr) => {
+        if (!dateStr) return new Date('1970-01-01');
+        return new Date(dateStr + (dateStr.includes('T') ? '' : 'T12:00:00'));
+    };
+
+    const formatDate = (dateStr) => {
+        if (!dateStr) return 'N/A';
+        const d = parseDate(dateStr);
+        if (isNaN(d)) return dateStr;
+        return d.toLocaleDateString('es-ES', { day: '2-digit', month: 'short', year: 'numeric' });
+    };
+
     const filtered = reservations.filter(r => {
         const matchFilter = filter === 'all' || r.status === filter;
         const q = search.toLowerCase();
         const matchSearch = !q ||
             String(r.id).includes(q) ||
-            (r.client?.name || r.user?.name || r.customer?.name || '').toLowerCase().includes(q) ||
-            (r.service_package?.name || r.service?.name || '').toLowerCase().includes(q);
+            getCustomerName(r).toLowerCase().includes(q) ||
+            getServiceName(r).toLowerCase().includes(q);
         return matchFilter && matchSearch;
+    }).sort((a, b) => {
+        return parseDate(getTravelDate(b)) - parseDate(getTravelDate(a)); // Orden descendente (más reciente arriba)
     });
+
+    const groupedReservations = filtered.reduce((groups, res) => {
+        const dateStr = getTravelDate(res);
+        const dateObj = parseDate(dateStr);
+        
+        let monthYear = 'Fecha no definida';
+        if (!isNaN(dateObj) && dateStr) {
+            monthYear = dateObj.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+            monthYear = monthYear.charAt(0).toUpperCase() + monthYear.slice(1);
+        }
+        
+        if (!groups[monthYear]) groups[monthYear] = [];
+        groups[monthYear].push(res);
+        return groups;
+    }, {});
 
     const openPanel = (res) => {
         setSelectedRes(res);
@@ -66,13 +103,6 @@ const AdminReservations = () => {
         { value: 'cancelled', label: 'Canceladas' },
         { value: 'completed', label: 'Completadas' },
     ];
-
-    const getCustomerName = (r) => r.client?.name || r.user?.name || r.customer?.name || 'Cliente';
-    const getCustomerEmail = (r) => r.client?.email || r.user?.email || r.customer?.email || '';
-    const getServiceName = (r) => r.service?.title || r.service_title || 'Servicio';
-    const getServiceType = (r) => r.service?.type === 'paquete' ? 'Paquete Turístico' : 'Destino';
-    const getTotal = (r) => r.total_price || r.total || r.service?.price || 0;
-    const getTravelDate = (r) => r.reservation_date || r.travel_date || '';
 
     return (
         <>
@@ -126,53 +156,82 @@ const AdminReservations = () => {
                             </tr>
                         </thead>
                         <tbody className="font-body-md text-body-md divide-y divide-outline-variant">
-                            {filtered.length === 0 ? (
+                            {Object.keys(groupedReservations).length === 0 ? (
                                 <tr><td colSpan="7" className="p-10 text-center text-on-surface-variant">
                                     {loading ? 'Cargando...' : 'No se encontraron reservas'}
                                 </td></tr>
-                            ) : filtered.map(res => {
-                                const sc = getStatusConfig(res.status);
-                                return (
-                                    <tr key={res.id} className="hover:bg-surface transition-colors group">
-                                        <td className="p-4 text-primary font-semibold">#{res.id}</td>
-                                        <td className="p-4">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-primary font-bold text-xs">
-                                                    {getCustomerName(res).substring(0,2).toUpperCase()}
+                            ) : Object.entries(groupedReservations).map(([groupName, resList]) => (
+                                <React.Fragment key={groupName}>
+                                    <tr 
+                                        className="bg-surface-container-low/60 border-t-2 border-outline-variant cursor-pointer hover:bg-surface-container-low transition-colors select-none" 
+                                        onClick={() => setExpandedGroups(prev => ({ ...prev, [groupName]: !prev[groupName] }))}
+                                    >
+                                        <td colSpan="7" className="px-4 py-3 font-label-md text-label-sm text-primary tracking-widest uppercase">
+                                            <div className="flex items-center justify-between">
+                                                <div className="flex items-center gap-2">
+                                                    <span className="material-symbols-outlined text-[18px]">event_note</span>
+                                                    {groupName}
+                                                    <span className="ml-2 bg-primary/10 text-primary px-2 py-0.5 rounded-full text-[10px] font-bold">
+                                                        {resList.length} {resList.length === 1 ? 'reserva' : 'reservas'}
+                                                    </span>
                                                 </div>
-                                                <div>
-                                                    <p className="font-semibold text-on-surface">{getCustomerName(res)}</p>
-                                                    <p className="text-sm text-on-surface-variant">{getCustomerEmail(res)}</p>
-                                                </div>
+                                                <span className={`material-symbols-outlined text-on-surface-variant transition-transform duration-200 ${expandedGroups[groupName] ? 'rotate-180' : ''}`}>
+                                                    expand_more
+                                                </span>
                                             </div>
                                         </td>
-                                        <td className="p-4">
-                                            <p className="font-semibold text-on-surface">{getServiceName(res)}</p>
-                                            <span className={`inline-block mt-1 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full tracking-wide ${
-                                                getServiceType(res) === 'Paquete Turístico'
-                                                ? 'bg-primary-container text-on-primary-container'
-                                                : 'bg-secondary-container text-on-secondary-container'
-                                            }`}>
-                                                {getServiceType(res)}
-                                            </span>
-                                        </td>
-                                        <td className="p-4 text-on-surface-variant">{getTravelDate(res)}</td>
-                                        <td className="p-4 font-semibold text-primary">S/ {parseFloat(getTotal(res)).toFixed(2)}</td>
-                                        <td className="p-4">
-                                            <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${sc.bg} ${sc.text}`}>
-                                                <span className={`w-1.5 h-1.5 rounded-full ${sc.dot}`}></span>
-                                                {sc.label}
-                                            </span>
-                                        </td>
-                                        <td className="p-4 text-right">
-                                            <button onClick={() => openPanel(res)} className="text-primary hover:text-secondary font-label-md text-label-md border border-outline-variant px-3 py-1.5 rounded-lg hover:bg-surface-variant transition-colors inline-flex items-center gap-1">
-                                                Ver Detalle
-                                                <span className="material-symbols-outlined text-sm">chevron_right</span>
-                                            </button>
-                                        </td>
                                     </tr>
-                                );
-                            })}
+                                    {expandedGroups[groupName] && resList.map((res, idx) => {
+                                        const sc = getStatusConfig(res.status);
+                                        const displayId = resList.length - idx;
+                                        return (
+                                            <tr key={res.id} className="hover:bg-surface transition-colors group">
+                                                <td className="p-4 text-primary font-semibold" title={`ID BD: ${res.id}`}>#{displayId}</td>
+                                                <td className="p-4">
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center text-primary font-bold text-xs">
+                                                            {getCustomerName(res).substring(0,2).toUpperCase()}
+                                                        </div>
+                                                        <div>
+                                                            <p className="font-semibold text-on-surface">{getCustomerName(res)}</p>
+                                                            <p className="text-sm text-on-surface-variant">{getCustomerEmail(res)}</p>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td className="p-4">
+                                                    <p className="font-semibold text-on-surface">{getServiceName(res)}</p>
+                                                    <span className={`inline-block mt-1 text-[10px] font-bold uppercase px-2 py-0.5 rounded-full tracking-wide ${
+                                                        getServiceType(res) === 'Paquete Turístico'
+                                                        ? 'bg-primary-container text-on-primary-container'
+                                                        : 'bg-secondary-container text-on-secondary-container'
+                                                    }`}>
+                                                        {getServiceType(res)}
+                                                    </span>
+                                                </td>
+                                                <td className="p-4">
+                                                    <div className="flex items-center gap-1.5 text-on-surface-variant">
+                                                        <span className="material-symbols-outlined text-[16px]">calendar_today</span>
+                                                        <span className="font-medium">{formatDate(getTravelDate(res))}</span>
+                                                    </div>
+                                                </td>
+                                                <td className="p-4 font-semibold text-primary">S/ {parseFloat(getTotal(res)).toFixed(2)}</td>
+                                                <td className="p-4">
+                                                    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold ${sc.bg} ${sc.text}`}>
+                                                        <span className={`w-1.5 h-1.5 rounded-full ${sc.dot}`}></span>
+                                                        {sc.label}
+                                                    </span>
+                                                </td>
+                                                <td className="p-4 text-right">
+                                                    <button onClick={() => openPanel({ ...res, displayId })} className="text-primary hover:text-secondary font-label-md text-label-md border border-outline-variant px-3 py-1.5 rounded-lg hover:bg-surface-variant transition-colors inline-flex items-center gap-1">
+                                                        Ver Detalle
+                                                        <span className="material-symbols-outlined text-sm">chevron_right</span>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                                </React.Fragment>
+                            ))}
                         </tbody>
                     </table>
                 </div>
@@ -190,7 +249,7 @@ const AdminReservations = () => {
                         <div className="p-gutter border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
                             <h3 className="font-headline-sm text-headline-sm text-primary flex items-center gap-2">
                                 Detalle de Reserva
-                                <span className="text-sm px-2 py-1 bg-surface-variant rounded text-on-surface-variant font-label-md">#{selectedRes.id}</span>
+                                <span className="text-sm px-2 py-1 bg-surface-variant rounded text-on-surface-variant font-label-md" title={`ID BD: ${selectedRes.id}`}>#{selectedRes.displayId || selectedRes.id}</span>
                             </h3>
                             <button onClick={() => setPanelOpen(false)} className="p-2 rounded-full hover:bg-surface-variant text-on-surface-variant transition-colors">
                                 <span className="material-symbols-outlined">close</span>
@@ -243,7 +302,7 @@ const AdminReservations = () => {
                                         <div>
                                             <p className="text-xs text-outline mb-1">Fecha de Viaje</p>
                                             <p className="font-semibold text-on-surface text-sm flex items-center gap-1">
-                                                <span className="material-symbols-outlined text-sm text-primary">calendar_today</span> {getTravelDate(selectedRes)}
+                                                <span className="material-symbols-outlined text-sm text-primary">calendar_today</span> {formatDate(getTravelDate(selectedRes))}
                                             </p>
                                         </div>
                                         <div>

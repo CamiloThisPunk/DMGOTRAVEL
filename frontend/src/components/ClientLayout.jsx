@@ -19,30 +19,27 @@ const ClientLayout = () => {
                     <NavLink to="/" className="font-display-lg md:text-display-lg text-display-lg-mobile text-primary tracking-tight">
                         DMGOTRAVEL
                     </NavLink>
-                    <nav className="hidden md:flex gap-6 h-full">
-                        <NavLink to="/" className="flex items-center h-full px-2 text-on-surface-variant hover:text-secondary transition-colors font-body-md text-body-md">
-                            Inicio
-                        </NavLink>
+                    <nav className="hidden md:flex items-center gap-8">
                         <NavLink to="/client/catalog"
                             className={({ isActive }) =>
-                                `flex items-center h-full px-2 font-body-md text-body-md transition-colors ${
-                                    isActive ? 'text-primary font-bold border-b-2 border-secondary' : 'text-on-surface-variant hover:text-secondary'
+                                `block pb-1 font-body-md text-body-md transition-colors border-b-2 ${
+                                    isActive ? 'text-primary font-bold border-secondary' : 'text-on-surface-variant border-transparent hover:text-secondary hover:border-secondary'
                                 }`
                             }>
                             Destinos
                         </NavLink>
                         <NavLink to="/client/tourist-packages"
                             className={({ isActive }) =>
-                                `flex items-center h-full px-2 font-body-md text-body-md transition-colors ${
-                                    isActive ? 'text-primary font-bold border-b-2 border-secondary' : 'text-on-surface-variant hover:text-secondary'
+                                `block pb-1 font-body-md text-body-md transition-colors border-b-2 ${
+                                    isActive ? 'text-primary font-bold border-secondary' : 'text-on-surface-variant border-transparent hover:text-secondary hover:border-secondary'
                                 }`
                             }>
                             Paquetes Turísticos
                         </NavLink>
                         <NavLink to="/client/dashboard"
                             className={({ isActive }) =>
-                                `flex items-center h-full px-2 font-body-md text-body-md transition-colors ${
-                                    isActive ? 'text-primary font-bold border-b-2 border-secondary' : 'text-on-surface-variant hover:text-secondary'
+                                `block pb-1 font-body-md text-body-md transition-colors border-b-2 ${
+                                    isActive ? 'text-primary font-bold border-secondary' : 'text-on-surface-variant border-transparent hover:text-secondary hover:border-secondary'
                                 }`
                             }>
                             Mis Reservas
