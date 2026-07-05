@@ -81,9 +81,9 @@ const Landing = () => {
             {/* TopNavBar */}
             <header className="w-full sticky top-0 z-50 bg-surface-container-lowest border-b border-outline-variant">
                 <nav className="container mx-auto max-w-[1320px] flex justify-between items-center h-20 px-gutter">
-                    <Link to="/" className="font-display-lg md:text-display-lg text-display-lg-mobile text-primary tracking-tight">
+                    <a href="#inicio" className="font-display-lg md:text-display-lg text-display-lg-mobile text-primary tracking-tight">
                         DMGOTRAVEL
-                    </Link>
+                    </a>
                     <ul className="hidden md:flex items-center gap-8 font-body-md text-body-md">
                         <li><a className={getNavClass('inicio')} href="#inicio">Inicio</a></li>
                         <li><a className={getNavClass('destinos')} href="#destinos">Destinos</a></li>
