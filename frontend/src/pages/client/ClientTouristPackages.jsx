@@ -35,7 +35,7 @@ const ClientTouristPackages = () => {
         <div className="bg-background min-h-screen">
             {/* Hero Section */}
             <section className="relative w-full h-[400px] flex items-center justify-center overflow-hidden">
-                <div className="absolute inset-0 w-full h-full bg-cover bg-center" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuCqosLhbr5Me_Q49ecmCqOY7NMOSfKBRdjAsBpuXzLgm3TXS4JUruQejrwBvOuDPK3f7ZbQaV0LJ-KK41mUXgVxV5ViwUqbTjalTT6V7OX_ZY87QrKpjWL2kQDUTSLJKQz-tOBI5QNBRWNVuUxfx1hIJV_USvXzwvFv-cw3dHeYN9ZeZWW6SOjWhNO4wE65oLg6W3c36kqpd9cxPkblMun04NcL3gf3OgpqEo3VBxTHay2YZGm2l1x6TIuffWgcveKlmOn0Kt9Q2A')" }}></div>
+                <div className="absolute inset-0 w-full h-full bg-cover bg-center" style={{ backgroundImage: "url('/images/hero-client-catalog.jpg')" }}></div>
                 <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg, rgba(0,31,63,0.8) 0%, rgba(0,6,19,0.9) 100%)' }}></div>
                 <div className="relative z-10 text-center px-4 max-w-[1280px] mx-auto">
                     <h1 className="text-[32px] md:text-[48px] leading-tight font-bold text-white mb-4">Encuentra tu próxima aventura</h1>
@@ -91,7 +91,7 @@ const ClientTouristPackages = () => {
                                         }`}>
                                         <div className="relative h-56 overflow-hidden bg-[#e3e2e5]">
                                             <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                                src={tour.image_360_url || 'https://images.unsplash.com/photo-1518173946687-a4c8a9b749f4?auto=format&fit=crop&q=80'}
+                                                src={tour.image_360_url || '/images/demo-tour-1.jpg'}
                                                 alt={tour.title} />
                                             <div className="absolute top-4 left-4">
                                                 <span className="bg-[#faf9fc]/90 backdrop-blur-sm text-[#964900] font-bold text-[12px] uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">

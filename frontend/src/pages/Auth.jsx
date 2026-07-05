@@ -100,7 +100,7 @@ const Auth = () => {
                 </button>
                     {/* Left Side: Image / Brand */}
                     <div className="w-full md:w-1/2 relative bg-primary-container overflow-hidden hidden md:block">
-                        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdF1t7a6Yd9aSzWMTTv9nWRMhW-56cBodM8WTM5DR-QWWkwKiU4bvULJcqIz9-wGUhSLfQFJcWci7GR12znUysrWHVNKndoMbPzn25G_8frSj8R0EZAwayp-M2RxFMtnI5I_3r-VL0n5pO2qKp5I8R54Xb0cIxucgZonEpBGenc6fpzwu_ZbL5iMenEzJuz6I9dbS7XRJUzlJCja4GGLMlFU_IwAp_RWNsyDnaM8I66LMzEHjYPscrphNjsfm2KMoRmiJcB0gxgmg')" }}></div>
+                        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/images/hero-auth.jpg')" }}></div>
                         <div className="absolute inset-0 bg-gradient-to-t from-primary/80 to-transparent"></div>
                         <div className="absolute bottom-0 left-0 p-10 z-10">
                             <h2 className="font-display-lg text-display-lg text-on-primary mb-4">Descubre Ayacucho</h2>

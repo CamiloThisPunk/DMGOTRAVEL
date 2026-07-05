@@ -67,7 +67,7 @@ const TourCatalog = () => {
         <>
             {/* Hero Header */}
             <section className="relative w-full h-[400px] md:h-[500px] flex items-center justify-center">
-                <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuASk_GMG8YT_ni-NW5RrapIqAvGmmEBTQ1pZzmbCeJcIl8tq7mEDi_MQK6W9Are9Old_zIJdi3WitDUIldjeUVrVSDNeuMY-q4jnqKKAAIITfj7TtfWbF1Abc7FAZr1tVKNJxTfd0j0RLXOuXHTlwt8c5wuFq7wrPuSvc_0pvRU_e0Gdml_umpQL7A5e9Fq3Y2U6nT5wtX4wTlXdsMm_DWWI1ESMBySonUqUj_hhu5fL0L1Fq8c7L_2ObJ5mTc4HAgcUL2KDoAAxwU')" }}></div>
+                <div className="absolute inset-0 bg-cover bg-center z-0" style={{ backgroundImage: "url('/images/hero-tour-catalog.jpg')" }}></div>
                 <div className="absolute inset-0 bg-primary/60 z-10"></div>
                 <div className="relative z-20 text-center px-gutter w-full max-w-[1320px] mx-auto">
                     <h1 className="font-display-lg md:text-display-lg text-display-lg-mobile text-on-primary mb-stack-sm drop-shadow-md">
@@ -98,7 +98,7 @@ const TourCatalog = () => {
                                 }`}>
                                     <div className="relative h-48 w-full overflow-hidden">
                                         <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                            src={tour.image_360_url || 'https://images.unsplash.com/photo-1518173946687-a4c8a9b749f4?auto=format&fit=crop&q=80&w=800'}
+                                            src={tour.image_360_url || '/images/demo-tour-1.jpg'}
                                             alt={tour.title} />
                                         <div className="absolute top-3 left-3 bg-secondary-container text-on-secondary-container font-label-md text-label-md px-3 py-1 rounded-full flex items-center gap-1">
                                             <span className="material-symbols-outlined text-[16px]">hiking</span>
