@@ -34,7 +34,7 @@ const ClientTouristPackageCheckout = () => {
     if (!pkg) return null;
 
     const totalPrice = parseFloat(pkg.price) * guests;
-    const defaultImage = "https://images.unsplash.com/photo-1526392060635-9d6019884377?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80";
+    const defaultImage = "/images/demo-tour-detail.jpg";
     const bgImage = pkg.image_360_url || defaultImage;
 
     const handleSubmit = async (e) => {

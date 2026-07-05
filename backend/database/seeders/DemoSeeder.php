@@ -30,7 +30,7 @@ class DemoSeeder extends Seeder
                 'price' => 120.00,
                 'capacity' => 15,
                 'duration' => 600, // 10 horas en minutos
-                'image_360_url' => 'https://images.unsplash.com/photo-1518173946687-a4c8a9b749f4?auto=format&fit=crop&q=80&w=800'
+                'image_360_url' => env('APP_URL') . '/images/seed/demo-tour-1.jpg'
             ],
             [
                 'title' => 'City Tour & Ruinas Wari',
@@ -38,7 +38,7 @@ class DemoSeeder extends Seeder
                 'price' => 65.00,
                 'capacity' => 20,
                 'duration' => 300, // 5 horas
-                'image_360_url' => 'https://images.unsplash.com/photo-1518173946687-a4c8a9b749f4?auto=format&fit=crop&q=80&w=800'
+                'image_360_url' => env('APP_URL') . '/images/seed/demo-tour-1.jpg'
             ],
             [
                 'title' => 'Trekking Pampa de Ayacucho',
@@ -46,7 +46,7 @@ class DemoSeeder extends Seeder
                 'price' => 90.00,
                 'capacity' => 12,
                 'duration' => 480, // 8 horas
-                'image_360_url' => 'https://images.unsplash.com/photo-1518173946687-a4c8a9b749f4?auto=format&fit=crop&q=80&w=800'
+                'image_360_url' => env('APP_URL') . '/images/seed/demo-tour-1.jpg'
             ],
         ];
 

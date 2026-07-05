@@ -6,13 +6,19 @@ import { useAuth } from '../contexts/AuthContext';
 const Landing = () => {
     const { user } = useAuth();
     const [services, setServices] = useState([]);
+    const [packages, setPackages] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [activeSection, setActiveSection] = useState('inicio');
 
     useEffect(() => {
         const fetchServices = async () => {
             try {
-                const res = await api.get('/api/services');
-                setServices(res.data?.data || res.data || []);
+                const [resServices, resPackages] = await Promise.all([
+                    api.get('/api/services?type=servicio'),
+                    api.get('/api/services?type=paquete')
+                ]);
+                setServices(resServices.data?.data || resServices.data || []);
+                setPackages(resPackages.data?.data || resPackages.data || []);
             } catch (error) {
                 console.error("Error fetching services", error);
             } finally {
@@ -20,6 +26,28 @@ const Landing = () => {
             }
         };
         fetchServices();
+
+        const handleScroll = () => {
+            const sections = ['inicio', 'destinos', 'paquetes', 'nosotros', 'contacto'];
+            let current = 'inicio';
+
+            for (const section of sections) {
+                const element = document.getElementById(section);
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    // Offset by some pixels to trigger slightly before it hits the top
+                    if (rect.top <= window.innerHeight / 3) {
+                        current = section;
+                    }
+                }
+            }
+            setActiveSection(current);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        handleScroll();
+
+        return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
     // Helper to generate dynamic tags to fix the inconsistency of hardcoded tags
@@ -40,6 +68,14 @@ const Landing = () => {
         return { name: 'Destino', icon: 'location_on' };
     };
 
+    const getNavClass = (sectionName) => {
+        const baseClass = "transition-colors block pb-1 border-b-2 ";
+        if (activeSection === sectionName) {
+            return baseClass + "text-secondary border-secondary font-bold";
+        }
+        return baseClass + "text-on-surface-variant border-transparent hover:text-secondary hover:border-secondary font-normal";
+    };
+
     return (
         <div className="bg-background text-on-background font-body-md text-body-md antialiased">
             {/* TopNavBar */}
@@ -49,10 +85,11 @@ const Landing = () => {
                         DMGOTRAVEL
                     </Link>
                     <ul className="hidden md:flex items-center gap-8 font-body-md text-body-md">
-                        <li><a className="text-primary font-bold border-b-2 border-secondary pb-1 block hover:text-secondary transition-colors" href="#inicio">Inicio</a></li>
-                        <li><a className="text-on-surface-variant hover:text-secondary transition-colors block pb-1 border-b-2 border-transparent" href="#destinos">Destinos</a></li>
-                        <li><a className="text-on-surface-variant hover:text-secondary transition-colors block pb-1 border-b-2 border-transparent" href="#nosotros">Nosotros</a></li>
-                        <li><a className="text-on-surface-variant hover:text-secondary transition-colors block pb-1 border-b-2 border-transparent" href="#contacto">Contacto</a></li>
+                        <li><a className={getNavClass('inicio')} href="#inicio">Inicio</a></li>
+                        <li><a className={getNavClass('destinos')} href="#destinos">Destinos</a></li>
+                        <li><a className={getNavClass('paquetes')} href="#paquetes">Paquetes Turísticos</a></li>
+                        <li><a className={getNavClass('nosotros')} href="#nosotros">Nosotros</a></li>
+                        <li><a className={getNavClass('contacto')} href="#contacto">Contacto</a></li>
                     </ul>
                     <div className="hidden md:block">
                         {user ? (
@@ -75,7 +112,7 @@ const Landing = () => {
                 {/* Hero Section */}
                 <section className="relative w-full h-[819px] min-h-[600px] flex items-center justify-center overflow-hidden" id="inicio">
                     <div className="absolute inset-0 z-0">
-                        <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuDD_V6y9OlnL1qSmdBpUSbPE79P1JJs937IgKkdGtg1OTRRz5UKBCSyDEVWC7594oYnHMRHzFFrqjnDsWmIYM8SHibpBoRTjqd7eyaTlrtJaNOtUHHcQrNBwtutm-M2HVtdCKdothcGmeyvXgHeZFoEv7HfTtLYWOp3vtWRl1lKqExM5lRfHUsEk1RlSv5nJVJ2pgnWi2w86IfTP7lh6YtueNFAZ7OVjAZIXvAwn6dAX5UFoSX55ngzpcy9K960u3lGvwFUZFEssxs')" }}></div>
+                        <div className="w-full h-full bg-cover bg-center" style={{ backgroundImage: "url('/images/hero-landing.jpg')" }}></div>
                         <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent"></div>
                     </div>
                     <div className="relative z-10 container mx-auto max-w-[1320px] px-gutter text-left">
@@ -100,7 +137,7 @@ const Landing = () => {
                             <h2 className="font-headline-md text-headline-md text-primary mb-2">Destinos Destacados</h2>
                             <p className="text-on-surface-variant max-w-2xl mx-auto">Experiencias diseñadas para el viajero moderno. Seguridad, profesionalismo y aventura en cada ruta.</p>
                         </div>
-                        
+
                         {loading ? (
                             <div className="flex items-center justify-center py-12">
                                 <span className="material-symbols-outlined animate-spin text-primary text-4xl">sync</span>
@@ -145,11 +182,63 @@ const Landing = () => {
                     </div>
                 </section>
 
-                {/* About Us Section */}
-                <section className="py-section-padding-mobile md:py-section-padding-desktop bg-surface-container-lowest border-y border-outline-variant" id="nosotros">
+                {/* Service Catalog Section - Paquetes */}
+                <section className="py-section-padding-mobile md:py-section-padding-desktop bg-surface-container-low" id="paquetes">
                     <div className="container mx-auto max-w-[1320px] px-gutter">
-                        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-center">
-                            <div className="md:col-span-6 order-2 md:order-1">
+                        <div className="text-center mb-12">
+                            <h2 className="font-headline-md text-headline-md text-primary mb-2">Paquetes Turísticos</h2>
+                            <p className="text-on-surface-variant max-w-2xl mx-auto">Experiencias completas de varios días. Todo organizado para que solo te preocupes por disfrutar.</p>
+                        </div>
+
+                        {loading ? (
+                            <div className="flex items-center justify-center py-12">
+                                <span className="material-symbols-outlined animate-spin text-primary text-4xl">sync</span>
+                            </div>
+                        ) : packages.length === 0 ? (
+                            <div className="text-center py-12 text-on-surface-variant">
+                                No hay paquetes turísticos disponibles en este momento. Vuelve más tarde.
+                            </div>
+                        ) : (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+                                {packages.slice(0, 4).map((service) => {
+                                    const cat = getCategory(service.title, service.description);
+                                    return (
+                                        <article key={service.id} className="tour-card bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden flex flex-col h-full hover:border-primary transition-colors hover:shadow-md">
+                                            <div className="h-64 overflow-hidden relative">
+                                                {service.image_360_url ? (
+                                                    <img className="w-full h-full object-cover" alt={service.title} src={service.image_360_url} />
+                                                ) : (
+                                                    <div className="w-full h-full bg-surface-container flex items-center justify-center text-on-surface-variant">
+                                                        <span className="material-symbols-outlined text-4xl">image</span>
+                                                    </div>
+                                                )}
+                                                <div className="absolute top-4 left-4 bg-surface-container-lowest text-primary font-label-md text-label-md px-3 py-1 rounded shadow-sm flex items-center gap-1">
+                                                    <span className="material-symbols-outlined text-[16px]">{cat.icon}</span> {cat.name}
+                                                </div>
+                                            </div>
+                                            <div className="p-6 flex-grow flex flex-col">
+                                                <h3 className="font-headline-sm text-headline-sm text-primary mb-2 line-clamp-2">{service.title}</h3>
+                                                <p className="text-on-surface-variant flex-grow mb-4 line-clamp-3">{service.description}</p>
+                                                <div className="flex justify-between items-center mt-auto border-t border-outline-variant pt-4">
+                                                    <span className="bg-surface-container text-primary px-3 py-1 rounded font-bold text-sm">Desde S/ {parseFloat(service.price).toFixed(2)}</span>
+                                                    <Link to={`/auth`} className="text-secondary font-label-md text-label-md hover:text-secondary-container transition-colors flex items-center gap-1">
+                                                        Reservar <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                                                    </Link>
+                                                </div>
+                                            </div>
+                                        </article>
+                                    );
+                                })}
+                            </div>
+                        )}
+                    </div>
+                </section>
+
+                {/* About Us Section */}
+                <section className="py-section-padding-mobile md:py-section-padding-desktop bg-surface-container-lowest border-y border-outline-variant min-h-screen scroll-mt-20" id="nosotros">
+                    <div className="container mx-auto max-w-[1320px] px-gutter">
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start">
+                            <div className="md:col-span-6 order-2 md:order-1 text-center">
                                 <h2 className="font-headline-md text-headline-md text-primary mb-6">Expertos en Turismo Local</h2>
                                 <p className="text-on-surface-variant mb-4">
                                     En DMGOTRAVEL, no solo organizamos viajes; creamos conexiones auténticas con el corazón de los Andes. Nuestro equipo está conformado por guías locales apasionados y certificados, listos para mostrarte los secretos mejor guardados de Ayacucho.
@@ -157,26 +246,28 @@ const Landing = () => {
                                 <p className="text-on-surface-variant mb-6">
                                     Combinamos la rica herencia histórica de la región con la emoción de la aventura moderna. Desde rutas arqueológicas en Quinua hasta deportes extremos, garantizamos una experiencia profesional, segura e inolvidable.
                                 </p>
-                                <ul className="space-y-3 mb-8">
-                                    <li className="flex items-center gap-3 text-primary">
-                                        <span className="material-symbols-outlined text-secondary">check_circle</span>
-                                        Guías certificados y bilingües.
-                                    </li>
-                                    <li className="flex items-center gap-3 text-primary">
-                                        <span className="material-symbols-outlined text-secondary">check_circle</span>
-                                        Equipamiento de primera calidad.
-                                    </li>
-                                    <li className="flex items-center gap-3 text-primary">
-                                        <span className="material-symbols-outlined text-secondary">check_circle</span>
-                                        Compromiso con el turismo sostenible.
-                                    </li>
-                                </ul>
+                                <div className="flex justify-center mb-8">
+                                    <ul className="space-y-3 text-left">
+                                        <li className="flex items-center gap-3 text-primary">
+                                            <span className="material-symbols-outlined text-secondary">check_circle</span>
+                                            Guías certificados y bilingües.
+                                        </li>
+                                        <li className="flex items-center gap-3 text-primary">
+                                            <span className="material-symbols-outlined text-secondary">check_circle</span>
+                                            Equipamiento de primera calidad.
+                                        </li>
+                                        <li className="flex items-center gap-3 text-primary">
+                                            <span className="material-symbols-outlined text-secondary">check_circle</span>
+                                            Compromiso con el turismo sostenible.
+                                        </li>
+                                    </ul>
+                                </div>
                                 <button className="border border-primary text-primary px-6 py-3 rounded font-label-md hover:bg-primary hover:text-on-primary transition-colors">
                                     Conoce al Equipo
                                 </button>
                             </div>
                             <div className="md:col-span-6 order-1 md:order-2 h-[500px] rounded-lg overflow-hidden relative shadow-sm border border-outline-variant">
-                                <img className="w-full h-full object-cover" alt="Guía turístico DMGOTRAVEL" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcasfvf2ILNz6EsZ9NHP9-UlOQL0YABzRfzAUXg-cf6EqPeiLeJIP2HV7lpacSITSGHbmZ1pvMA80vSFwP0a8M75s7tAeTcxr7T8Liov4-93Z3tVW8GwDv40s6iYqL8V6WVXtSc-uoOfej7SIjyQJuY0VyVk-QLSBkr5-5jxU86p18JFtdwfRqeLuSv9iOhm3JgsEIxmhxrYukq71_VB0J4QKHvXR4f1TH8VbKYGYpHC4-um-RvcsO_8Kn3tt5b7js2PvzHL3Nk-0" />
+                                <img className="w-full h-full object-cover" alt="Guía turístico DMGOTRAVEL" src="/images/guide-landing.jpg" />
                             </div>
                         </div>
                     </div>

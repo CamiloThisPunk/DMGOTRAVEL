@@ -47,7 +47,7 @@ const ClientTouristPackageDetail = () => {
         return <div className="min-h-screen flex items-center justify-center text-[#43474e]">Paquete no encontrado</div>;
     }
 
-    const defaultImage = "https://images.unsplash.com/photo-1526392060635-9d6019884377?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80";
+    const defaultImage = "/images/demo-tour-detail.jpg";
     const bgImage = pkg.image_360_url || defaultImage;
 
     // Parse itinerary safely

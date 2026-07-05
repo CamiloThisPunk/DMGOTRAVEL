@@ -20,7 +20,7 @@ class TouristPackagesSeeder extends Seeder
                 'price' => 450.00,
                 'capacity' => 10,
                 'duration' => 3,
-                'image_360_url' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuA5kkY-5qkPUzcvjSVlzB43Obo-7-Sy1NMpkOrc3S5sVMVsWotBiCn6bldT_ZpgmFlt3fdt9B1mZ-PuUWEMy91_VaDVu1kqbBiu9RJb_rnHWVNWb5aJqcZ-HRRvNoBQUknxn5QRgGUhJ7V3rmZC6EK7zuHRFp3i7mJiFfmP6mXDXYQnpXzBHYqIu0i7nFWDtiv3PjxdXZy_swcxHvc8_4__EENx7y_uEFRKek7tQr08huTrWFt_rksOgBW9S56b9LJZT5e4PcMiEA',
+                'image_360_url' => env('APP_URL') . '/images/seed/tour-adventure.jpg',
                 'is_active' => true,
                 'itinerary' => json_encode([
                     [
@@ -53,7 +53,7 @@ class TouristPackagesSeeder extends Seeder
                 'price' => 350.00,
                 'capacity' => 20,
                 'duration' => 2,
-                'image_360_url' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuDl0mPPLKDX3K7G78e0Zo_wbnZoe4gOmNI7IHXXABUR6wAaVXeELwhrP9-kq_gMsSl0Agrc_OpGJ6mAmFM_UQjKvdQuF2QwaZ5lzXTjA-k8glSuc1oPEig1ZhJvabRSn-6sRHhb1y7YI12NNiB2oDgUI7GyF9dtyT7Hc817t1Ie27MDVTC9fRQgV3VidKyfPkrsiSDuPAvYiQLX_7tHunMRDXtv2659736oDMWf01GRvGudnOpMRIsrfgasIRi66-jA2469k1DVmg',
+                'image_360_url' => env('APP_URL') . '/images/seed/tour-wari.jpg',
                 'is_active' => true,
                 'itinerary' => json_encode([
                     [
@@ -79,7 +79,7 @@ class TouristPackagesSeeder extends Seeder
                 'price' => 150.00,
                 'capacity' => 15,
                 'duration' => 1,
-                'image_360_url' => 'https://lh3.googleusercontent.com/aida-public/AB6AXuBKjp7J__Q1SvOcgddB-NXGCEYv5ITf-OmhsgJ5l8J75wdtya4xi_vlhJwss4KpX2FFWBvviGF5LQoznboq05Isqf4ObzyvkCSzxLxY1VX_Gcnu3tfwLnwdeQcGXHDkVxAub6Iv-hKl08aIl8nLkpjgCHSz7PeRxlMVzR13ZrPsUwakcHVVFu6_Yhq48m3sWDifqK7UJHmEm-lHmDwfZAcBbYEX_2_cerhMMyzfiaYFi6Awq8kPh-93G_NtVaOb3eb63hTyRXBaOg',
+                'image_360_url' => env('APP_URL') . '/images/seed/tour-millpu.jpg',
                 'is_active' => true,
                 'itinerary' => json_encode([
                     [
