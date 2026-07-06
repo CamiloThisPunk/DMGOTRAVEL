@@ -13,12 +13,12 @@ export const options = {
   },
 };
 
-const BASE_URL = 'http://127.0.0.1:8000/api';
+const BASE_URL = 'http://127.0.0.1:8001/api';
 
 export function setup() {
   const payload = JSON.stringify({
-    email: 'admin@test.com',
-    password: 'password123',
+    email: 'admin@dmgotravel.com',
+    password: 'admin_password',
   });
 
   const res = http.post(`${BASE_URL}/auth/login`, payload, {

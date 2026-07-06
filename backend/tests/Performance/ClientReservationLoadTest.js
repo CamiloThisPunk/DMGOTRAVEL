@@ -13,7 +13,7 @@ export const options = {
   },
 };
 
-const BASE_URL = 'http://127.0.0.1:8000/api';
+const BASE_URL = 'http://127.0.0.1:8001/api';
 
 export function setup() {
   // Register a temporary client user for the load test
@@ -62,7 +62,7 @@ export default function (data) {
     // Create Reservation
     const payload = JSON.stringify({
       service_package_id: packageId,
-      reservation_date: '2028-12-01',
+      reservation_date: '2026-07-09',
       guests_count: 1,
     });
 

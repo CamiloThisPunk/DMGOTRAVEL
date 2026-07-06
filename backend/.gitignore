@@ -31,3 +31,9 @@ yarn-error.log
 !/storage/framework/views/.gitignore
 /storage/logs/*
 !/storage/logs/.gitignore
+
+**/caddy
+frankenphp
+frankenphp-worker.php
+rr
+.rr.yaml

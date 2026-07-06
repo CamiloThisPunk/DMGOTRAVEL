@@ -13,13 +13,13 @@ export const options = {
   },
 };
 
-const BASE_URL = 'http://127.0.0.1:8000/api';
+const BASE_URL = 'http://127.0.0.1:8001/api';
 
 export function setup() {
   // Login with existing admin account. Ensure this user exists in your DB.
   const payload = JSON.stringify({
-    email: 'admin@test.com', // Change to valid admin email
-    password: 'password123',
+    email: 'admin@dmgotravel.com', // Change to valid admin email
+    password: 'admin_password',
   });
 
   const res = http.post(`${BASE_URL}/auth/login`, payload, {

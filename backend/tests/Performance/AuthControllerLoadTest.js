@@ -13,7 +13,7 @@ export const options = {
   },
 };
 
-const BASE_URL = 'http://127.0.0.1:8000/api/auth';
+const BASE_URL = 'http://127.0.0.1:8001/api/auth';
 
 export default function () {
   // We use a random suffix to avoid unique email constraint errors during registration

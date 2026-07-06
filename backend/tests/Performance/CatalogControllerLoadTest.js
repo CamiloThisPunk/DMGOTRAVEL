@@ -13,7 +13,7 @@ export const options = {
   },
 };
 
-const BASE_URL = 'http://127.0.0.1:8000/api';
+const BASE_URL = 'http://127.0.0.1:8001/api';
 
 export default function () {
   // Simular la obtención del catálogo público (GET /services)
