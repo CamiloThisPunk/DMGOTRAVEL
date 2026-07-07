@@ -1,0 +1,22 @@
+version: '3'
+rpc:
+    listen: 'tcp://127.0.0.1:6001'
+server:
+    command: 'php vendor/laravel/octane/bin/roadrunner-worker'
+    relay: pipes
+    env:
+        - APP_BASE_PATH: 'C:\Users\Asus TUF\Desktop\DMGOTRAVEL\backend'
+http:
+    address: '127.0.0.1:8001'
+    middleware:
+        - gzip
+        - static
+    static:
+        dir: public
+        forbid:
+            - .php
+            - .htaccess
+    pool:
+        num_workers: 8
+        supervisor:
+            max_worker_memory: 128
