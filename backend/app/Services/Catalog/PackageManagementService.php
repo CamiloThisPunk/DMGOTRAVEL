@@ -3,10 +3,12 @@
 namespace App\Services\Catalog;
 
 use App\Models\AuditLog;
+use App\Models\Reservation;
 use App\Models\ServicePackage;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use App\Services\Media\ImageUploadService;
 
 class PackageManagementService
@@ -85,6 +87,15 @@ class PackageManagementService
         }
 
         $package->update($data);
+
+        // Sync total_price on active reservations when price changes
+        if (isset($data['price']) && (float) $data['price'] !== (float) $oldValues['price']) {
+            Reservation::where('service_package_id', $package->id)
+                ->whereIn('status', ['pending', 'confirmed'])
+                ->update([
+                    'total_price' => DB::raw('guests_count * ' . (float) $data['price']),
+                ]);
+        }
 
         $this->logAction(
             'service_package.updated',

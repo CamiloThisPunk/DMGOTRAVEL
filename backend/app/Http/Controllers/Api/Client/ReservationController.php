@@ -10,6 +10,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Models\Reservation;
+use OpenApi\Attributes as OA;
 
 class ReservationController extends Controller
 {
@@ -17,6 +18,15 @@ class ReservationController extends Controller
         private readonly ReservationService $reservationService
     ) {}
 
+    #[OA\Get(
+        path: '/api/client/reservations',
+        summary: 'List the authenticated client\'s reservations',
+        security: [['bearerAuth' => []]],
+        tags: ['Client Reservations'],
+        responses: [
+            new OA\Response(response: 200, description: 'Successful operation')
+        ]
+    )]
     /**
      * List the authenticated client's reservations.
      */
@@ -30,6 +40,26 @@ class ReservationController extends Controller
         return ReservationResource::collection($reservations);
     }
 
+    #[OA\Post(
+        path: '/api/client/reservations',
+        summary: 'Create a new reservation',
+        security: [['bearerAuth' => []]],
+        tags: ['Client Reservations'],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['service_package_id', 'reservation_date', 'guests_count'],
+                properties: [
+                    new OA\Property(property: 'service_package_id', type: 'integer'),
+                    new OA\Property(property: 'reservation_date', type: 'string', format: 'date'),
+                    new OA\Property(property: 'guests_count', type: 'integer')
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(response: 201, description: 'Reservation created successfully')
+        ]
+    )]
     /**
      * Create a new reservation for the authenticated client.
      */
@@ -45,6 +75,18 @@ class ReservationController extends Controller
             ->setStatusCode(201);
     }
 
+    #[OA\Patch(
+        path: '/api/client/reservations/{reservation}/cancel',
+        summary: 'Cancel a pending reservation',
+        security: [['bearerAuth' => []]],
+        tags: ['Client Reservations'],
+        parameters: [
+            new OA\Parameter(name: 'reservation', description: 'Reservation ID', in: 'path', required: true, schema: new OA\Schema(type: 'integer'))
+        ],
+        responses: [
+            new OA\Response(response: 200, description: 'Reservation cancelled successfully')
+        ]
+    )]
     /**
      * Cancel a pending reservation.
      */

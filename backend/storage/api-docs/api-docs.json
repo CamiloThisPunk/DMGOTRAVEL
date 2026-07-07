@@ -7,11 +7,521 @@
     },
     "servers": [
         {
-            "url": "http://my-default-host.com",
+            "url": "http://127.0.0.1:8000",
             "description": "API Server"
         }
     ],
     "paths": {
+        "/api/admin/clients": {
+            "get": {
+                "tags": [
+                    "Admin Clients"
+                ],
+                "summary": "List all client accounts (Admin)",
+                "description": "List all client accounts (read-only).",
+                "operationId": "dea370bd1e7bf2c18cf55ecb323ad5f7",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/logs": {
+            "get": {
+                "tags": [
+                    "Admin Logs"
+                ],
+                "summary": "List audit log entries (Admin)",
+                "description": "List audit log entries.",
+                "operationId": "c84f3c236916b510da3e903d45d4b30e",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/reservations": {
+            "get": {
+                "tags": [
+                    "Admin Reservations"
+                ],
+                "summary": "List all reservations (Admin)",
+                "description": "List all reservations (admin view).",
+                "operationId": "0ccc36f8d1766e301dd0fe41ed9184ec",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/reservations/{reservation}/status": {
+            "patch": {
+                "tags": [
+                    "Admin Reservations"
+                ],
+                "summary": "Update a reservation status",
+                "description": "Update a reservation's status.",
+                "operationId": "83999b52026477e430b77e8acd5abe74",
+                "parameters": [
+                    {
+                        "name": "reservation",
+                        "in": "path",
+                        "description": "Reservation ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "status"
+                                ],
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "pending",
+                                            "confirmed",
+                                            "cancelled",
+                                            "completed"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Status updated successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/services": {
+            "get": {
+                "tags": [
+                    "Admin Services"
+                ],
+                "summary": "List all service packages (Admin)",
+                "operationId": "a1da599dd379565abeace41ec5ac034f",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Admin Services"
+                ],
+                "summary": "Create a new service package",
+                "operationId": "89976a5a09c6bf63fd8d213daab0e641",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "description",
+                                    "price",
+                                    "capacity",
+                                    "duration_days"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "type": "number"
+                                    },
+                                    "capacity": {
+                                        "type": "integer"
+                                    },
+                                    "duration_days": {
+                                        "type": "integer"
+                                    },
+                                    "is_active": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Package created successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/services/{service}": {
+            "get": {
+                "tags": [
+                    "Admin Services"
+                ],
+                "summary": "Show a specific service package",
+                "operationId": "675ddb0c10260812dccdc702f4cc11c0",
+                "parameters": [
+                    {
+                        "name": "service",
+                        "in": "path",
+                        "description": "Package ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Admin Services"
+                ],
+                "summary": "Deactivate/Delete a service package",
+                "operationId": "527c0a6fcd26748bcece55d084eefc70",
+                "parameters": [
+                    {
+                        "name": "service",
+                        "in": "path",
+                        "description": "Package ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Package deactivated successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "patch": {
+                "tags": [
+                    "Admin Services"
+                ],
+                "summary": "Update a service package",
+                "operationId": "a7a74f164ef68a4e51c0f3fbd47cab22",
+                "parameters": [
+                    {
+                        "name": "service",
+                        "in": "path",
+                        "description": "Package ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "price": {
+                                        "type": "number"
+                                    },
+                                    "capacity": {
+                                        "type": "integer"
+                                    },
+                                    "duration_days": {
+                                        "type": "integer"
+                                    },
+                                    "is_active": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Package updated successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register a new client user",
+                "description": "Register a new client user.",
+                "operationId": "d43ecdfd17aca209ecd9b0a8b370e2c0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully"
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Authenticate user and return token",
+                "description": "Authenticate user and return Sanctum token.",
+                "operationId": "be2e78e5f93182d4403f839cc516d312",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful login"
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Revoke current token",
+                "description": "Revoke current token.",
+                "operationId": "0b366af9c6842623aab9c8827c519b89",
+                "responses": {
+                    "204": {
+                        "description": "Successfully logged out"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/client/reservations": {
+            "get": {
+                "tags": [
+                    "Client Reservations"
+                ],
+                "summary": "List the authenticated client's reservations",
+                "description": "List the authenticated client's reservations.",
+                "operationId": "0cd132fe14a8e8ab161296d2d201176a",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Client Reservations"
+                ],
+                "summary": "Create a new reservation",
+                "description": "Create a new reservation for the authenticated client.",
+                "operationId": "68cc00f06ebb352a608d857c2ec01177",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "service_package_id",
+                                    "reservation_date",
+                                    "guests_count"
+                                ],
+                                "properties": {
+                                    "service_package_id": {
+                                        "type": "integer"
+                                    },
+                                    "reservation_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "guests_count": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Reservation created successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/client/reservations/{reservation}/cancel": {
+            "patch": {
+                "tags": [
+                    "Client Reservations"
+                ],
+                "summary": "Cancel a pending reservation",
+                "description": "Cancel a pending reservation.",
+                "operationId": "1f559d328dd1c26e1548fefcfae99b05",
+                "parameters": [
+                    {
+                        "name": "reservation",
+                        "in": "path",
+                        "description": "Reservation ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Reservation cancelled successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/services": {
             "get": {
                 "tags": [
@@ -26,9 +536,62 @@
                     }
                 }
             }
+        },
+        "/api/services/{servicePackage}": {
+            "get": {
+                "tags": [
+                    "Catalog"
+                ],
+                "summary": "Show a single active service package",
+                "description": "Show a single active service package.",
+                "operationId": "32a20c67455181141018e62044c7fc85",
+                "parameters": [
+                    {
+                        "name": "servicePackage",
+                        "in": "path",
+                        "description": "Package ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Package not found"
+                    }
+                }
+            }
         }
     },
     "tags": [
+        {
+            "name": "Admin Clients",
+            "description": "Admin Clients"
+        },
+        {
+            "name": "Admin Logs",
+            "description": "Admin Logs"
+        },
+        {
+            "name": "Admin Reservations",
+            "description": "Admin Reservations"
+        },
+        {
+            "name": "Admin Services",
+            "description": "Admin Services"
+        },
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "Client Reservations",
+            "description": "Client Reservations"
+        },
         {
             "name": "Catalog",
             "description": "Catalog"

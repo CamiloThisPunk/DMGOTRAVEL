@@ -83,4 +83,74 @@ class ReservationServiceTest extends TestCase
 
         $this->assertEquals('cancelled', $updated->status);
     }
+
+    public function test_client_cannot_cancel_others_reservation(): void
+    {
+        $client = User::factory()->client()->create();
+        $otherClient = User::factory()->client()->create();
+        $reservation = Reservation::factory()->create([
+            'client_id' => $otherClient->id,
+            'status' => 'pending',
+        ]);
+
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage('You can only cancel your own reservations.');
+        $this->service->clientCancel($reservation, $client);
+    }
+
+    public function test_client_cannot_cancel_non_pending_reservation(): void
+    {
+        $client = User::factory()->client()->create();
+        $reservation = Reservation::factory()->create([
+            'client_id' => $client->id,
+            'status' => 'confirmed',
+        ]);
+
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage('Only pending reservations can be cancelled.');
+        $this->service->clientCancel($reservation, $client);
+    }
+
+    public function test_admin_can_update_status(): void
+    {
+        $reservation = Reservation::factory()->create([
+            'status' => 'pending',
+        ]);
+
+        $updated = $this->service->adminUpdateStatus($reservation, 'confirmed');
+
+        $this->assertEquals('confirmed', $updated->status);
+    }
+
+    public function test_admin_cannot_update_status_to_invalid_transition(): void
+    {
+        $reservation = Reservation::factory()->create([
+            'status' => 'completed',
+        ]);
+
+        $this->expectException(ValidationException::class);
+        $this->expectExceptionMessage("Cannot transition from 'completed' to 'confirmed'.");
+        $this->service->adminUpdateStatus($reservation, 'confirmed');
+    }
+
+    public function test_list_for_client_returns_paginator(): void
+    {
+        $client = User::factory()->client()->create();
+        Reservation::factory()->count(3)->create(['client_id' => $client->id]);
+        
+        $paginator = $this->service->listForClient($client, 15);
+        $this->assertEquals(3, $paginator->total());
+    }
+
+    public function test_list_all_returns_paginator_with_status_filter(): void
+    {
+        Reservation::factory()->count(2)->create(['status' => 'pending']);
+        Reservation::factory()->count(3)->create(['status' => 'confirmed']);
+        
+        $all = $this->service->listAll(15);
+        $this->assertEquals(5, $all->total());
+        
+        $filtered = $this->service->listAll(15, 'confirmed');
+        $this->assertEquals(3, $filtered->total());
+    }
 }
