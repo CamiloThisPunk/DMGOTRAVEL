@@ -9,6 +9,7 @@ use App\Http\Resources\UserResource;
 use App\Services\Auth\AuthService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use OpenApi\Attributes as OA;
 
 class AuthController extends Controller
 {
@@ -16,6 +17,26 @@ class AuthController extends Controller
         private readonly AuthService $authService
     ) {}
 
+    #[OA\Post(
+        path: '/api/auth/register',
+        summary: 'Register a new client user',
+        tags: ['Auth'],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['name', 'email', 'password', 'password_confirmation'],
+                properties: [
+                    new OA\Property(property: 'name', type: 'string'),
+                    new OA\Property(property: 'email', type: 'string', format: 'email'),
+                    new OA\Property(property: 'password', type: 'string', format: 'password'),
+                    new OA\Property(property: 'password_confirmation', type: 'string', format: 'password')
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(response: 201, description: 'User registered successfully')
+        ]
+    )]
     /**
      * Register a new client user.
      */
@@ -31,6 +52,25 @@ class AuthController extends Controller
         ], 201);
     }
 
+    #[OA\Post(
+        path: '/api/auth/login',
+        summary: 'Authenticate user and return token',
+        tags: ['Auth'],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['email', 'password'],
+                properties: [
+                    new OA\Property(property: 'email', type: 'string', format: 'email'),
+                    new OA\Property(property: 'password', type: 'string', format: 'password')
+                ]
+            )
+        ),
+        responses: [
+            new OA\Response(response: 200, description: 'Successful login'),
+            new OA\Response(response: 401, description: 'Invalid credentials')
+        ]
+    )]
     /**
      * Authenticate user and return Sanctum token.
      */
@@ -46,6 +86,15 @@ class AuthController extends Controller
         ]);
     }
 
+    #[OA\Post(
+        path: '/api/auth/logout',
+        summary: 'Revoke current token',
+        security: [['bearerAuth' => []]],
+        tags: ['Auth'],
+        responses: [
+            new OA\Response(response: 204, description: 'Successfully logged out')
+        ]
+    )]
     /**
      * Revoke current token.
      */

@@ -9,9 +9,19 @@ use App\Models\AuditLog;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use OpenApi\Attributes as OA;
 
 class ClientOversightController extends Controller
 {
+    #[OA\Get(
+        path: '/api/admin/clients',
+        summary: 'List all client accounts (Admin)',
+        security: [['bearerAuth' => []]],
+        tags: ['Admin Clients'],
+        responses: [
+            new OA\Response(response: 200, description: 'Successful operation')
+        ]
+    )]
     /**
      * List all client accounts (read-only).
      */
@@ -24,6 +34,15 @@ class ClientOversightController extends Controller
         );
     }
 
+    #[OA\Get(
+        path: '/api/admin/logs',
+        summary: 'List audit log entries (Admin)',
+        security: [['bearerAuth' => []]],
+        tags: ['Admin Logs'],
+        responses: [
+            new OA\Response(response: 200, description: 'Successful operation')
+        ]
+    )]
     /**
      * List audit log entries.
      */

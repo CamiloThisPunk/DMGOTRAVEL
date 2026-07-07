@@ -36,6 +36,18 @@ class CatalogController extends Controller
         return ServicePackageResource::collection($packages);
     }
 
+    #[OA\Get(
+        path: '/api/services/{servicePackage}',
+        summary: 'Show a single active service package',
+        tags: ['Catalog'],
+        parameters: [
+            new OA\Parameter(name: 'servicePackage', description: 'Package ID', in: 'path', required: true, schema: new OA\Schema(type: 'integer'))
+        ],
+        responses: [
+            new OA\Response(response: 200, description: 'Successful operation'),
+            new OA\Response(response: 404, description: 'Package not found')
+        ]
+    )]
     /**
      * Show a single active service package.
      */
