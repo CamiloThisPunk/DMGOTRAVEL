@@ -17,7 +17,6 @@ class DemoSeeder extends Seeder
             [
                 'name' => 'Carlos Cliente',
                 'password' => Hash::make('client_password'),
-                'phone' => '999888777'
             ]
         );
         $client->assignRole('client');
