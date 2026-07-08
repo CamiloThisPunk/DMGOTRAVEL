@@ -99,6 +99,7 @@ const TourCatalog = () => {
                                     <div className="relative h-48 w-full overflow-hidden">
                                         <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                             src={tour.image_360_url || '/images/demo-tour-1.jpg'}
+                                            onError={(e) => { e.target.onerror = null; e.target.src = '/images/demo-tour-1.jpg'; }}
                                             alt={tour.title} />
                                         <div className="absolute top-3 left-3 bg-secondary-container text-on-secondary-container font-label-md text-label-md px-3 py-1 rounded-full flex items-center gap-1">
                                             <span className="material-symbols-outlined text-[16px]">hiking</span>

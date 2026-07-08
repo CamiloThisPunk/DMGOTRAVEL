@@ -180,7 +180,7 @@ const ClientTouristPackageCheckout = () => {
                     <div className="w-full lg:w-[400px]">
                         <div className="bg-[#f2f4f7] rounded-2xl p-6 border border-[#c4c6cf] sticky top-[100px]">
                             <div className="relative h-48 rounded-xl overflow-hidden mb-6">
-                                <img src={bgImage} alt={pkg.title} className="w-full h-full object-cover" />
+                                <img src={bgImage} alt={pkg.title} onError={(e) => { e.target.onerror = null; e.target.src = '/images/demo-tour-detail.jpg'; }} className="w-full h-full object-cover" />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                                 <div className="absolute bottom-4 left-4">
                                     <span className="text-white text-xs font-bold bg-black/30 px-2 py-1 rounded backdrop-blur-sm mb-2 inline-block">{pkg.duration} Días</span>

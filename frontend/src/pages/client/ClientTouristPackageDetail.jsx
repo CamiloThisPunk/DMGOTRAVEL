@@ -65,8 +65,9 @@ const ClientTouristPackageDetail = () => {
             {/* Hero Section */}
             <div className="relative w-full h-[60vh] bg-[#000613]">
                 <img 
-                    src={bgImage} 
+                    src={pkg.image_360_url || '/images/demo-tour-detail.jpg'} 
                     alt={pkg.title} 
+                    onError={(e) => { e.target.onerror = null; e.target.src = '/images/demo-tour-detail.jpg'; }}
                     className="w-full h-full object-cover opacity-80"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#000613] to-transparent opacity-80"></div>

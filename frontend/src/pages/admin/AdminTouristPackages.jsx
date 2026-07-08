@@ -175,7 +175,7 @@ const AdminTouristPackages = () => {
                                             <div className="flex items-center gap-4">
                                                 <div className={`w-12 h-12 rounded-lg bg-surface-container-high overflow-hidden shrink-0 ${!service.is_active ? 'grayscale opacity-60' : ''}`}>
                                                     {service.image_360_url ? (
-                                                        <img src={service.image_360_url} alt={service.title} className="w-full h-full object-cover" />
+                                                        <img src={service.image_360_url} alt={service.title} onError={(e) => { e.target.onerror = null; e.target.src = '/images/demo-tour-1.jpg'; }} className="w-full h-full object-cover" />
                                                     ) : (
                                                         <div className="w-full h-full bg-surface-container-high flex items-center justify-center text-on-surface-variant">
                                                             <span className="material-symbols-outlined text-[24px]">image</span>
@@ -275,7 +275,7 @@ const AdminTouristPackages = () => {
                                     <div className="flex flex-col sm:flex-row gap-6 items-start">
                                         <div className="relative w-40 h-40 flex-shrink-0 border-2 border-dashed border-outline-variant rounded-xl overflow-hidden bg-surface-container-low flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container hover:border-secondary transition-colors group">
                                             {previewUrl ? (
-                                                <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
+                                                <img src={previewUrl} alt="Preview" onError={(e) => { e.target.onerror = null; e.target.src = '/images/demo-tour-1.jpg'; }} className="w-full h-full object-cover" />
                                             ) : (
                                                 <div className="flex flex-col items-center justify-center p-4">
                                                     <span className="material-symbols-outlined text-4xl mb-2 text-outline">add_photo_alternate</span>

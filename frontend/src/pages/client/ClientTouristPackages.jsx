@@ -92,6 +92,7 @@ const ClientTouristPackages = () => {
                                         <div className="relative h-56 overflow-hidden bg-[#e3e2e5]">
                                             <img className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                                 src={tour.image_360_url || '/images/demo-tour-1.jpg'}
+                                                onError={(e) => { e.target.onerror = null; e.target.src = '/images/demo-tour-1.jpg'; }}
                                                 alt={tour.title} />
                                             <div className="absolute top-4 left-4">
                                                 <span className="bg-[#faf9fc]/90 backdrop-blur-sm text-[#964900] font-bold text-[12px] uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">

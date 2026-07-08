@@ -172,7 +172,7 @@ const AdminServices = () => {
                                     <tr key={service.id} className="hover:bg-surface-container transition-colors group">
                                         <td className="p-4">
                                             {service.image_360_url ? (
-                                                <img src={service.image_360_url} alt={service.title} className="w-10 h-10 object-cover rounded-md border border-outline-variant" />
+                                                <img src={service.image_360_url} alt={service.title} onError={(e) => { e.target.onerror = null; e.target.src = '/images/tour-adventure.jpg'; }} className="w-10 h-10 object-cover rounded-md border border-outline-variant" />
                                             ) : (
                                                 <div className="w-10 h-10 bg-surface-container rounded-md flex items-center justify-center border border-outline-variant">
                                                     <span className="material-symbols-outlined text-on-surface-variant text-sm">image</span>
@@ -259,7 +259,7 @@ const AdminServices = () => {
                                         {/* Cuadro de previsualización / Carga */}
                                         <div className="relative w-40 h-40 flex-shrink-0 border-2 border-dashed border-outline-variant rounded-xl overflow-hidden bg-surface-container-low flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container hover:border-primary transition-colors group">
                                             {previewUrl ? (
-                                                <img src={previewUrl} alt="Preview" className="w-full h-full object-cover" />
+                                                <img src={previewUrl} alt="Preview" onError={(e) => { e.target.onerror = null; e.target.src = '/images/tour-adventure.jpg'; }} className="w-full h-full object-cover" />
                                             ) : (
                                                 <div className="flex flex-col items-center justify-center p-4">
                                                     <span className="material-symbols-outlined text-4xl mb-2 text-outline">add_photo_alternate</span>

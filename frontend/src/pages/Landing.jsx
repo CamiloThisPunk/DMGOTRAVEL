@@ -154,7 +154,7 @@ const Landing = () => {
                                         <article key={service.id} className="tour-card bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden flex flex-col h-full hover:border-primary transition-colors hover:shadow-md">
                                             <div className="h-64 overflow-hidden relative">
                                                 {service.image_360_url ? (
-                                                    <img className="w-full h-full object-cover" alt={service.title} src={service.image_360_url} />
+                                                    <img className="w-full h-full object-cover" alt={service.title} src={service.image_360_url} onError={(e) => { e.target.onerror = null; e.target.src = '/images/demo-tour-1.jpg'; }} />
                                                 ) : (
                                                     <div className="w-full h-full bg-surface-container flex items-center justify-center text-on-surface-variant">
                                                         <span className="material-symbols-outlined text-4xl">image</span>
@@ -206,7 +206,7 @@ const Landing = () => {
                                         <article key={service.id} className="tour-card bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden flex flex-col h-full hover:border-primary transition-colors hover:shadow-md">
                                             <div className="h-64 overflow-hidden relative">
                                                 {service.image_360_url ? (
-                                                    <img className="w-full h-full object-cover" alt={service.title} src={service.image_360_url} />
+                                                    <img className="w-full h-full object-cover" alt={service.title} src={service.image_360_url} onError={(e) => { e.target.onerror = null; e.target.src = '/images/demo-tour-1.jpg'; }} />
                                                 ) : (
                                                     <div className="w-full h-full bg-surface-container flex items-center justify-center text-on-surface-variant">
                                                         <span className="material-symbols-outlined text-4xl">image</span>
