@@ -65,7 +65,7 @@ const AdminTouristPackages = () => {
         
         if (imageFile instanceof File) {
             formData.append('image_360', imageFile);
-        } else if (form.image_360_url && typeof form.image_360_url === 'string' && !form.image_360_url.startsWith('http://127.0.0.1')) {
+        } else if (form.image_360_url && typeof form.image_360_url === 'string' && !form.image_360_url.includes('/storage/')) {
             formData.append('image_360_url', form.image_360_url);
         }
 
