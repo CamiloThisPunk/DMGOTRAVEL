@@ -15,6 +15,16 @@ use Illuminate\Support\Facades\Storage;
 |--------------------------------------------------------------------------
 */
 
+Route::get('/debug-db', function () {
+    try {
+        \DB::connection()->getPdo();
+        return ['status' => 'success', 'message' => 'DB Connected!'];
+    } catch (\Exception $e) {
+        return ['status' => 'error', 'message' => $e->getMessage()];
+    }
+});
+
+
 Route::get('/services', [CatalogController::class, 'index']);
 Route::get('/services/{servicePackage}', [CatalogController::class, 'show']);
 
