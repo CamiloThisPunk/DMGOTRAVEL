@@ -39,4 +39,15 @@ class CatalogTest extends TestCase
 
         $response->assertStatus(404);
     }
+
+    public function test_public_can_filter_active_packages_by_type(): void
+    {
+        ServicePackage::factory()->count(2)->create(['is_active' => true, 'type' => 'servicio']);
+        ServicePackage::factory()->count(1)->create(['is_active' => true, 'type' => 'paquete']);
+
+        $response = $this->getJson('/api/services?type=servicio');
+
+        $response->assertStatus(200)
+            ->assertJsonCount(2, 'data');
+    }
 }

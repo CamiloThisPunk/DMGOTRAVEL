@@ -106,7 +106,6 @@ class PackageManagementService
         $oldValues = ['is_active' => $package->is_active];
 
         $package->update(['is_active' => false]);
-        $package->delete();
 
         $this->logAction(
             'service_package.deactivated',

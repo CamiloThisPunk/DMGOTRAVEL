@@ -52,4 +52,33 @@ class AuthTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonStructure(['data' => ['token']]);
     }
+
+    public function test_cannot_login_with_invalid_credentials(): void
+    {
+        $user = User::factory()->client()->create([
+            'email' => 'test@example.com',
+            'password' => bcrypt('password123'),
+        ]);
+
+        $response = $this->postJson('/api/auth/login', [
+            'email' => 'test@example.com',
+            'password' => 'wrongpassword',
+        ]);
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors(['email']);
+    }
+
+    public function test_can_logout(): void
+    {
+        $user = User::factory()->client()->create();
+        $token = $user->createToken('test')->plainTextToken;
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $token,
+        ])->postJson('/api/auth/logout');
+
+        $response->assertStatus(204);
+        $this->assertDatabaseCount('personal_access_tokens', 0);
+    }
 }

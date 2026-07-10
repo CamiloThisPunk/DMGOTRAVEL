@@ -66,4 +66,37 @@ class ReservationTest extends TestCase
         // Spatie returns 403 when role is missing.
         $response->assertStatus(403);
     }
+
+    public function test_admin_can_list_reservations(): void
+    {
+        $admin = User::factory()->admin()->create();
+        Reservation::factory()->create(['status' => 'pending']);
+
+        $response = $this->actingAs($admin)->getJson('/api/admin/reservations?status=pending');
+        
+        $response->assertStatus(200)
+            ->assertJsonCount(1, 'data');
+    }
+
+    public function test_client_can_list_reservations(): void
+    {
+        $client = User::factory()->client()->create();
+        Reservation::factory()->create(['client_id' => $client->id]);
+
+        $response = $this->actingAs($client)->getJson('/api/client/reservations');
+        
+        $response->assertStatus(200)
+            ->assertJsonCount(1, 'data');
+    }
+
+    public function test_client_can_cancel_reservation(): void
+    {
+        $client = User::factory()->client()->create();
+        $reservation = Reservation::factory()->create(['client_id' => $client->id, 'status' => 'pending']);
+
+        $response = $this->actingAs($client)->patchJson("/api/client/reservations/{$reservation->id}/cancel");
+        
+        $response->assertStatus(200)
+            ->assertJsonPath('data.status', 'cancelled');
+    }
 }
