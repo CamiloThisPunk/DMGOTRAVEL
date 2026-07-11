@@ -1,0 +1,27 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "title": "Paquete Aventura Inca",
+      "description": "Explora las montañas",
+      "price": 150.00,
+      "capacity": 20,
+      "duration_days": 3,
+      "image_url": "https://via.placeholder.com/150",
+      "is_active": 1,
+      "services": []
+    },
+    {
+      "id": 2,
+      "title": "Tour Ciudad",
+      "description": "Recorrido colonial",
+      "price": 50.00,
+      "capacity": 30,
+      "duration_days": 1,
+      "image_url": "https://via.placeholder.com/150",
+      "is_active": 1,
+      "services": []
+    }
+  ],
+  "meta": { "current_page": 1, "last_page": 1, "total": 2 }
+}
