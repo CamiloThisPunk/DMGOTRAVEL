@@ -88,7 +88,7 @@ const ClientTouristPackageDetail = () => {
             </div>
 
             {/* Content Container */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 flex flex-col lg:flex-row gap-12 relative">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 flex flex-col-reverse lg:flex-row gap-12 relative">
                 
                 {/* Left Column (Details & Itinerary) */}
                 <div className="flex-1">

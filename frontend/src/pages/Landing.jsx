@@ -9,6 +9,7 @@ const Landing = () => {
     const [packages, setPackages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [activeSection, setActiveSection] = useState('inicio');
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     useEffect(() => {
         const fetchServices = async () => {
@@ -102,10 +103,32 @@ const Landing = () => {
                             </Link>
                         )}
                     </div>
-                    <button className="md:hidden text-primary">
-                        <span className="material-symbols-outlined text-3xl">menu</span>
+                    <button className="md:hidden text-primary" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                        <span className="material-symbols-outlined text-3xl">{isMobileMenuOpen ? 'close' : 'menu'}</span>
                     </button>
                 </nav>
+
+                {/* Mobile Menu */}
+                {isMobileMenuOpen && (
+                    <div className="md:hidden bg-surface-container-lowest border-t border-outline-variant px-gutter py-4 absolute w-full left-0 shadow-lg">
+                        <ul className="flex flex-col gap-4 font-body-md text-body-md mb-6">
+                            <li><a className={getNavClass('inicio')} href="#inicio" onClick={() => setIsMobileMenuOpen(false)}>Inicio</a></li>
+                            <li><a className={getNavClass('destinos')} href="#destinos" onClick={() => setIsMobileMenuOpen(false)}>Destinos</a></li>
+                            <li><a className={getNavClass('paquetes')} href="#paquetes" onClick={() => setIsMobileMenuOpen(false)}>Paquetes Turísticos</a></li>
+                            <li><a className={getNavClass('nosotros')} href="#nosotros" onClick={() => setIsMobileMenuOpen(false)}>Nosotros</a></li>
+                            <li><a className={getNavClass('contacto')} href="#contacto" onClick={() => setIsMobileMenuOpen(false)}>Contacto</a></li>
+                        </ul>
+                        {user ? (
+                            <Link to={user.roles?.includes('admin') ? '/admin/dashboard' : '/client/catalog'} onClick={() => setIsMobileMenuOpen(false)} className="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded block text-center w-full">
+                                Ir a mi panel
+                            </Link>
+                        ) : (
+                            <Link to="/auth" onClick={() => setIsMobileMenuOpen(false)} className="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded block text-center w-full">
+                                Reservar ahora
+                            </Link>
+                        )}
+                    </div>
+                )}
             </header>
 
             <main>

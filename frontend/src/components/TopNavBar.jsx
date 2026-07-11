@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const TopNavBar = () => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
     return (
         <header className="w-full sticky top-0 z-50 bg-surface-container-lowest border-b border-outline-variant">
             <nav className="container mx-auto max-w-[1320px] flex justify-between items-center h-20 px-gutter">
@@ -38,10 +40,33 @@ const TopNavBar = () => {
                     </Link>
                 </div>
                 
-                <button className="md:hidden text-primary">
-                    <span className="material-symbols-outlined text-3xl">menu</span>
+                <button className="md:hidden text-primary" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+                    <span className="material-symbols-outlined text-3xl">{isMenuOpen ? 'close' : 'menu'}</span>
                 </button>
             </nav>
+
+            {/* Mobile Menu */}
+            {isMenuOpen && (
+                <div className="md:hidden bg-surface-container-lowest border-t border-outline-variant px-gutter py-4 absolute w-full left-0 shadow-lg">
+                    <ul className="flex flex-col gap-4 font-body-md text-body-md mb-6">
+                        <li>
+                            <a className="text-primary font-bold block" href="#inicio" onClick={() => setIsMenuOpen(false)}>Inicio</a>
+                        </li>
+                        <li>
+                            <a className="text-on-surface-variant block" href="#destinos" onClick={() => setIsMenuOpen(false)}>Destinos</a>
+                        </li>
+                        <li>
+                            <a className="text-on-surface-variant block" href="#nosotros" onClick={() => setIsMenuOpen(false)}>Nosotros</a>
+                        </li>
+                        <li>
+                            <a className="text-on-surface-variant block" href="#contacto" onClick={() => setIsMenuOpen(false)}>Contacto</a>
+                        </li>
+                    </ul>
+                    <Link to="/login" onClick={() => setIsMenuOpen(false)} className="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded block text-center w-full">
+                        Reservar ahora
+                    </Link>
+                </div>
+            )}
         </header>
     );
 };
