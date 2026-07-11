@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const ClientLayout = () => {
     const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const handleLogout = async () => {
         await logout();
@@ -53,11 +54,46 @@ const ClientLayout = () => {
                         <button onClick={handleLogout} className="text-on-surface-variant hover:text-error transition-colors">
                             <span className="material-symbols-outlined">logout</span>
                         </button>
-                        <button className="md:hidden text-primary">
-                            <span className="material-symbols-outlined">menu</span>
+                        <button className="md:hidden text-primary" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                            <span className="material-symbols-outlined">{isMobileMenuOpen ? 'close' : 'menu'}</span>
                         </button>
                     </div>
                 </div>
+                {/* Mobile Menu */}
+                {isMobileMenuOpen && (
+                    <div className="md:hidden bg-surface-container-lowest border-t border-outline-variant py-4 px-gutter shadow-lg absolute w-full">
+                        <nav className="flex flex-col gap-4">
+                            <NavLink to="/client/catalog" onClick={() => setIsMobileMenuOpen(false)}
+                                className={({ isActive }) =>
+                                    `block pb-2 font-body-md text-body-md transition-colors border-b border-outline-variant/50 ${
+                                        isActive ? 'text-primary font-bold' : 'text-on-surface-variant hover:text-secondary'
+                                    }`
+                                }>
+                                Destinos
+                            </NavLink>
+                            <NavLink to="/client/tourist-packages" onClick={() => setIsMobileMenuOpen(false)}
+                                className={({ isActive }) =>
+                                    `block pb-2 font-body-md text-body-md transition-colors border-b border-outline-variant/50 ${
+                                        isActive ? 'text-primary font-bold' : 'text-on-surface-variant hover:text-secondary'
+                                    }`
+                                }>
+                                Paquetes Turísticos
+                            </NavLink>
+                            <NavLink to="/client/dashboard" onClick={() => setIsMobileMenuOpen(false)}
+                                className={({ isActive }) =>
+                                    `block pb-2 font-body-md text-body-md transition-colors border-b border-outline-variant/50 ${
+                                        isActive ? 'text-primary font-bold' : 'text-on-surface-variant hover:text-secondary'
+                                    }`
+                                }>
+                                Mis Reservas
+                            </NavLink>
+                            <div className="pt-2 flex items-center gap-2 text-on-surface-variant">
+                                <span className="material-symbols-outlined">account_circle</span>
+                                <span className="font-label-md text-label-md">{user?.name || 'Perfil'}</span>
+                            </div>
+                        </nav>
+                    </div>
+                )}
             </header>
 
             {/* Main Content */}

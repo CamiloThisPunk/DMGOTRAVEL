@@ -35,37 +35,6 @@ const Auth = () => {
         }
     };
 
-    const handleAdminDemo = async () => {
-        setLoginEmail('admin@dmgotravel.com');
-        setLoginPassword('admin_password');
-        setLoginError('');
-        try {
-            const user = await login('admin@dmgotravel.com', 'admin_password');
-            if (user.roles && user.roles.includes('admin')) {
-                navigate('/admin/dashboard');
-            } else {
-                navigate('/client/dashboard');
-            }
-        } catch (error) {
-            setLoginError('Credenciales incorrectas o problema de red.');
-        }
-    };
-
-    const handleClientDemo = async () => {
-        setLoginEmail('client@test.com');
-        setLoginPassword('client_password');
-        setLoginError('');
-        try {
-            const user = await login('client@test.com', 'client_password');
-            if (user.roles && user.roles.includes('admin')) {
-                navigate('/admin/dashboard');
-            } else {
-                navigate('/client/dashboard');
-            }
-        } catch (error) {
-            setLoginError('Credenciales incorrectas o problema de red.');
-        }
-    };
 
     const handleRegister = async (e) => {
         e.preventDefault();
@@ -151,10 +120,7 @@ const Auth = () => {
                                             Crear Cuenta Nueva
                                         </button>
                                     </div>
-                                    <div className="mt-6 flex justify-center gap-2">
-                                        <button type="button" onClick={handleAdminDemo} className="bg-surface-variant text-on-surface-variant text-xs font-semibold px-2 py-1 rounded hover:bg-outline-variant transition-colors">Entrar como Admin</button>
-                                        <button type="button" onClick={handleClientDemo} className="bg-surface-variant text-on-surface-variant text-xs font-semibold px-2 py-1 rounded hover:bg-outline-variant transition-colors">Entrar como Cliente</button>
-                                    </div>
+
                                 </div>
                             </div>
 
