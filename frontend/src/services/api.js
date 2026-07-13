@@ -16,4 +16,12 @@ const api = axios.create({
     },
 });
 
+// Automatically handle FormData: remove Content-Type so axios sets multipart boundary
+api.interceptors.request.use((config) => {
+    if (config.data instanceof FormData) {
+        delete config.headers['Content-Type'];
+    }
+    return config;
+});
+
 export default api;

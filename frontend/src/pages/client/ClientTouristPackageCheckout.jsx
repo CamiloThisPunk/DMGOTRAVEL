@@ -79,9 +79,7 @@ const ClientTouristPackageCheckout = () => {
             }
             formPayload.append('payment_voucher', voucherFile);
 
-            await api.post('/api/client/reservations', formPayload, {
-                headers: { 'Content-Type': 'multipart/form-data' }
-            });
+            await api.post('/api/client/reservations', formPayload);
             setSuccessMessage('¡Reserva confirmada exitosamente! Te hemos enviado los detalles a tu correo.');
             setTimeout(() => {
                 navigate('/client/dashboard');

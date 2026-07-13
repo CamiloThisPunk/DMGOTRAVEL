@@ -314,14 +314,43 @@ const AdminReservations = () => {
                                     </div>
                                 </div>
                             </div>
+                            {/* Special Requests */}
+                            {selectedRes.special_requests && (
+                                <div>
+                                    <h4 className="font-label-md text-label-md text-on-surface-variant mb-stack-sm uppercase tracking-wider text-xs">Requerimientos Especiales</h4>
+                                    <div className="bg-surface border border-outline-variant rounded-xl p-4">
+                                        <p className="font-body-md text-sm text-on-surface whitespace-pre-wrap">
+                                            {selectedRes.special_requests}
+                                        </p>
+                                    </div>
+                                </div>
+                            )}
                             {/* Payment */}
                             <div>
                                 <h4 className="font-label-md text-label-md text-on-surface-variant mb-stack-sm uppercase tracking-wider text-xs">Resumen de Pago</h4>
                                 <div className="bg-surface rounded-xl p-4 border border-outline-variant">
-                                    <div className="flex justify-between items-center pt-3 border-t border-outline-variant">
+                                    <div className="flex justify-between items-center mb-2">
                                         <span className="font-semibold text-on-surface">Total</span>
                                         <span className="font-bold text-primary text-lg">S/ {parseFloat(getTotal(selectedRes)).toFixed(2)}</span>
                                     </div>
+                                    {selectedRes.payment_voucher_url && (
+                                        <div className="pt-3 mt-2 border-t border-outline-variant">
+                                            <p className="text-xs text-outline mb-2 font-semibold">Comprobante de Pago (Yape)</p>
+                                            <a 
+                                                href={selectedRes.payment_voucher_url} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="block rounded-lg overflow-hidden border border-outline-variant hover:opacity-90 transition-opacity"
+                                                title="Clic para ver en tamaño completo"
+                                            >
+                                                <img 
+                                                    src={selectedRes.payment_voucher_url} 
+                                                    alt="Voucher de pago" 
+                                                    className="w-full h-auto max-h-48 object-cover bg-surface-container-lowest"
+                                                />
+                                            </a>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
