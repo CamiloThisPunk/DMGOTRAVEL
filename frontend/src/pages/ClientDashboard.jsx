@@ -6,6 +6,7 @@ const ClientDashboard = () => {
     const [reservations, setReservations] = useState([]);
     const [loading, setLoading] = useState(true);
     const [filter, setFilter] = useState('all');
+    const [selectedReservation, setSelectedReservation] = useState(null);
 
     useEffect(() => { fetchReservations(); }, []);
 
@@ -176,9 +177,13 @@ const ClientDashboard = () => {
                                     </div>
                                     {/* Actions */}
                                     <div className="w-full md:w-auto flex md:flex-col gap-3 shrink-0">
+                                        <button onClick={() => setSelectedReservation(res)}
+                                            className="bg-primary-container text-on-primary-container px-4 py-2 rounded-lg font-label-md text-label-md font-bold hover:bg-primary hover:text-on-primary transition-colors text-center w-full md:w-auto">
+                                            Ver Detalles
+                                        </button>
                                         {canCancel && (
                                             <button onClick={() => cancelReservation(res.id)}
-                                                className="text-error font-label-md text-label-md hover:underline py-2 text-center md:text-left">
+                                                className="text-error font-label-md text-label-md hover:underline py-2 text-center md:text-left w-full md:w-auto">
                                                 Cancelar
                                             </button>
                                         )}
@@ -189,6 +194,77 @@ const ClientDashboard = () => {
                     </div>
                 </section>
             </div>
+
+            {/* Modal de Detalle de Reserva */}
+            {selectedReservation && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" onClick={() => setSelectedReservation(null)}>
+                    <div className="bg-surface rounded-xl shadow-lg w-full max-w-2xl max-h-[90vh] overflow-y-auto flex flex-col animate-in fade-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
+                        <div className="p-6 border-b border-outline-variant flex justify-between items-center sticky top-0 bg-surface z-10">
+                            <h3 className="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+                                <span className="material-symbols-outlined text-primary">receipt_long</span>
+                                Detalle de Reserva
+                            </h3>
+                            <button onClick={() => setSelectedReservation(null)} className="text-on-surface-variant hover:text-on-surface p-2 rounded-full hover:bg-surface-variant/50 transition-colors flex items-center justify-center">
+                                <span className="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+                        <div className="p-6 space-y-6">
+                            <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+                                <div>
+                                    <div className="flex items-center gap-2 mb-2">
+                                        {getStatusBadge(selectedReservation.status)}
+                                        <span className="text-xs text-on-surface-variant">ID: #{selectedReservation.id}</span>
+                                    </div>
+                                    <h4 className="font-title-lg text-title-lg text-on-surface mb-2">{getName(selectedReservation)}</h4>
+                                    <div className="flex flex-col gap-1 text-sm text-on-surface-variant">
+                                        <p className="flex items-center gap-2">
+                                            <span className="material-symbols-outlined text-[18px]">calendar_today</span>
+                                            Fecha: {getDate(selectedReservation)}
+                                        </p>
+                                        <p className="flex items-center gap-2">
+                                            <span className="material-symbols-outlined text-[18px]">group</span>
+                                            Pasajeros: {getGuests(selectedReservation)}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-5">
+                                <div className="flex justify-between items-center mb-1">
+                                    <span className="font-semibold text-on-surface">Total del Servicio</span>
+                                    <span className="font-bold text-primary text-xl">S/ {parseFloat(getTotal(selectedReservation)).toFixed(2)}</span>
+                                </div>
+                                <p className="text-xs text-on-surface-variant mb-5">
+                                    {selectedReservation.payment_voucher_url ? 'Pagado vía Yape' : 'Pendiente o sin comprobante'}
+                                </p>
+                                
+                                {selectedReservation.special_requests && (
+                                    <div className="pt-5 border-t border-outline-variant">
+                                        <h5 className="font-label-md text-xs text-on-surface-variant uppercase tracking-wider mb-3">Requerimientos Especiales</h5>
+                                        <div className="bg-surface-container-low p-3 rounded-lg text-sm text-on-surface whitespace-pre-wrap">
+                                            {selectedReservation.special_requests}
+                                        </div>
+                                    </div>
+                                )}
+                                
+                                {selectedReservation.payment_voucher_url && (
+                                    <div className="pt-5 border-t border-outline-variant mt-5">
+                                        <h5 className="font-label-md text-xs text-on-surface-variant uppercase tracking-wider mb-3 flex items-center gap-2">
+                                            <span className="material-symbols-outlined text-primary text-[18px]">image</span>
+                                            Comprobante de Pago
+                                        </h5>
+                                        <a href={selectedReservation.payment_voucher_url} target="_blank" rel="noopener noreferrer" 
+                                           className="block w-full max-w-sm rounded-lg overflow-hidden border border-outline-variant hover:opacity-90 hover:ring-2 hover:ring-primary transition-all mx-auto sm:mx-0">
+                                            <img src={selectedReservation.payment_voucher_url} alt="Voucher de pago" className="w-full h-auto object-cover bg-surface-container-lowest" />
+                                        </a>
+                                        <p className="text-[10px] text-on-surface-variant mt-2">Haz clic en la imagen para verla en tamaño completo.</p>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
