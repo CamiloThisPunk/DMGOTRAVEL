@@ -11,6 +11,8 @@ const Auth = () => {
     const [loginEmail, setLoginEmail] = useState('');
     const [loginPassword, setLoginPassword] = useState('');
     const [loginError, setLoginError] = useState('');
+    const [showLoginPassword, setShowLoginPassword] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
 
     // Register State
     const [regName, setRegName] = useState('');
@@ -19,12 +21,13 @@ const Auth = () => {
     const [regPassword, setRegPassword] = useState('');
     const [regConfirm, setRegConfirm] = useState('');
     const [regError, setRegError] = useState('');
+    const [showRegPassword, setShowRegPassword] = useState(false);
 
     const handleLogin = async (e) => {
         e.preventDefault();
         setLoginError('');
         try {
-            const user = await login(loginEmail, loginPassword);
+            const user = await login(loginEmail, loginPassword, rememberMe);
             if (user.roles && user.roles.includes('admin')) {
                 navigate('/admin/dashboard');
             } else {
@@ -100,12 +103,17 @@ const Auth = () => {
                                         </div>
                                         <div>
                                             <label className="block font-label-md text-label-md text-on-surface mb-2" htmlFor="login-password">Contraseña</label>
-                                            <input className="w-full rounded border border-outline-variant bg-surface-container-lowest text-on-surface px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" id="login-password" placeholder="••••••••" required type="password" value={loginPassword} onChange={e => setLoginPassword(e.target.value)} />
+                                            <div className="relative">
+                                                <input className="w-full rounded border border-outline-variant bg-surface-container-lowest text-on-surface px-4 py-3 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary pr-10" id="login-password" placeholder="••••••••" required type={showLoginPassword ? "text" : "password"} value={loginPassword} onChange={e => setLoginPassword(e.target.value)} />
+                                                <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center" onClick={() => setShowLoginPassword(!showLoginPassword)}>
+                                                    <span className="material-symbols-outlined text-[20px]">{showLoginPassword ? 'visibility_off' : 'visibility'}</span>
+                                                </button>
+                                            </div>
                                         </div>
                                         <div className="flex items-center justify-between">
                                             <div className="flex items-center">
-                                                <input className="rounded border-outline-variant text-primary focus:ring-primary h-4 w-4" id="remember" type="checkbox" />
-                                                <label className="ml-2 font-body-md text-body-md text-on-surface-variant" htmlFor="remember">Recordarme</label>
+                                                <input className="rounded border-outline-variant text-primary focus:ring-primary h-4 w-4" id="remember" type="checkbox" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
+                                                <label className="ml-2 font-body-md text-body-md text-on-surface-variant cursor-pointer" htmlFor="remember">Recordarme</label>
                                             </div>
                                             <a className="font-label-md text-label-md text-primary hover:text-secondary transition-colors" href="#">¿Olvidaste tu contraseña?</a>
                                         </div>
@@ -153,11 +161,21 @@ const Auth = () => {
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div>
                                                 <label className="block font-label-md text-label-md text-on-surface mb-1" htmlFor="reg-password">Contraseña</label>
-                                                <input className="w-full rounded border border-outline-variant bg-surface-container-lowest text-on-surface px-4 py-2.5 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" id="reg-password" required type="password" value={regPassword} onChange={e => setRegPassword(e.target.value)} />
+                                                <div className="relative">
+                                                    <input className="w-full rounded border border-outline-variant bg-surface-container-lowest text-on-surface px-4 py-2.5 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary pr-10" id="reg-password" required type={showRegPassword ? "text" : "password"} value={regPassword} onChange={e => setRegPassword(e.target.value)} />
+                                                    <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center" onClick={() => setShowRegPassword(!showRegPassword)}>
+                                                        <span className="material-symbols-outlined text-[18px]">{showRegPassword ? 'visibility_off' : 'visibility'}</span>
+                                                    </button>
+                                                </div>
                                             </div>
                                             <div>
                                                 <label className="block font-label-md text-label-md text-on-surface mb-1" htmlFor="reg-confirm">Confirmar</label>
-                                                <input className="w-full rounded border border-outline-variant bg-surface-container-lowest text-on-surface px-4 py-2.5 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" id="reg-confirm" required type="password" value={regConfirm} onChange={e => setRegConfirm(e.target.value)} />
+                                                <div className="relative">
+                                                    <input className="w-full rounded border border-outline-variant bg-surface-container-lowest text-on-surface px-4 py-2.5 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary pr-10" id="reg-confirm" required type={showRegPassword ? "text" : "password"} value={regConfirm} onChange={e => setRegConfirm(e.target.value)} />
+                                                    <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors flex items-center justify-center" onClick={() => setShowRegPassword(!showRegPassword)}>
+                                                        <span className="material-symbols-outlined text-[18px]">{showRegPassword ? 'visibility_off' : 'visibility'}</span>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                         <div className="mt-6">

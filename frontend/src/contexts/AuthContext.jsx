@@ -8,8 +8,8 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const storedUser = localStorage.getItem('user');
-        const storedToken = localStorage.getItem('token');
+        const storedUser = localStorage.getItem('user') || sessionStorage.getItem('user');
+        const storedToken = localStorage.getItem('token') || sessionStorage.getItem('token');
         if (storedUser) {
             setUser(JSON.parse(storedUser));
         }
@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
-    const login = async (email, password) => {
+    const login = async (email, password, remember = false) => {
         try {
             // First try to get CSRF cookie (may fail silently, that's ok for token auth)
             try {
@@ -40,12 +40,20 @@ export const AuthProvider = ({ children }) => {
             
             // Set token immediately for all future requests
             if (token) {
-                localStorage.setItem('token', token);
+                if (remember) {
+                    localStorage.setItem('token', token);
+                } else {
+                    sessionStorage.setItem('token', token);
+                }
                 api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             }
             
             setUser(userData);
-            localStorage.setItem('user', JSON.stringify(userData));
+            if (remember) {
+                localStorage.setItem('user', JSON.stringify(userData));
+            } else {
+                sessionStorage.setItem('user', JSON.stringify(userData));
+            }
             return userData;
         } catch (error) {
             console.error("Login Error:", error.response?.data || error.response?.status || error.message);
@@ -80,6 +88,8 @@ export const AuthProvider = ({ children }) => {
         setUser(null);
         localStorage.removeItem('user');
         localStorage.removeItem('token');
+        sessionStorage.removeItem('user');
+        sessionStorage.removeItem('token');
         delete api.defaults.headers.common['Authorization'];
     };
 
