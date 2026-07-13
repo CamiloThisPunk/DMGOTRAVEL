@@ -31,9 +31,9 @@ const ClientTouristPackageCheckout = () => {
 
     useEffect(() => {
         if (!pkg) {
-            navigate(`/client/tourist-packages/${id}`);
+            navigate(location.pathname.includes('catalog') ? '/client/catalog' : `/client/tourist-packages/${id}`);
         }
-    }, [pkg, id, navigate]);
+    }, [pkg, id, navigate, location.pathname]);
 
     if (!pkg) return null;
 

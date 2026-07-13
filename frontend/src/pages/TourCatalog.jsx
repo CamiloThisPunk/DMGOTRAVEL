@@ -36,31 +36,13 @@ const TourCatalog = () => {
         if (!selectedTour) { alert('Selecciona un tour primero'); return; }
         if (!reservationDate) { alert('Selecciona una fecha'); return; }
 
-        setSubmitting(true);
-        try {
-            await api.post('/api/client/reservations', {
-                service_package_id: selectedTour.id,
-                reservation_date: reservationDate,
-                guests_count: guestsCount,
-            });
-            setSuccessMessage('¡Reserva confirmada! Redirigiendo a tus reservas...');
-            setTimeout(() => {
-                navigate('/client/dashboard');
-            }, 2000);
-        } catch (err) {
-            if (err.response?.status === 422) {
-                const errors = err.response.data.errors;
-                if (errors) {
-                    let msg = 'Error de validación:';
-                    Object.values(errors).forEach(errs => { msg += `\n- ${errs.join(', ')}`; });
-                    alert(msg);
-                } else {
-                    alert(err.response.data.message || 'Datos inválidos');
-                }
-            } else {
-                alert(err.response?.data?.message || 'Error al procesar la reserva');
+        navigate(`/client/catalog/${selectedTour.id}/checkout`, {
+            state: {
+                pkg: selectedTour,
+                guests: guestsCount,
+                date: reservationDate
             }
-        } finally { setSubmitting(false); }
+        });
     };
 
     return (

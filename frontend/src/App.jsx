@@ -34,6 +34,7 @@ function App() {
         <Route path="/client" element={<ProtectedRoute allowedRoles={['client']}><ClientLayout /></ProtectedRoute>}>
             <Route path="dashboard" element={<ClientDashboard />} />
             <Route path="catalog" element={<TourCatalog />} />
+            <Route path="catalog/:id/checkout" element={<ClientTouristPackageCheckout />} />
             <Route path="tourist-packages" element={<ClientTouristPackages />} />
             <Route path="tourist-packages/:id" element={<ClientTouristPackageDetail />} />
             <Route path="tourist-packages/:id/checkout" element={<ClientTouristPackageCheckout />} />
