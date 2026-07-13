@@ -65,7 +65,7 @@ class ReservationService
             $voucherUrl = null;
             if ($voucherFile) {
                 $voucherPath = $this->imageUploadService->storeImage($voucherFile, 'vouchers');
-                $voucherUrl = asset('storage/' . $voucherPath);
+                $voucherUrl = url('/api/images?path=' . urlencode($voucherPath), [], env('APP_ENV') === 'production');
             }
 
             $reservation = Reservation::create([
