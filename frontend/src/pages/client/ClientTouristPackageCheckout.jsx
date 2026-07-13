@@ -84,8 +84,7 @@ const ClientTouristPackageCheckout = () => {
                                         <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#74777f]">person</span>
                                         <input 
                                             type="text" required
-                                            readOnly={!!user?.name}
-                                            className={`w-full pl-10 pr-4 py-3 border border-[#c4c6cf] rounded-xl outline-none ${user?.name ? 'bg-[#f0f1f3] text-[#43474e] cursor-default' : 'focus:border-[#000613] focus:ring-1 focus:ring-[#000613]'}`}
+                                            className="w-full pl-10 pr-4 py-3 border border-[#c4c6cf] rounded-xl focus:border-[#000613] focus:ring-1 focus:ring-[#000613] outline-none"
                                             placeholder="Ej. Juan Pérez"
                                             value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}
                                         />
@@ -97,8 +96,7 @@ const ClientTouristPackageCheckout = () => {
                                         <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#74777f]">mail</span>
                                         <input 
                                             type="email" required
-                                            readOnly={!!user?.email}
-                                            className={`w-full pl-10 pr-4 py-3 border border-[#c4c6cf] rounded-xl outline-none ${user?.email ? 'bg-[#f0f1f3] text-[#43474e] cursor-default' : 'focus:border-[#000613] focus:ring-1 focus:ring-[#000613]'}`}
+                                            className="w-full pl-10 pr-4 py-3 border border-[#c4c6cf] rounded-xl focus:border-[#000613] focus:ring-1 focus:ring-[#000613] outline-none"
                                             placeholder="tu@email.com"
                                             value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})}
                                         />
@@ -110,8 +108,7 @@ const ClientTouristPackageCheckout = () => {
                                         <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#74777f]">phone_iphone</span>
                                         <input 
                                             type="tel" required
-                                            readOnly={!!user?.phone}
-                                            className={`w-full pl-10 pr-4 py-3 border border-[#c4c6cf] rounded-xl outline-none ${user?.phone ? 'bg-[#f0f1f3] text-[#43474e] cursor-default' : 'focus:border-[#000613] focus:ring-1 focus:ring-[#000613]'}`}
+                                            className="w-full pl-10 pr-4 py-3 border border-[#c4c6cf] rounded-xl focus:border-[#000613] focus:ring-1 focus:ring-[#000613] outline-none"
                                             placeholder="+51 987 654 321"
                                             value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})}
                                         />
