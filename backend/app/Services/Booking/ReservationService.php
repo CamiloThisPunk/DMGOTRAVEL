@@ -6,6 +6,7 @@ use App\Models\AuditLog;
 use App\Models\Reservation;
 use App\Models\ServicePackage;
 use App\Models\User;
+use App\Services\Media\ImageUploadService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,9 @@ use Illuminate\Validation\ValidationException;
 
 class ReservationService
 {
+    public function __construct(
+        private readonly ImageUploadService $imageUploadService
+    ) {}
     /**
      * List reservations for a specific client.
      */
@@ -44,18 +48,25 @@ class ReservationService
      *
      * Validates capacity and calculates total price.
      *
-     * @param array{service_package_id: int, reservation_date: string, guests_count: int} $data
+     * @param array{service_package_id: int, reservation_date: string, guests_count: int, special_requests?: string} $data
      *
      * @throws ValidationException
      */
-    public function createReservation(User $client, array $data): Reservation
+    public function createReservation(User $client, array $data, $voucherFile = null): Reservation
     {
-        return DB::transaction(function () use ($client, $data) {
+        return DB::transaction(function () use ($client, $data, $voucherFile) {
             $package = ServicePackage::active()->lockForUpdate()->findOrFail($data['service_package_id']);
 
             $this->validateCapacity($package, $data['reservation_date'], $data['guests_count']);
 
             $totalPrice = $package->price * $data['guests_count'];
+
+            // Handle voucher upload
+            $voucherUrl = null;
+            if ($voucherFile) {
+                $voucherPath = $this->imageUploadService->storeImage($voucherFile, 'vouchers');
+                $voucherUrl = asset('storage/' . $voucherPath);
+            }
 
             $reservation = Reservation::create([
                 'client_id' => $client->id,
@@ -64,6 +75,8 @@ class ReservationService
                 'guests_count' => $data['guests_count'],
                 'status' => 'pending',
                 'total_price' => $totalPrice,
+                'payment_voucher_url' => $voucherUrl,
+                'special_requests' => $data['special_requests'] ?? null,
             ]);
 
             $this->logAction(

@@ -16,6 +16,8 @@ class Reservation extends Model
         'guests_count',
         'status',
         'total_price',
+        'payment_voucher_url',
+        'special_requests',
     ];
 
     protected $casts = [

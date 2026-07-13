@@ -37,7 +37,8 @@ class ReservationController extends Controller
     {
         $reservation = $this->reservationService->createReservation(
             $request->user(),
-            $request->validated()
+            $request->validated(),
+            $request->file('payment_voucher')
         );
 
         return (new ReservationResource($reservation))

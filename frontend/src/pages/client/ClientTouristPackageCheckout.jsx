@@ -24,6 +24,8 @@ const ClientTouristPackageCheckout = () => {
         phone: user?.phone || '',
         message: ''
     });
+    const [voucherFile, setVoucherFile] = useState(null);
+    const [voucherPreview, setVoucherPreview] = useState(null);
     const [submitting, setSubmitting] = useState(false);
     const [successMessage, setSuccessMessage] = useState('');
 
@@ -39,16 +41,46 @@ const ClientTouristPackageCheckout = () => {
     const defaultImage = "/images/demo-tour-detail.jpg";
     const bgImage = pkg.image_360_url || defaultImage;
 
+    const handleVoucherChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            if (file.size > 5 * 1024 * 1024) {
+                alert('El archivo es demasiado grande. Máximo 5MB.');
+                return;
+            }
+            setVoucherFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => setVoucherPreview(reader.result);
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const removeVoucher = () => {
+        setVoucherFile(null);
+        setVoucherPreview(null);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!voucherFile) {
+            alert('Por favor sube tu comprobante de pago de Yape antes de confirmar.');
+            return;
+        }
+
         setSubmitting(true);
         try {
-            await api.post('/api/client/reservations', {
-                service_package_id: pkg.id,
-                reservation_date: date,
-                guests_count: guests,
-                special_requests: formData.message,
-                // Contact info can be sent if backend supports it, otherwise it uses Auth user
+            const formPayload = new FormData();
+            formPayload.append('service_package_id', pkg.id);
+            formPayload.append('reservation_date', date);
+            formPayload.append('guests_count', guests);
+            if (formData.message) {
+                formPayload.append('special_requests', formData.message);
+            }
+            formPayload.append('payment_voucher', voucherFile);
+
+            await api.post('/api/client/reservations', formPayload, {
+                headers: { 'Content-Type': 'multipart/form-data' }
             });
             setSuccessMessage('¡Reserva confirmada exitosamente! Te hemos enviado los detalles a tu correo.');
             setTimeout(() => {
@@ -73,10 +105,15 @@ const ClientTouristPackageCheckout = () => {
                 <div className="flex flex-col-reverse lg:flex-row gap-8">
                     
                     {/* Left Column (Form) */}
-                    <div className="flex-1 bg-white rounded-2xl p-8 border border-[#c4c6cf] shadow-sm">
-                        <h2 className="text-2xl font-bold text-[#000613] mb-8">Tus Datos</h2>
-                        
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                    <div className="flex-1 space-y-8">
+
+                        {/* Section 1: Personal Data */}
+                        <div className="bg-white rounded-2xl p-8 border border-[#c4c6cf] shadow-sm">
+                            <div className="flex items-center gap-3 mb-8">
+                                <div className="w-8 h-8 rounded-full bg-[#000613] text-white flex items-center justify-center text-sm font-bold">1</div>
+                                <h2 className="text-2xl font-bold text-[#000613]">Tus Datos</h2>
+                            </div>
+                            
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label className="block text-xs font-bold text-[#43474e] uppercase tracking-wider mb-2">Nombre completo</label>
@@ -150,32 +187,143 @@ const ClientTouristPackageCheckout = () => {
                                     ></textarea>
                                 </div>
                             </div>
+                        </div>
 
-                            {successMessage && (
-                                <div className="p-4 bg-green-50 text-green-800 rounded-xl border border-green-200 flex items-center gap-2">
-                                    <span className="material-symbols-outlined">check_circle</span>
-                                    {successMessage}
-                                </div>
-                            )}
-
-                            <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-6 pt-6 mt-6 border-t border-[#c4c6cf]">
-                                <div className="flex items-center gap-2 text-green-600 font-bold text-sm">
-                                    <span className="material-symbols-outlined text-xl">verified_user</span>
-                                    Pago Seguro y Encriptado
-                                </div>
-                                <button 
-                                    type="submit" 
-                                    disabled={submitting || successMessage}
-                                    className={`w-full md:w-auto px-8 py-4 rounded-xl font-bold text-lg transition-colors ${
-                                        submitting || successMessage 
-                                        ? 'bg-[#c4c6cf] text-[#43474e] cursor-not-allowed'
-                                        : 'bg-[#964900] text-white hover:bg-[#7a3b00] shadow-lg shadow-[#964900]/20'
-                                    }`}
-                                >
-                                    {submitting ? 'Procesando...' : 'Confirmar y Pagar'}
-                                </button>
+                        {/* Section 2: Yape Payment */}
+                        <div className="bg-white rounded-2xl p-8 border border-[#c4c6cf] shadow-sm">
+                            <div className="flex items-center gap-3 mb-8">
+                                <div className="w-8 h-8 rounded-full bg-[#000613] text-white flex items-center justify-center text-sm font-bold">2</div>
+                                <h2 className="text-2xl font-bold text-[#000613]">Pago con Yape</h2>
                             </div>
-                        </form>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                {/* QR Code */}
+                                <div className="flex flex-col items-center">
+                                    <div className="bg-gradient-to-br from-[#742284] to-[#9b30b8] rounded-2xl p-6 w-full max-w-[280px] shadow-lg shadow-purple-200">
+                                        <div className="text-center mb-4">
+                                            <span className="text-white font-bold text-2xl tracking-wide">yape</span>
+                                        </div>
+                                        <div className="bg-white rounded-xl p-4 mb-4">
+                                            <img 
+                                                src="/images/yape-qr.png" 
+                                                alt="QR de Yape - DMGOTRAVEL" 
+                                                className="w-full h-auto rounded-lg"
+                                            />
+                                        </div>
+                                        <div className="text-center">
+                                            <p className="text-white font-bold text-sm">DMGOTRAVEL</p>
+                                            <p className="text-white/80 text-xs">+51 999 888 777</p>
+                                        </div>
+                                    </div>
+                                    <div className="mt-4 text-center">
+                                        <p className="text-[#43474e] text-sm font-medium">Escanea el QR con tu app de Yape</p>
+                                        <p className="text-[#964900] font-bold text-lg mt-1">Monto: S/ {totalPrice.toFixed(2)}</p>
+                                    </div>
+                                </div>
+
+                                {/* Upload Voucher */}
+                                <div className="flex flex-col">
+                                    <div className="mb-4">
+                                        <h3 className="text-sm font-bold text-[#000613] uppercase tracking-wider mb-2">Pasos para pagar</h3>
+                                        <ol className="space-y-3 text-sm text-[#43474e]">
+                                            <li className="flex gap-3">
+                                                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#742284]/10 text-[#742284] flex items-center justify-center text-xs font-bold">1</span>
+                                                <span>Abre tu app de <strong className="text-[#742284]">Yape</strong> y escanea el código QR</span>
+                                            </li>
+                                            <li className="flex gap-3">
+                                                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#742284]/10 text-[#742284] flex items-center justify-center text-xs font-bold">2</span>
+                                                <span>Ingresa el monto de <strong className="text-[#964900]">S/ {totalPrice.toFixed(2)}</strong></span>
+                                            </li>
+                                            <li className="flex gap-3">
+                                                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#742284]/10 text-[#742284] flex items-center justify-center text-xs font-bold">3</span>
+                                                <span>Toma una <strong>captura de pantalla</strong> del voucher</span>
+                                            </li>
+                                            <li className="flex gap-3">
+                                                <span className="flex-shrink-0 w-6 h-6 rounded-full bg-[#742284]/10 text-[#742284] flex items-center justify-center text-xs font-bold">4</span>
+                                                <span>Sube tu comprobante aquí abajo</span>
+                                            </li>
+                                        </ol>
+                                    </div>
+
+                                    <label className="block text-xs font-bold text-[#43474e] uppercase tracking-wider mb-2">
+                                        Comprobante de pago <span className="text-red-500">*</span>
+                                    </label>
+
+                                    {!voucherPreview ? (
+                                        <label className="flex flex-col items-center justify-center w-full h-48 border-2 border-dashed border-[#c4c6cf] rounded-xl cursor-pointer hover:border-[#742284] hover:bg-[#742284]/5 transition-all group">
+                                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                                <span className="material-symbols-outlined text-4xl text-[#74777f] group-hover:text-[#742284] mb-2 transition-colors">cloud_upload</span>
+                                                <p className="text-sm text-[#43474e] group-hover:text-[#742284] transition-colors">
+                                                    <strong>Haz clic para subir</strong> tu voucher
+                                                </p>
+                                                <p className="text-xs text-[#74777f] mt-1">PNG, JPG o WebP (máx. 5MB)</p>
+                                            </div>
+                                            <input 
+                                                type="file" 
+                                                className="hidden" 
+                                                accept="image/jpeg,image/png,image/webp"
+                                                onChange={handleVoucherChange}
+                                            />
+                                        </label>
+                                    ) : (
+                                        <div className="relative border-2 border-green-300 rounded-xl overflow-hidden bg-green-50">
+                                            <img 
+                                                src={voucherPreview} 
+                                                alt="Comprobante de pago" 
+                                                className="w-full h-48 object-contain p-2"
+                                            />
+                                            <div className="absolute top-2 right-2 flex gap-2">
+                                                <span className="bg-green-500 text-white text-xs px-2 py-1 rounded-lg font-bold flex items-center gap-1">
+                                                    <span className="material-symbols-outlined text-sm">check_circle</span>
+                                                    Subido
+                                                </span>
+                                                <button 
+                                                    type="button"
+                                                    onClick={removeVoucher}
+                                                    className="bg-red-500 text-white w-7 h-7 rounded-lg flex items-center justify-center hover:bg-red-600 transition-colors"
+                                                >
+                                                    <span className="material-symbols-outlined text-sm">close</span>
+                                                </button>
+                                            </div>
+                                            <div className="px-3 py-2 bg-green-100 text-green-800 text-xs font-medium flex items-center gap-1">
+                                                <span className="material-symbols-outlined text-sm">attach_file</span>
+                                                {voucherFile?.name}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Submit Section */}
+                        <div className="bg-white rounded-2xl p-8 border border-[#c4c6cf] shadow-sm">
+                            <form onSubmit={handleSubmit}>
+                                {successMessage && (
+                                    <div className="p-4 bg-green-50 text-green-800 rounded-xl border border-green-200 flex items-center gap-2 mb-6">
+                                        <span className="material-symbols-outlined">check_circle</span>
+                                        {successMessage}
+                                    </div>
+                                )}
+
+                                <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-6">
+                                    <div className="flex items-center gap-2 text-green-600 font-bold text-sm">
+                                        <span className="material-symbols-outlined text-xl">verified_user</span>
+                                        Pago Seguro y Encriptado
+                                    </div>
+                                    <button 
+                                        type="submit" 
+                                        disabled={submitting || successMessage}
+                                        className={`w-full md:w-auto px-8 py-4 rounded-xl font-bold text-lg transition-colors ${
+                                            submitting || successMessage 
+                                            ? 'bg-[#c4c6cf] text-[#43474e] cursor-not-allowed'
+                                            : 'bg-[#964900] text-white hover:bg-[#7a3b00] shadow-lg shadow-[#964900]/20'
+                                        }`}
+                                    >
+                                        {submitting ? 'Procesando...' : 'Confirmar y Pagar'}
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
 
                     {/* Right Column (Summary) */}
@@ -193,7 +341,6 @@ const ClientTouristPackageCheckout = () => {
                             <h4 className="text-xs font-bold text-[#74777f] uppercase tracking-wider mb-4">Resumen de tu selección</h4>
                             
                             <div className="space-y-4 mb-6 pb-6 border-b border-[#c4c6cf]">
-                                {/* We could show itinerary highlights here, but since it's dynamic we just show a static placeholder or basic details */}
                                 <div className="flex gap-3">
                                     <span className="material-symbols-outlined text-[#964900]">check_circle</span>
                                     <div>
@@ -231,6 +378,22 @@ const ClientTouristPackageCheckout = () => {
                             <div className="flex justify-between items-center pt-6 border-t border-[#c4c6cf]">
                                 <span className="text-lg font-bold text-[#000613]">Total</span>
                                 <span className="text-2xl font-bold text-[#964900]">S/ {totalPrice.toFixed(2)}</span>
+                            </div>
+
+                            {/* Payment method indicator */}
+                            <div className="mt-6 pt-4 border-t border-[#c4c6cf]">
+                                <div className="flex items-center gap-3 bg-[#742284]/10 rounded-xl p-3">
+                                    <div className="w-8 h-8 rounded-lg bg-[#742284] flex items-center justify-center">
+                                        <span className="text-white font-bold text-xs">Y</span>
+                                    </div>
+                                    <div>
+                                        <p className="text-[#742284] font-bold text-sm">Pago con Yape</p>
+                                        <p className="text-[#74777f] text-xs">Transferencia inmediata</p>
+                                    </div>
+                                    {voucherFile && (
+                                        <span className="material-symbols-outlined text-green-500 ml-auto">check_circle</span>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>

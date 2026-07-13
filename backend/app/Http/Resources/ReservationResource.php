@@ -21,6 +21,8 @@ class ReservationResource extends JsonResource
             'guests_count' => $this->guests_count,
             'status' => $this->status,
             'total_price' => (float) $this->total_price,
+            'payment_voucher_url' => $this->payment_voucher_url,
+            'special_requests' => $this->special_requests,
             'created_at' => $this->created_at?->toIso8601String(),
         ];
     }

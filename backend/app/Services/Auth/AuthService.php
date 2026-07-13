@@ -11,7 +11,7 @@ class AuthService
     /**
      * Register a new client user and issue an API token.
      *
-     * @param array{name: string, email: string, password: string} $data
+     * @param array{name: string, email: string, phone?: string, password: string} $data
      * @return array{user: User, token: string}
      */
     public function register(array $data): array
@@ -19,6 +19,7 @@ class AuthService
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'phone' => $data['phone'] ?? null,
             'password' => Hash::make($data['password']),
         ]);
 
