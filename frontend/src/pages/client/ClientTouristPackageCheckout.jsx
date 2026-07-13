@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import api from '../../services/api';
+import { useAuth } from '../../contexts/AuthContext';
 
 const ClientTouristPackageCheckout = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
+    const { user } = useAuth();
 
     // From previous page
     const state = location.state || {};
@@ -17,9 +19,9 @@ const ClientTouristPackageCheckout = () => {
     const [guests, setGuests] = useState(initialGuests);
     const [date, setDate] = useState(initialDate);
     const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        phone: '',
+        name: user?.name || '',
+        email: user?.email || '',
+        phone: user?.phone || '',
         message: ''
     });
     const [submitting, setSubmitting] = useState(false);
@@ -82,7 +84,8 @@ const ClientTouristPackageCheckout = () => {
                                         <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#74777f]">person</span>
                                         <input 
                                             type="text" required
-                                            className="w-full pl-10 pr-4 py-3 border border-[#c4c6cf] rounded-xl focus:border-[#000613] focus:ring-1 focus:ring-[#000613] outline-none"
+                                            readOnly={!!user?.name}
+                                            className={`w-full pl-10 pr-4 py-3 border border-[#c4c6cf] rounded-xl outline-none ${user?.name ? 'bg-[#f0f1f3] text-[#43474e] cursor-default' : 'focus:border-[#000613] focus:ring-1 focus:ring-[#000613]'}`}
                                             placeholder="Ej. Juan Pérez"
                                             value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}
                                         />
@@ -94,7 +97,8 @@ const ClientTouristPackageCheckout = () => {
                                         <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#74777f]">mail</span>
                                         <input 
                                             type="email" required
-                                            className="w-full pl-10 pr-4 py-3 border border-[#c4c6cf] rounded-xl focus:border-[#000613] focus:ring-1 focus:ring-[#000613] outline-none"
+                                            readOnly={!!user?.email}
+                                            className={`w-full pl-10 pr-4 py-3 border border-[#c4c6cf] rounded-xl outline-none ${user?.email ? 'bg-[#f0f1f3] text-[#43474e] cursor-default' : 'focus:border-[#000613] focus:ring-1 focus:ring-[#000613]'}`}
                                             placeholder="tu@email.com"
                                             value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})}
                                         />
@@ -106,7 +110,8 @@ const ClientTouristPackageCheckout = () => {
                                         <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#74777f]">phone_iphone</span>
                                         <input 
                                             type="tel" required
-                                            className="w-full pl-10 pr-4 py-3 border border-[#c4c6cf] rounded-xl focus:border-[#000613] focus:ring-1 focus:ring-[#000613] outline-none"
+                                            readOnly={!!user?.phone}
+                                            className={`w-full pl-10 pr-4 py-3 border border-[#c4c6cf] rounded-xl outline-none ${user?.phone ? 'bg-[#f0f1f3] text-[#43474e] cursor-default' : 'focus:border-[#000613] focus:ring-1 focus:ring-[#000613]'}`}
                                             placeholder="+51 987 654 321"
                                             value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})}
                                         />
