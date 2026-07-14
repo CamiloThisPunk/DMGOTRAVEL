@@ -191,22 +191,20 @@ const Landing = () => {
                                             <div className="p-6 flex-grow flex flex-col">
                                                 <h3 className="font-headline-sm text-headline-sm text-primary mb-2 line-clamp-2">{service.title}</h3>
                                                 <p className="text-on-surface-variant flex-grow mb-4 line-clamp-3">{service.description}</p>
-                                                <div className="flex justify-between items-end mt-auto border-t border-outline-variant pt-4">
-                                                    <div className="flex flex-col">
+                                                <div className="flex justify-between items-center mt-auto border-t border-outline-variant pt-4">
+                                                    <div className="flex items-center gap-1.5 flex-wrap">
                                                         {service.old_price && parseFloat(service.old_price) > parseFloat(service.price) ? (
                                                             <>
-                                                                <div className="flex items-center gap-2 mb-1">
-                                                                    <span className="text-xs text-on-surface-variant line-through">S/ {parseFloat(service.old_price).toFixed(2)}</span>
-                                                                    <span className="bg-error text-on-error text-[10px] font-bold px-1.5 py-0.5 rounded">-{Math.round((1 - service.price/service.old_price) * 100)}%</span>
-                                                                </div>
-                                                                <span className="bg-surface-container text-primary px-2 py-1 rounded font-bold text-sm whitespace-nowrap w-fit">S/ {parseFloat(service.price).toFixed(2)}</span>
+                                                                <span className="text-[10px] text-on-surface-variant line-through shrink-0">S/ {parseFloat(service.old_price).toFixed(2)}</span>
+                                                                <span className="bg-surface-container text-primary px-2 py-1 rounded font-bold text-[13px] whitespace-nowrap">S/ {parseFloat(service.price).toFixed(2)}</span>
+                                                                <span className="bg-error text-on-error text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0">-{Math.round((1 - service.price/service.old_price) * 100)}%</span>
                                                             </>
                                                         ) : (
-                                                            <span className="bg-surface-container text-primary px-2 py-1 rounded font-bold text-sm whitespace-nowrap w-fit">Desde S/ {parseFloat(service.price).toFixed(2)}</span>
+                                                            <span className="bg-surface-container text-primary px-2 py-1 rounded font-bold text-[13px] whitespace-nowrap">Desde S/ {parseFloat(service.price).toFixed(2)}</span>
                                                         )}
                                                     </div>
-                                                    <Link to={`/auth`} className="text-secondary font-label-md text-label-md hover:text-secondary-container transition-colors flex items-center gap-1 shrink-0 mb-1">
-                                                        Reservar <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                                                    <Link to={`/auth`} className="text-secondary font-label-md text-label-md hover:text-secondary-container transition-colors flex items-center gap-0.5 shrink-0 pl-1">
+                                                        Reservar <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
                                                     </Link>
                                                 </div>
                                             </div>
@@ -255,22 +253,20 @@ const Landing = () => {
                                             <div className="p-6 flex-grow flex flex-col">
                                                 <h3 className="font-headline-sm text-headline-sm text-primary mb-2 line-clamp-2">{service.title}</h3>
                                                 <p className="text-on-surface-variant flex-grow mb-4 line-clamp-3">{service.description}</p>
-                                                <div className="flex justify-between items-end mt-auto border-t border-outline-variant pt-4">
-                                                    <div className="flex flex-col">
+                                                <div className="flex justify-between items-center mt-auto border-t border-outline-variant pt-4">
+                                                    <div className="flex items-center gap-1.5 flex-wrap">
                                                         {service.old_price && parseFloat(service.old_price) > parseFloat(service.price) ? (
                                                             <>
-                                                                <div className="flex items-center gap-2 mb-1">
-                                                                    <span className="text-xs text-on-surface-variant line-through">S/ {parseFloat(service.old_price).toFixed(2)}</span>
-                                                                    <span className="bg-error text-on-error text-[10px] font-bold px-1.5 py-0.5 rounded">-{Math.round((1 - service.price/service.old_price) * 100)}%</span>
-                                                                </div>
-                                                                <span className="bg-surface-container text-primary px-2 py-1 rounded font-bold text-sm whitespace-nowrap w-fit">S/ {parseFloat(service.price).toFixed(2)}</span>
+                                                                <span className="text-[10px] text-on-surface-variant line-through shrink-0">S/ {parseFloat(service.old_price).toFixed(2)}</span>
+                                                                <span className="bg-surface-container text-primary px-2 py-1 rounded font-bold text-[13px] whitespace-nowrap">S/ {parseFloat(service.price).toFixed(2)}</span>
+                                                                <span className="bg-error text-on-error text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0">-{Math.round((1 - service.price/service.old_price) * 100)}%</span>
                                                             </>
                                                         ) : (
-                                                            <span className="bg-surface-container text-primary px-2 py-1 rounded font-bold text-sm whitespace-nowrap w-fit">Desde S/ {parseFloat(service.price).toFixed(2)}</span>
+                                                            <span className="bg-surface-container text-primary px-2 py-1 rounded font-bold text-[13px] whitespace-nowrap">Desde S/ {parseFloat(service.price).toFixed(2)}</span>
                                                         )}
                                                     </div>
-                                                    <Link to={`/auth`} className="text-secondary font-label-md text-label-md hover:text-secondary-container transition-colors flex items-center gap-1 shrink-0 mb-1">
-                                                        Reservar <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                                                    <Link to={`/auth`} className="text-secondary font-label-md text-label-md hover:text-secondary-container transition-colors flex items-center gap-0.5 shrink-0 pl-1">
+                                                        Reservar <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
                                                     </Link>
                                                 </div>
                                             </div>
