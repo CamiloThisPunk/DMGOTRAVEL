@@ -19,6 +19,7 @@ class ServicePackageResource extends JsonResource
             'description' => $this->description,
             'itinerary' => $this->itinerary,
             'price' => (float) $this->price,
+            'old_price' => $this->old_price ? (float) $this->old_price : null,
             'capacity' => $this->capacity,
             'duration' => $this->duration,
             'image_360_url' => $this->image_360_url

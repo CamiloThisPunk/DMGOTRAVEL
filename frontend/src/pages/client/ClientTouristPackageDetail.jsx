@@ -154,13 +154,19 @@ const ClientTouristPackageDetail = () => {
                     <div className="sticky top-[100px] bg-white rounded-2xl p-8 shadow-[0_8px_30px_rgba(0,0,0,0.12)] border border-[#c4c6cf]">
                         <div className="flex justify-between items-start border-b border-[#c4c6cf] pb-6 mb-6">
                             <div>
-                                <p className="text-[#74777f] text-sm mb-1 line-through">S/ {(parseFloat(pkg.price) * 1.2).toFixed(2)}</p>
+                                {pkg.old_price && parseFloat(pkg.old_price) > parseFloat(pkg.price) && (
+                                    <p className="text-[#74777f] text-sm mb-1 line-through">S/ {parseFloat(pkg.old_price).toFixed(2)}</p>
+                                )}
                                 <div className="flex items-baseline gap-2">
                                     <span className="text-4xl font-bold text-[#000613]">S/ {parseFloat(pkg.price).toFixed(2)}</span>
                                     <span className="text-[#74777f]">/ persona</span>
+                                    {pkg.old_price && parseFloat(pkg.old_price) > parseFloat(pkg.price) && (
+                                        <span className="bg-error text-on-error text-[12px] font-bold px-2 py-1 rounded ml-2 shadow-sm">
+                                            Ahorra {Math.round((1 - pkg.price/pkg.old_price) * 100)}%
+                                        </span>
+                                    )}
                                 </div>
                             </div>
-                            <span className="bg-[#ff851b]/10 text-[#964900] px-2 py-1 rounded text-xs font-bold uppercase">-20% DCTO</span>
                         </div>
 
                         <div className="space-y-6 mb-8">

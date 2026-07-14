@@ -21,6 +21,7 @@ class StoreServicePackageRequest extends FormRequest
             'type' => ['required', 'string', 'in:servicio,paquete'],
             'description' => ['required', 'string'],
             'price' => ['required', 'numeric', 'min:0'],
+            'old_price' => ['nullable', 'numeric', 'min:0'],
             'capacity' => ['required', 'integer', 'min:1'],
             'duration' => ['required', 'integer', 'min:1'],
             'image_360' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:10240'],

@@ -14,6 +14,7 @@ const AdminEditTouristPackage = () => {
     const [form, setForm] = useState({
         title: '',
         price: '',
+        old_price: '',
         duration: '',
         category: 'Cultura e Historia',
         description: '',
@@ -46,6 +47,7 @@ const AdminEditTouristPackage = () => {
             setForm({
                 title: data.title || '',
                 price: data.price || '',
+                old_price: data.old_price || '',
                 duration: data.duration || '',
                 category: data.category || 'Cultura e Historia',
                 description: data.description || '',
@@ -132,6 +134,11 @@ const AdminEditTouristPackage = () => {
         formData.append('type', 'paquete');
         formData.append('description', form.description);
         formData.append('price', parseFloat(form.price) || 0);
+        if (form.old_price) {
+            formData.append('old_price', parseFloat(form.old_price));
+        } else {
+            formData.append('old_price', ''); // Send empty if cleared
+        }
         formData.append('capacity', 15); // Default capacity for now if removed from UI
         formData.append('duration', parseInt(form.duration) || 1);
         formData.append('itinerary', JSON.stringify(itinerary));
@@ -210,14 +217,23 @@ const AdminEditTouristPackage = () => {
                                     className="w-full bg-[#faf9fc] border border-[#c4c6cf] rounded-lg px-4 py-3 focus:outline-none focus:border-[#000613] focus:ring-1 focus:ring-[#000613] transition-all text-[#1a1c1e] placeholder-[#74777f]" 
                                     placeholder="Ej. Ruta de la Independencia" type="text" />
                             </div>
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-3 gap-4">
                                 <div>
-                                    <label className="block text-sm font-semibold text-[#43474e] mb-1">Precio Base (PEN)</label>
+                                    <label className="block text-sm font-semibold text-[#43474e] mb-1">Precio Final (S/)</label>
                                     <div className="relative">
                                         <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#43474e]">S/</span>
                                         <input name="price" value={form.price} onChange={handleFormChange} required min="0" step="0.01"
                                             className="w-full bg-[#faf9fc] border border-[#c4c6cf] rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:border-[#000613] focus:ring-1 focus:ring-[#000613] transition-all text-[#1a1c1e]" 
                                             type="number" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-semibold text-[#43474e] mb-1">Precio Normal (Opc)</label>
+                                    <div className="relative">
+                                        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#43474e]">S/</span>
+                                        <input name="old_price" value={form.old_price} onChange={handleFormChange} min="0" step="0.01"
+                                            className="w-full bg-[#faf9fc] border border-[#c4c6cf] rounded-lg pl-10 pr-4 py-3 focus:outline-none focus:border-[#000613] focus:ring-1 focus:ring-[#000613] transition-all text-[#1a1c1e]" 
+                                            type="number" placeholder="Ej. 120" />
                                     </div>
                                 </div>
                                 <div>

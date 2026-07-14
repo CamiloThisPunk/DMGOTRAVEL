@@ -104,8 +104,18 @@ const TourCatalog = () => {
                                                 }`}>
                                                 {selectedTour?.id === tour.id ? '✓ Seleccionado' : 'Seleccionar'}
                                             </button>
-                                            <div className="bg-surface-container text-primary font-headline-sm text-headline-sm px-3 py-1 rounded">
-                                                S/ {parseFloat(tour.price || 0).toFixed(2)}
+                                            <div className="flex flex-col items-end">
+                                                {tour.old_price && parseFloat(tour.old_price) > parseFloat(tour.price || 0) && (
+                                                    <span className="text-xs text-on-surface-variant line-through mb-0.5">S/ {parseFloat(tour.old_price).toFixed(2)}</span>
+                                                )}
+                                                <div className="flex items-center gap-2">
+                                                    {tour.old_price && parseFloat(tour.old_price) > parseFloat(tour.price || 0) && (
+                                                        <span className="bg-error text-on-error text-[10px] font-bold px-1.5 py-0.5 rounded">-{Math.round((1 - tour.price/tour.old_price) * 100)}%</span>
+                                                    )}
+                                                    <div className="bg-surface-container text-primary font-headline-sm text-headline-sm px-3 py-1 rounded">
+                                                        S/ {parseFloat(tour.price || 0).toFixed(2)}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

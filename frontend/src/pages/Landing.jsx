@@ -192,7 +192,17 @@ const Landing = () => {
                                                 <h3 className="font-headline-sm text-headline-sm text-primary mb-2 line-clamp-2">{service.title}</h3>
                                                 <p className="text-on-surface-variant flex-grow mb-4 line-clamp-3">{service.description}</p>
                                                 <div className="flex justify-between items-center mt-auto border-t border-outline-variant pt-4">
-                                                    <span className="bg-surface-container text-primary px-3 py-1 rounded font-bold text-sm">Desde S/ {parseFloat(service.price).toFixed(2)}</span>
+                                                    <div className="flex flex-col">
+                                                        {service.old_price && parseFloat(service.old_price) > parseFloat(service.price) && (
+                                                            <span className="text-xs text-on-surface-variant line-through mb-0.5">S/ {parseFloat(service.old_price).toFixed(2)}</span>
+                                                        )}
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="bg-surface-container text-primary px-3 py-1 rounded font-bold text-sm">Desde S/ {parseFloat(service.price).toFixed(2)}</span>
+                                                            {service.old_price && parseFloat(service.old_price) > parseFloat(service.price) && (
+                                                                <span className="bg-error text-on-error text-[10px] font-bold px-1.5 py-0.5 rounded">-{Math.round((1 - service.price/service.old_price) * 100)}%</span>
+                                                            )}
+                                                        </div>
+                                                    </div>
                                                     <Link to={`/auth`} className="text-secondary font-label-md text-label-md hover:text-secondary-container transition-colors flex items-center gap-1">
                                                         Reservar <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
                                                     </Link>
@@ -244,7 +254,17 @@ const Landing = () => {
                                                 <h3 className="font-headline-sm text-headline-sm text-primary mb-2 line-clamp-2">{service.title}</h3>
                                                 <p className="text-on-surface-variant flex-grow mb-4 line-clamp-3">{service.description}</p>
                                                 <div className="flex justify-between items-center mt-auto border-t border-outline-variant pt-4">
-                                                    <span className="bg-surface-container text-primary px-3 py-1 rounded font-bold text-sm">Desde S/ {parseFloat(service.price).toFixed(2)}</span>
+                                                    <div className="flex flex-col">
+                                                        {service.old_price && parseFloat(service.old_price) > parseFloat(service.price) && (
+                                                            <span className="text-xs text-on-surface-variant line-through mb-0.5">S/ {parseFloat(service.old_price).toFixed(2)}</span>
+                                                        )}
+                                                        <div className="flex items-center gap-2">
+                                                            <span className="bg-surface-container text-primary px-3 py-1 rounded font-bold text-sm">Desde S/ {parseFloat(service.price).toFixed(2)}</span>
+                                                            {service.old_price && parseFloat(service.old_price) > parseFloat(service.price) && (
+                                                                <span className="bg-error text-on-error text-[10px] font-bold px-1.5 py-0.5 rounded">-{Math.round((1 - service.price/service.old_price) * 100)}%</span>
+                                                            )}
+                                                        </div>
+                                                    </div>
                                                     <Link to={`/auth`} className="text-secondary font-label-md text-label-md hover:text-secondary-container transition-colors flex items-center gap-1">
                                                         Reservar <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
                                                     </Link>

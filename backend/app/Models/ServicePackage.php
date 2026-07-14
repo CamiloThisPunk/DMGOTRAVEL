@@ -15,6 +15,7 @@ class ServicePackage extends Model
         'description',
         'itinerary',
         'price',
+        'old_price',
         'capacity',
         'duration',
         'image_360_url',
