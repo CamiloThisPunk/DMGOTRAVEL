@@ -56,7 +56,7 @@ class SocialAuthController extends Controller
         } catch (\Exception $e) {
             \Log::error('Google Auth Error: ' . $e->getMessage());
             $frontendUrl = env('FRONTEND_URL', 'http://localhost:5173');
-            return redirect()->away($frontendUrl . '/auth?error=google_failed');
+            return redirect()->away($frontendUrl . '/auth?error=' . urlencode($e->getMessage()));
         }
     }
 }

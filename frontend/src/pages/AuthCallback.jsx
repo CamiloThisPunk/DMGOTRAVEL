@@ -15,8 +15,8 @@ const AuthCallback = () => {
         const errorParam = urlParams.get('error');
 
         if (errorParam) {
-            setError('No se pudo iniciar sesión con Google. Intenta de nuevo.');
-            setTimeout(() => navigate('/auth'), 3000);
+            setError(`Error de Google: ${decodeURIComponent(errorParam)}`);
+            setTimeout(() => navigate('/auth'), 6000);
             return;
         }
 
