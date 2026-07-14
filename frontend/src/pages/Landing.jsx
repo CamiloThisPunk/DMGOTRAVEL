@@ -94,8 +94,8 @@ const Landing = () => {
                     </ul>
                     <div className="hidden md:block">
                         {user ? (
-                            <Link to={user.roles?.some(r => (r.name || r) === 'admin') ? '/admin/dashboard' : '/client/catalog'} className="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded hover:bg-primary-container hover:text-on-primary-container transition-colors">
-                                Dashboard
+                            <Link to={user.roles?.includes('admin') ? '/admin/dashboard' : '/client/catalog'} className="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded hover:bg-primary-container hover:text-on-primary-container transition-colors">
+                                Ir a mi panel
                             </Link>
                         ) : (
                             <Link to="/auth" className="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded hover:bg-primary-container hover:text-on-primary-container transition-colors">
@@ -118,8 +118,8 @@ const Landing = () => {
                             <li><a className={getNavClass('contacto') + " block pb-2"} href="#contacto" onClick={() => setIsMobileMenuOpen(false)}>Contacto</a></li>
                             <li className="pt-2">
                                 {user ? (
-                                    <Link to={user.roles?.some(r => (r.name || r) === 'admin') ? '/admin/dashboard' : '/client/catalog'} className="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded text-center block w-full hover:bg-primary-container hover:text-on-primary-container transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
-                                        Dashboard
+                                    <Link to={user.roles?.includes('admin') ? '/admin/dashboard' : '/client/catalog'} className="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded text-center block w-full hover:bg-primary-container hover:text-on-primary-container transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+                                        Ir a mi panel
                                     </Link>
                                 ) : (
                                     <Link to="/auth" className="bg-primary text-on-primary font-label-md text-label-md px-6 py-3 rounded text-center block w-full hover:bg-primary-container hover:text-on-primary-container transition-colors" onClick={() => setIsMobileMenuOpen(false)}>

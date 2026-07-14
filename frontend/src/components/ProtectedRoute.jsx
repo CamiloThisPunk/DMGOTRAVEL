@@ -13,10 +13,10 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
         return <Navigate to="/login" />;
     }
 
-    if (allowedRoles && !user.roles?.some(role => allowedRoles.includes(role.name || role))) {
+    const userRoles = user.roles || [];
+    if (allowedRoles && !allowedRoles.some(role => userRoles.includes(role))) {
         // Redirigir al dashboard correcto según su rol si no tiene permiso para esta ruta
-        const isAdmin = user.roles?.some(r => (r.name || r) === 'admin');
-        return <Navigate to={isAdmin ? '/admin/dashboard' : '/client/dashboard'} />;
+        return <Navigate to={userRoles.includes('admin') ? '/admin/dashboard' : '/client/dashboard'} />;
     }
 
     return children;

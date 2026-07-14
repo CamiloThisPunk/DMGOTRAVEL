@@ -51,7 +51,7 @@ Route::prefix('auth')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::get('/me', function (\Illuminate\Http\Request $request) {
-            return response()->json(['user' => $request->user()]);
+            return response()->json(['user' => new \App\Http\Resources\UserResource($request->user())]);
         });
         Route::post('/logout', [AuthController::class, 'logout']);
     });
