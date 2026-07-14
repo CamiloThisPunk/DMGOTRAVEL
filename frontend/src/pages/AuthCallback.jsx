@@ -29,7 +29,12 @@ const AuthCallback = () => {
                     if (isAdmin) {
                         navigate('/admin/dashboard', { replace: true });
                     } else {
-                        navigate('/client/welcome', { replace: true });
+                        // Si es primera vez (no tiene teléfono guardado), va a bienvenida. Si no, directo al panel.
+                        if (!user.phone) {
+                            navigate('/client/welcome', { replace: true });
+                        } else {
+                            navigate('/client/dashboard', { replace: true });
+                        }
                     }
                 })
                 .catch((err) => {
