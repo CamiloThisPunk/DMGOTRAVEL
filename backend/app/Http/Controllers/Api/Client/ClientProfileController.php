@@ -28,4 +28,27 @@ class ClientProfileController extends Controller
             'user' => $user
         ]);
     }
+
+    /**
+     * Delete the authenticated client's account.
+     */
+    public function destroy(Request $request)
+    {
+        $user = $request->user();
+        
+        // Prevent admins from deleting their account via this client endpoint
+        if ($user->hasRole('admin')) {
+            return response()->json(['message' => 'No puedes eliminar una cuenta de administrador desde aquí.'], 403);
+        }
+
+        // Delete user's tokens to immediately invalidate sessions
+        $user->tokens()->delete();
+        
+        // Delete the user
+        $user->delete();
+
+        return response()->json([
+            'message' => 'Cuenta eliminada exitosamente'
+        ]);
+    }
 }
