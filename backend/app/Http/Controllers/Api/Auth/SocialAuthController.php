@@ -26,11 +26,10 @@ class SocialAuthController extends Controller
             $user = User::where('email', $googleUser->getEmail())->first();
 
             if ($user) {
-                // If user exists, just update their google_id and avatar if missing
-                $user->update([
-                    'google_id' => $googleUser->getId(),
-                    'avatar' => $googleUser->getAvatar(),
-                ]);
+                // If user exists, update their google_id and avatar
+                $user->google_id = $googleUser->getId();
+                $user->avatar = $googleUser->getAvatar();
+                $user->save();
             } else {
                 // Create a new user
                 $user = User::create([
@@ -38,12 +37,13 @@ class SocialAuthController extends Controller
                     'email' => $googleUser->getEmail(),
                     'google_id' => $googleUser->getId(),
                     'avatar' => $googleUser->getAvatar(),
-                    'password' => Hash::make(Str::random(24)), // Random secure password
+                    'password' => Hash::make(Str::random(24)),
                 ]);
-                // Assign default role if needed
-                if (class_exists(\Spatie\Permission\Models\Role::class)) {
-                    $user->assignRole('client');
-                }
+            }
+
+            // Always ensure user has the client role
+            if (!$user->hasRole('client') && !$user->hasRole('admin')) {
+                $user->assignRole('client');
             }
 
             // Create Sanctum Token
@@ -54,7 +54,9 @@ class SocialAuthController extends Controller
             return redirect()->away($frontendUrl . '/auth/callback?token=' . $token);
 
         } catch (\Exception $e) {
-            return response()->json(['error' => 'No se pudo iniciar sesión con Google.'], 500);
+            \Log::error('Google Auth Error: ' . $e->getMessage());
+            $frontendUrl = env('FRONTEND_URL', 'http://localhost:5173');
+            return redirect()->away($frontendUrl . '/auth?error=google_failed');
         }
     }
 }

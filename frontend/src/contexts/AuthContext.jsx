@@ -85,16 +85,28 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('token', token);
             api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
             
-            // Fetch user data
+            // Fetch user data from /me endpoint
             const response = await api.get('/api/auth/me');
+            console.log('Google login /me response:', JSON.stringify(response.data));
+            
             const userData = response.data.user;
+            
+            if (!userData) {
+                throw new Error('No user data received from /api/auth/me');
+            }
+            
+            // Ensure roles is always an array
+            if (!userData.roles) {
+                console.warn('User has no roles, defaulting to ["client"]');
+                userData.roles = ['client'];
+            }
             
             setUser(userData);
             localStorage.setItem('user', JSON.stringify(userData));
             
             return userData;
         } catch (error) {
-            console.error("Google Token Login Error:", error);
+            console.error("Google Token Login Error:", error?.response?.status, error?.response?.data || error.message);
             logout();
             throw error;
         }
