@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import api from '../services/api';
 
 const Auth = () => {
     const [isRegister, setIsRegister] = useState(false);
@@ -25,7 +26,7 @@ const Auth = () => {
 
     const handleGoogleLogin = async () => {
         try {
-            const response = await api.get('/auth/google/redirect');
+            const response = await api.get('/api/auth/google/redirect');
             if (response.data.url) {
                 window.location.href = response.data.url;
             }
