@@ -176,7 +176,7 @@ const Landing = () => {
                                     const cat = getCategory(service.title, service.description);
                                     return (
                                         <article key={service.id} className="tour-card bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden flex flex-col h-full hover:border-primary transition-colors hover:shadow-md">
-                                            <div className="h-64 overflow-hidden relative">
+                                            <div className="h-44 overflow-hidden relative">
                                                 {service.image_360_url ? (
                                                     <img className="w-full h-full object-cover" alt={service.title} src={service.image_360_url} onError={(e) => { e.target.onerror = null; e.target.src = '/images/demo-tour-1.jpg'; }} />
                                                 ) : (
@@ -184,33 +184,33 @@ const Landing = () => {
                                                         <span className="material-symbols-outlined text-4xl">image</span>
                                                     </div>
                                                 )}
-                                                <div className="absolute top-4 left-4 bg-surface-container-lowest text-primary font-label-md text-label-md px-3 py-1 rounded shadow-sm flex items-center gap-1">
-                                                    <span className="material-symbols-outlined text-[16px]">{cat.icon}</span> {cat.name}
+                                                <div className="absolute top-3 left-3 bg-surface-container-lowest text-primary font-bold text-[11px] px-2 py-1 rounded shadow-sm flex items-center gap-1">
+                                                    <span className="material-symbols-outlined text-[14px]">{cat.icon}</span> {cat.name}
                                                 </div>
                                             </div>
-                                            <div className="p-6 flex-grow flex flex-col">
-                                                <h3 className="font-headline-sm text-headline-sm text-primary mb-2" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                                            <div className="p-4 flex-grow flex flex-col">
+                                                <h3 className="font-bold text-[16px] text-primary mb-1.5 leading-tight" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                                                     {service.title}
                                                 </h3>
-                                                <p className="text-on-surface-variant flex-grow mb-4 text-sm" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                                                    {service.description?.length > 110 ? service.description.substring(0, 110) + '...' : service.description}
+                                                <p className="text-on-surface-variant flex-grow mb-3 text-[12px] leading-snug" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                                                    {service.description?.length > 80 ? service.description.substring(0, 80) + '...' : service.description}
                                                 </p>
-                                                <div className="flex justify-between items-center mt-auto border-t border-outline-variant pt-4 h-[76px]">
+                                                <div className="flex justify-between items-center mt-auto border-t border-outline-variant pt-3 h-[50px]">
                                                     <div className="flex flex-col justify-center h-full">
                                                         {service.old_price && parseFloat(service.old_price) > parseFloat(service.price) ? (
                                                             <>
-                                                                <div className="flex items-center gap-2 mb-1">
-                                                                    <span className="text-xs text-on-surface-variant line-through">S/ {parseFloat(service.old_price).toFixed(2)}</span>
-                                                                    <span className="bg-error text-on-error text-[10px] font-bold px-1.5 py-0.5 rounded">-{Math.round((1 - service.price/service.old_price) * 100)}%</span>
+                                                                <div className="flex items-center gap-1.5 mb-0.5">
+                                                                    <span className="text-[10px] text-on-surface-variant line-through">S/ {parseFloat(service.old_price).toFixed(2)}</span>
+                                                                    <span className="bg-error text-on-error text-[9px] font-bold px-1 py-0.5 rounded leading-none">-{Math.round((1 - service.price/service.old_price) * 100)}%</span>
                                                                 </div>
-                                                                <span className="bg-surface-container text-primary px-2 py-1 rounded font-bold text-sm whitespace-nowrap w-fit">S/ {parseFloat(service.price).toFixed(2)}</span>
+                                                                <span className="text-primary font-bold text-[14px] whitespace-nowrap leading-none">S/ {parseFloat(service.price).toFixed(2)}</span>
                                                             </>
                                                         ) : (
-                                                            <span className="bg-surface-container text-primary px-2 py-1 rounded font-bold text-sm whitespace-nowrap w-fit">Desde S/ {parseFloat(service.price).toFixed(2)}</span>
+                                                            <span className="text-primary font-bold text-[14px] whitespace-nowrap leading-none">Desde S/ {parseFloat(service.price).toFixed(2)}</span>
                                                         )}
                                                     </div>
-                                                    <Link to={`/auth`} className="text-secondary font-label-md text-label-md hover:text-secondary-container transition-colors flex items-center gap-1 shrink-0">
-                                                        Reservar <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                                                    <Link to={`/auth`} className="text-secondary font-bold text-[13px] hover:text-secondary-container transition-colors flex items-center gap-0.5 shrink-0">
+                                                        Reservar <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
                                                     </Link>
                                                 </div>
                                             </div>
@@ -244,7 +244,7 @@ const Landing = () => {
                                     const cat = getCategory(service.title, service.description);
                                     return (
                                         <article key={service.id} className="tour-card bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden flex flex-col h-full hover:border-primary transition-colors hover:shadow-md">
-                                            <div className="h-64 overflow-hidden relative">
+                                            <div className="h-44 overflow-hidden relative">
                                                 {service.image_360_url ? (
                                                     <img className="w-full h-full object-cover" alt={service.title} src={service.image_360_url} onError={(e) => { e.target.onerror = null; e.target.src = '/images/demo-tour-1.jpg'; }} />
                                                 ) : (
@@ -252,33 +252,33 @@ const Landing = () => {
                                                         <span className="material-symbols-outlined text-4xl">image</span>
                                                     </div>
                                                 )}
-                                                <div className="absolute top-4 left-4 bg-surface-container-lowest text-primary font-label-md text-label-md px-3 py-1 rounded shadow-sm flex items-center gap-1">
-                                                    <span className="material-symbols-outlined text-[16px]">{cat.icon}</span> {cat.name}
+                                                <div className="absolute top-3 left-3 bg-surface-container-lowest text-primary font-bold text-[11px] px-2 py-1 rounded shadow-sm flex items-center gap-1">
+                                                    <span className="material-symbols-outlined text-[14px]">{cat.icon}</span> {cat.name}
                                                 </div>
                                             </div>
-                                            <div className="p-6 flex-grow flex flex-col">
-                                                <h3 className="font-headline-sm text-headline-sm text-primary mb-2" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                                            <div className="p-4 flex-grow flex flex-col">
+                                                <h3 className="font-bold text-[16px] text-primary mb-1.5 leading-tight" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                                                     {service.title}
                                                 </h3>
-                                                <p className="text-on-surface-variant flex-grow mb-4 text-sm" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                                                    {service.description?.length > 110 ? service.description.substring(0, 110) + '...' : service.description}
+                                                <p className="text-on-surface-variant flex-grow mb-3 text-[12px] leading-snug" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                                                    {service.description?.length > 80 ? service.description.substring(0, 80) + '...' : service.description}
                                                 </p>
-                                                <div className="flex justify-between items-center mt-auto border-t border-outline-variant pt-4 h-[76px]">
+                                                <div className="flex justify-between items-center mt-auto border-t border-outline-variant pt-3 h-[50px]">
                                                     <div className="flex flex-col justify-center h-full">
                                                         {service.old_price && parseFloat(service.old_price) > parseFloat(service.price) ? (
                                                             <>
-                                                                <div className="flex items-center gap-2 mb-1">
-                                                                    <span className="text-xs text-on-surface-variant line-through">S/ {parseFloat(service.old_price).toFixed(2)}</span>
-                                                                    <span className="bg-error text-on-error text-[10px] font-bold px-1.5 py-0.5 rounded">-{Math.round((1 - service.price/service.old_price) * 100)}%</span>
+                                                                <div className="flex items-center gap-1.5 mb-0.5">
+                                                                    <span className="text-[10px] text-on-surface-variant line-through">S/ {parseFloat(service.old_price).toFixed(2)}</span>
+                                                                    <span className="bg-error text-on-error text-[9px] font-bold px-1 py-0.5 rounded leading-none">-{Math.round((1 - service.price/service.old_price) * 100)}%</span>
                                                                 </div>
-                                                                <span className="bg-surface-container text-primary px-2 py-1 rounded font-bold text-sm whitespace-nowrap w-fit">S/ {parseFloat(service.price).toFixed(2)}</span>
+                                                                <span className="text-primary font-bold text-[14px] whitespace-nowrap leading-none">S/ {parseFloat(service.price).toFixed(2)}</span>
                                                             </>
                                                         ) : (
-                                                            <span className="bg-surface-container text-primary px-2 py-1 rounded font-bold text-sm whitespace-nowrap w-fit">Desde S/ {parseFloat(service.price).toFixed(2)}</span>
+                                                            <span className="text-primary font-bold text-[14px] whitespace-nowrap leading-none">Desde S/ {parseFloat(service.price).toFixed(2)}</span>
                                                         )}
                                                     </div>
-                                                    <Link to={`/auth`} className="text-secondary font-label-md text-label-md hover:text-secondary-container transition-colors flex items-center gap-1 shrink-0">
-                                                        Reservar <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
+                                                    <Link to={`/auth`} className="text-secondary font-bold text-[13px] hover:text-secondary-container transition-colors flex items-center gap-0.5 shrink-0">
+                                                        Reservar <span className="material-symbols-outlined text-[16px]">arrow_forward</span>
                                                     </Link>
                                                 </div>
                                             </div>
