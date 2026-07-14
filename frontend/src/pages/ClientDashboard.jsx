@@ -172,7 +172,14 @@ const ClientDashboard = () => {
                                         </div>
                                         <p className="text-sm text-on-surface-variant flex items-center gap-4">
                                             <span><span className="material-symbols-outlined align-middle mr-1 text-[16px]">group</span>{getGuests(res)} Pasajeros</span>
-                                            <span><span className="material-symbols-outlined align-middle mr-1 text-[16px]">payments</span>S/ {parseFloat(getTotal(res)).toFixed(2)} Total</span>
+                                            <span className="flex items-center gap-2">
+                                                <span><span className="material-symbols-outlined align-middle mr-1 text-[16px]">payments</span>S/ {parseFloat(getTotal(res)).toFixed(2)} Total</span>
+                                                {res.service?.old_price && parseFloat(res.service.old_price) > parseFloat(res.service.price) && (
+                                                    <span className="bg-error text-on-error text-[10px] font-bold px-1.5 py-0.5 rounded">
+                                                        -{Math.round((1 - res.service.price/res.service.old_price) * 100)}%
+                                                    </span>
+                                                )}
+                                            </span>
                                         </p>
                                     </div>
                                     {/* Actions */}
@@ -232,7 +239,23 @@ const ClientDashboard = () => {
                             <div className="bg-surface-container-lowest border border-outline-variant rounded-xl p-5">
                                 <div className="flex justify-between items-center mb-1">
                                     <span className="font-semibold text-on-surface">Total del Servicio</span>
-                                    <span className="font-bold text-primary text-xl">S/ {parseFloat(getTotal(selectedReservation)).toFixed(2)}</span>
+                                    <div className="text-right">
+                                        {selectedReservation.service?.old_price && parseFloat(selectedReservation.service.old_price) > parseFloat(selectedReservation.service.price) && (
+                                            <div className="text-xs text-on-surface-variant line-through mb-0.5">
+                                                S/ {(parseFloat(selectedReservation.service.old_price) * getGuests(selectedReservation)).toFixed(2)}
+                                            </div>
+                                        )}
+                                        <div className="flex items-center justify-end gap-2">
+                                            <span className="font-bold text-primary text-xl">
+                                                S/ {parseFloat(getTotal(selectedReservation)).toFixed(2)}
+                                            </span>
+                                            {selectedReservation.service?.old_price && parseFloat(selectedReservation.service.old_price) > parseFloat(selectedReservation.service.price) && (
+                                                <span className="bg-error text-on-error text-[10px] font-bold px-1.5 py-0.5 rounded">
+                                                    -{Math.round((1 - selectedReservation.service.price/selectedReservation.service.old_price) * 100)}%
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                                 <p className="text-xs text-on-surface-variant mb-5">
                                     {selectedReservation.payment_voucher_url ? 'Pagado vía Yape' : 'Pendiente o sin comprobante'}

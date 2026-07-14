@@ -363,11 +363,25 @@ const ClientTouristPackageCheckout = () => {
                             </div>
 
                             <div className="space-y-3 mb-6">
-                                <div className="flex justify-between text-[#43474e] text-sm">
+                                <div className="flex justify-between items-center text-[#43474e] text-sm">
                                     <span>Precio por persona</span>
-                                    <span>S/ {parseFloat(pkg.price).toFixed(2)}</span>
+                                    <div className="text-right">
+                                        {pkg.old_price && parseFloat(pkg.old_price) > parseFloat(pkg.price) && (
+                                            <div className="text-xs text-[#74777f] line-through mb-0.5">
+                                                S/ {parseFloat(pkg.old_price).toFixed(2)}
+                                            </div>
+                                        )}
+                                        <div className="flex items-center justify-end gap-2">
+                                            <span>S/ {parseFloat(pkg.price).toFixed(2)}</span>
+                                            {pkg.old_price && parseFloat(pkg.old_price) > parseFloat(pkg.price) && (
+                                                <span className="bg-error text-on-error text-[10px] font-bold px-1.5 py-0.5 rounded">
+                                                    -{Math.round((1 - pkg.price/pkg.old_price) * 100)}%
+                                                </span>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="flex justify-between text-[#43474e] text-sm">
+                                <div className="flex justify-between items-center text-[#43474e] text-sm">
                                     <span>Cantidad</span>
                                     <span>x {guests}</span>
                                 </div>
