@@ -119,21 +119,21 @@ const ClientTouristPackages = () => {
                                                     <span className="text-[12px] font-bold uppercase tracking-wider">Máx {tour.capacity} pax</span>
                                                 </div>
                                             </div>
-                                            <div className="flex items-center justify-between pt-4 border-t border-[#c4c6cf]/30">
+                                            <div className="flex flex-wrap items-center justify-between pt-4 border-t border-[#c4c6cf]/30 gap-3">
                                                 <div>
                                                     <p className="text-[12px] font-bold uppercase tracking-wider text-[#43474e]">Precio Base</p>
                                                     {tour.old_price && parseFloat(tour.old_price) > parseFloat(tour.price) && (
                                                         <p className="text-xs text-[#74777f] line-through -mt-1">S/ {parseFloat(tour.old_price).toFixed(2)}</p>
                                                     )}
-                                                    <div className="flex items-center gap-2">
-                                                        <p className="text-[24px] leading-tight font-bold text-[#000613]">S/ {parseFloat(tour.price).toFixed(2)}</p>
+                                                    <div className="flex flex-wrap items-center gap-2">
+                                                        <p className="text-[24px] leading-tight font-bold text-[#000613] whitespace-nowrap">S/ {parseFloat(tour.price).toFixed(2)}</p>
                                                         {tour.old_price && parseFloat(tour.old_price) > parseFloat(tour.price) && (
                                                             <span className="bg-error text-on-error text-[12px] font-bold px-1.5 py-0.5 rounded">-{Math.round((1 - tour.price/tour.old_price) * 100)}%</span>
                                                         )}
                                                     </div>
                                                 </div>
                                                 <button onClick={() => handleSelectTour(tour)}
-                                                    className="bg-[#964900] text-white hover:bg-[#964900]/90 px-6 py-2.5 rounded-lg text-[16px] transition-colors font-bold">
+                                                    className="bg-[#964900] text-white hover:bg-[#964900]/90 px-6 py-2.5 rounded-lg text-[16px] transition-colors font-bold shrink-0">
                                                     Ver Detalle
                                                 </button>
                                             </div>
