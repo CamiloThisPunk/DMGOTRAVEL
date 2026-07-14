@@ -41,10 +41,12 @@ const Auth = () => {
         setLoginError('');
         try {
             const user = await login(loginEmail, loginPassword, rememberMe);
-            if (user.roles && user.roles.includes('admin')) {
-                navigate('/admin/dashboard');
-            } else {
-                navigate('/client/dashboard');
+            if (user) {
+                if (user.roles && user.roles.some(r => (r.name || r) === 'admin')) {
+                    navigate('/admin/dashboard');
+                } else {
+                    navigate('/client/welcome');
+                }
             }
         } catch (error) {
             setLoginError('Credenciales incorrectas o problema de red.');
@@ -61,10 +63,10 @@ const Auth = () => {
         }
         try {
             const user = await register(regName, regEmail, regPhone, regPassword, regConfirm);
-            if (user.roles && user.roles.includes('admin')) {
+            if (user.roles && user.roles.some(r => (r.name || r) === 'admin')) {
                 navigate('/admin/dashboard');
             } else {
-                navigate('/client/dashboard');
+                navigate('/client/welcome');
             }
         } catch (error) {
             setRegError('Error al crear cuenta. Verifica los datos.');
