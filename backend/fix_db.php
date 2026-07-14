@@ -1,16 +1,13 @@
 <?php
-require 'vendor/autoload.php';
-$app = require_once 'bootstrap/app.php';
+require __DIR__.'/vendor/autoload.php';
+$app = require_once __DIR__.'/bootstrap/app.php';
 $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
 $kernel->bootstrap();
 
-$res = App\Models\Reservation::whereNotNull('payment_voucher_url')->get();
-foreach($res as $r) {
-    if(strpos($r->payment_voucher_url, 'storage/vouchers/') !== false) {
-        $parts = explode('storage/vouchers/', $r->payment_voucher_url);
-        $path = $parts[1];
-        $r->payment_voucher_url = 'https://dmgotravel-api.onrender.com/api/images?path=vouchers/' . $path;
-        $r->save();
-        echo 'Updated ' . $r->id . "\n";
-    }
+try {
+    Illuminate\Support\Facades\DB::statement("ALTER TABLE users ADD COLUMN IF NOT EXISTS google_id VARCHAR(255)");
+    Illuminate\Support\Facades\DB::statement("ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar VARCHAR(255)");
+    echo "Columns added successfully.\n";
+} catch (\Exception $e) {
+    echo "Error: " . $e->getMessage() . "\n";
 }
