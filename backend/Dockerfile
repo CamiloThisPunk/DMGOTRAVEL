@@ -34,7 +34,6 @@ RUN composer install --no-dev --optimize-autoloader
 # Configurar variables de entorno y almacenamiento
 RUN cp .env.render .env
 RUN php artisan storage:link || true
-RUN php artisan config:cache || true
 
 # Dar permisos a las carpetas storage y bootstrap/cache
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
