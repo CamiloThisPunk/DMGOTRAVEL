@@ -100,6 +100,18 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const updateProfile = async (data) => {
+        const response = await api.patch('/api/client/profile', data);
+        const updatedUser = response.data.user;
+        setUser(updatedUser);
+        if (localStorage.getItem('user')) {
+            localStorage.setItem('user', JSON.stringify(updatedUser));
+        } else if (sessionStorage.getItem('user')) {
+            sessionStorage.setItem('user', JSON.stringify(updatedUser));
+        }
+        return updatedUser;
+    };
+
     const logout = async () => {
         try {
             await api.post('/api/auth/logout');
@@ -115,7 +127,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, loginWithGoogleToken, register, logout, loading }}>
+        <AuthContext.Provider value={{ user, login, loginWithGoogleToken, register, logout, loading, updateProfile }}>
             {!loading && children}
         </AuthContext.Provider>
     );

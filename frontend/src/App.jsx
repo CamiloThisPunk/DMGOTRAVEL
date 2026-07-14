@@ -13,6 +13,8 @@ import ClientTouristPackages from './pages/client/ClientTouristPackages';
 import ClientTouristPackageDetail from './pages/client/ClientTouristPackageDetail';
 import ClientTouristPackageCheckout from './pages/client/ClientTouristPackageCheckout';
 
+import ClientWelcome from './pages/ClientWelcome';
+
 // Admin Imports
 import AdminLayout from './components/AdminLayout';
 import AdminDashboard from './pages/admin/AdminDashboard';
@@ -33,6 +35,7 @@ function App() {
         <Route path="/auth/callback" element={<AuthCallback />} />
 
         {/* Client Routes */}
+        <Route path="/client/welcome" element={<ProtectedRoute allowedRoles={['client']}><ClientWelcome /></ProtectedRoute>} />
         <Route path="/client" element={<ProtectedRoute allowedRoles={['client']}><ClientLayout /></ProtectedRoute>}>
             <Route path="dashboard" element={<ClientDashboard />} />
             <Route path="catalog" element={<TourCatalog />} />

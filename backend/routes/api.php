@@ -67,6 +67,7 @@ Route::middleware('auth:sanctum')->prefix('client')->group(function () {
     Route::get('/reservations', [ClientReservationController::class, 'index']);
     Route::post('/reservations', [ClientReservationController::class, 'store']);
     Route::patch('/reservations/{reservation}/cancel', [ClientReservationController::class, 'cancel']);
+    Route::patch('/profile', [\App\Http\Controllers\Api\Client\ClientProfileController::class, 'update']);
 });
 
 /*

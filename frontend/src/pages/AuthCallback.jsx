@@ -16,9 +16,9 @@ const AuthCallback = () => {
             loginWithGoogleToken(token)
                 .then((user) => {
                     if (user.roles && user.roles.some(r => r.name === 'admin')) {
-                        navigate('/admin');
+                        navigate('/admin/dashboard');
                     } else {
-                        navigate('/client/reservations');
+                        navigate('/client/welcome');
                     }
                 })
                 .catch((err) => {
