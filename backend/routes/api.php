@@ -46,7 +46,13 @@ Route::prefix('auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
 
+    Route::get('/google/redirect', [\App\Http\Controllers\Api\Auth\SocialAuthController::class, 'redirect']);
+    Route::get('/google/callback', [\App\Http\Controllers\Api\Auth\SocialAuthController::class, 'callback']);
+
     Route::middleware('auth:sanctum')->group(function () {
+        Route::get('/me', function (\Illuminate\Http\Request $request) {
+            return response()->json(['user' => $request->user()]);
+        });
         Route::post('/logout', [AuthController::class, 'logout']);
     });
 });

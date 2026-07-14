@@ -79,6 +79,27 @@ export const AuthProvider = ({ children }) => {
         return userData;
     };
 
+    const loginWithGoogleToken = async (token) => {
+        try {
+            // Set token immediately
+            localStorage.setItem('token', token);
+            api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            
+            // Fetch user data
+            const response = await api.get('/api/auth/me');
+            const userData = response.data.user;
+            
+            setUser(userData);
+            localStorage.setItem('user', JSON.stringify(userData));
+            
+            return userData;
+        } catch (error) {
+            console.error("Google Token Login Error:", error);
+            logout();
+            throw error;
+        }
+    };
+
     const logout = async () => {
         try {
             await api.post('/api/auth/logout');
@@ -94,7 +115,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+        <AuthContext.Provider value={{ user, login, loginWithGoogleToken, register, logout, loading }}>
             {!loading && children}
         </AuthContext.Provider>
     );

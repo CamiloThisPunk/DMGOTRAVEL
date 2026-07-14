@@ -27,10 +27,11 @@
     23 => 'Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider',
     24 => 'L5Swagger\\L5SwaggerServiceProvider',
     25 => 'Laravel\\Sanctum\\SanctumServiceProvider',
-    26 => 'Carbon\\Laravel\\ServiceProvider',
-    27 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
-    28 => 'Termwind\\Laravel\\TermwindServiceProvider',
-    29 => 'Spatie\\Permission\\PermissionServiceProvider',
+    26 => 'Laravel\\Socialite\\SocialiteServiceProvider',
+    27 => 'Carbon\\Laravel\\ServiceProvider',
+    28 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
+    29 => 'Termwind\\Laravel\\TermwindServiceProvider',
+    30 => 'Spatie\\Permission\\PermissionServiceProvider',
   ),
   'eager' => 
   array (
@@ -206,6 +207,7 @@
     'Barryvdh\\LaravelIdeHelper\\Console\\ModelsCommand' => 'Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider',
     'Barryvdh\\LaravelIdeHelper\\Console\\MetaCommand' => 'Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider',
     'Barryvdh\\LaravelIdeHelper\\Console\\EloquentCommand' => 'Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider',
+    'Laravel\\Socialite\\Contracts\\Factory' => 'Laravel\\Socialite\\SocialiteServiceProvider',
   ),
   'when' => 
   array (
@@ -249,6 +251,9 @@
     array (
     ),
     'Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider' => 
+    array (
+    ),
+    'Laravel\\Socialite\\SocialiteServiceProvider' => 
     array (
     ),
   ),
